@@ -152,6 +152,27 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  srs_authen:
+    dependency: "direct main"
+    description:
+      path: "packages/srs_authen"
+      relative: true
+    source: path
+    version: "0.0.1"
+  srs_common:
+    dependency: "direct main"
+    description:
+      path: "packages/srs_common"
+      relative: true
+    source: path
+    version: "0.0.1"
+  srs_landing:
+    dependency: "direct main"
+    description:
+      path: "packages/srs_landing"
+      relative: true
+    source: path
+    version: "0.0.1"
   stack_trace:
     dependency: transitive
     description:

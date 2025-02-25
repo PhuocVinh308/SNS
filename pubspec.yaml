@@ -12,6 +12,13 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
 
+  srs_authen:
+    path: packages/srs_authen
+  srs_common:
+    path: packages/srs_common
+  srs_landing:
+    path: packages/srs_landing
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
