@@ -12,6 +12,14 @@ dependencies:
   flutter:
     sdk: flutter
 
+  get: ^4.7.2
+  flutter_screenutil: ^5.9.3
+  flutter_localization: ^0.3.1
+  flutter_smart_dialog: ^4.9.8+7
+  get_storage: ^2.1.1
+  path_provider: ^2.1.5
+  hive: ^2.2.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

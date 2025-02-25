@@ -1,1 +1,1 @@
-
+export 'app.dart';
