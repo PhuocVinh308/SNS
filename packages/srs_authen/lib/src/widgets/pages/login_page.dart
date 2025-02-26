@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common_lib.dart';
+import 'package:srs_common/srs_common.dart';
 
 class LoginPage extends GetView<LoginController> {
   const LoginPage({Key? key}) : super(key: key);
@@ -26,10 +27,16 @@ class LoginPage extends GetView<LoginController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    SnackBarUtil.showSnackBar();
+                  },
                   color: Colors.white,
                   child: const Text("Btn Test"),
                 ),
+                CustomTextField(
+                  controller: controller.tc,
+                  name: 'text',
+                )
               ],
             ),
           ),

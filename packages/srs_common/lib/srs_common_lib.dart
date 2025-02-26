@@ -10,3 +10,6 @@ export 'package:hive/hive.dart';
 
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_core/firebase_core.dart';
+
+export 'package:google_fonts/google_fonts.dart';
+export 'package:dropdown_search/dropdown_search.dart';
