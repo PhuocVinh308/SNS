@@ -10,7 +10,30 @@ class LoginPage extends GetView<LoginController> {
     return PopScope(
       canPop: false,
       child: SafeArea(
-        child: Scaffold(),
+        child: Scaffold(
+          body: Container(
+            height: 1.sh,
+            width: 1.sw,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/images/login_bg.jpg",
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MaterialButton(
+                  onPressed: () {},
+                  color: Colors.white,
+                  child: const Text("Btn Test"),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
