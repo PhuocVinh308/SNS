@@ -17,6 +17,29 @@ class StringHelper {
     }
     return null;
   }
+
+  /// check if the string contains only numbers
+  static bool isNumeric(String str) {
+    RegExp numeric = RegExp(r'^-?[0-9]+$');
+    return numeric.hasMatch(str);
+  }
+
+  static final usernameRegExp = RegExp(r'^[a-zA-Z0-9_]+$');
+  static final passwordRegExp = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$');
+
+  static final citizenIdNumberRegExp = RegExp(r'^[0-9]{9}$|^[0-9]{12}$');
+  static final identifierRegExp = RegExp(r'^[0-9]{12}$');
+  static final phoneRegExp =
+      RegExp(r'^(0|84)(\s|\.)?((2[0-9][0-9])|(3[2-9])|(5[689])|(7[06-9])|(8[01-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$');
+  static final emailRegExp = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+  static final intNumber = RegExp(r'^[0-9]*$');
+  static final doubleNumber = RegExp(r'^[0-9]*(\.[0-9]+)*$');
+
+  static final specialText = RegExp(r'[!@#\$%^&*()?":{}|<>|\-\[\]\\]');
+  static final specialTextAndNumber = RegExp(r'[!@#\$%^&*()?":{}|<>|\-\[\]\\0-9]');
+  static final specialTextAndVietnamese = RegExp(
+      r'[!@#\$%^&*()?":{}|<>|\-\[\]\\ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵýỷỹ]');
 }
 
 extension StringCasingExtension on String {

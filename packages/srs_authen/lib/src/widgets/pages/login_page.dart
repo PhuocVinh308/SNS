@@ -35,7 +35,9 @@ class LoginPage extends GetView<LoginController> {
                 ),
                 CustomTextField(
                   controller: controller.tc,
-                  name: 'text',
+                  title: 'name',
+                  customInputType: CustomInputType.int,
+                  regex: true,
                 )
               ],
             ),

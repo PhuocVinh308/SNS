@@ -63,47 +63,29 @@ class CustomReusableDropdown extends StatelessWidget {
               color: CustomColors.color182731.withOpacity(0.4),
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 14.sp),
-            border: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.green),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10.sp),
-              ),
-            ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.green),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10.sp),
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.green),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10.sp),
-              ),
+              borderSide: BorderSide(color: CustomColors.color243DE2.withOpacity(1)),
+              borderRadius: BorderRadius.all(Radius.circular(8.sp)),
             ),
             disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: CustomColors.color8B8B8B.withOpacity(0.5),
-              ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10.sp),
-              ),
+              borderSide: BorderSide(color: CustomColors.color8B8B8B.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+            ),
+            border: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.black12),
+              borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: CustomColors.color243DE2.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(8.sp)),
             ),
             errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: CustomColors.colorFF0033.withOpacity(0.5),
-              ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10.sp),
-              ),
+              borderSide: BorderSide(color: CustomColors.colorFF0033.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(8.sp)),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: CustomColors.colorFF0033.withOpacity(0.5),
-              ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10.sp),
-              ),
+              borderSide: BorderSide(color: CustomColors.colorFF0033.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(8.sp)),
             ),
             filled: true,
             fillColor:
@@ -209,8 +191,8 @@ class CustomReusableDropdown extends StatelessWidget {
         modalBottomSheetProps: ModalBottomSheetProps(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(10.sp),
-              topLeft: Radius.circular(10.sp),
+              topRight: Radius.circular(8.sp),
+              topLeft: Radius.circular(8.sp),
             ),
           ),
           elevation: 4.0,
@@ -273,35 +255,29 @@ class CustomReusableDropdown extends StatelessWidget {
             color: CustomColors.color182731.withOpacity(0.4),
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 14.sp),
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.green),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.sp),
-            ),
-          ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.green),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.sp),
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.green),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.sp),
-            ),
+            borderSide: BorderSide(color: CustomColors.color243DE2.withOpacity(1)),
+            borderRadius: BorderRadius.all(Radius.circular(8.sp)),
           ),
           disabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: CustomColors.color8B8B8B.withOpacity(0.5)),
-            borderRadius: BorderRadius.all(Radius.circular(10.sp)),
+            borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black12),
+            borderRadius: BorderRadius.all(Radius.circular(8.sp)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: CustomColors.color243DE2.withOpacity(0.5)),
+            borderRadius: BorderRadius.all(Radius.circular(8.sp)),
           ),
           errorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: CustomColors.colorFF0033.withOpacity(0.5)),
-            borderRadius: BorderRadius.all(Radius.circular(10.sp)),
+            borderRadius: BorderRadius.all(Radius.circular(8.sp)),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: CustomColors.colorFF0033.withOpacity(0.5)),
-            borderRadius: BorderRadius.all(Radius.circular(10.sp)),
+            borderRadius: BorderRadius.all(Radius.circular(8.sp)),
           ),
           filled: true,
           fillColor:
