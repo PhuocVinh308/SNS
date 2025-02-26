@@ -1,0 +1,25 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "agrigosrs",
+          "appId": "1:1024991899965:android:10e7cdf0cef90c59305554",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "agrigosrs",
+          "configurations": {
+            "android": "1:1024991899965:android:10e7cdf0cef90c59305554"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "rules": "y",
+    "indexes": "y"
+  }
+}
