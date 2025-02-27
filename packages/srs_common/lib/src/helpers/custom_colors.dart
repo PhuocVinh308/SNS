@@ -49,4 +49,8 @@ class CustomColors {
   static const Color colorB6DFFF = Color(0xFFB6DFFF);
   static const Color colorDBEEBF = Color(0xFFDBEEBF);
   static const Color colorFBFFDC = Color(0xFFFBFFDC);
+
+  // button color
+  static const Color colorFC6B68 = Color(0xFFFC6B68);
+  static const Color color008C00 = Color(0xFF008C00);
 }

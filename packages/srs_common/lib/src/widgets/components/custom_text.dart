@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:srs_common/srs_common.dart';
 
-class CustomTextTitle extends Text {
-  CustomTextTitle(
+class CustomText extends Text {
+  CustomText(
     String text, {
     Key? key,
     Color color = CustomColors.color313131,
-    FontWeight fontWeight = CustomConsts.semiBold,
+    FontWeight fontWeight = CustomConsts.medium,
     double? fontSize,
     TextAlign textAlign = TextAlign.left,
     int maxLines = 1,
@@ -17,7 +17,7 @@ class CustomTextTitle extends Text {
           style: GoogleFonts.roboto(
             color: color,
             fontWeight: fontWeight,
-            fontSize: fontSize ?? CustomConsts.title,
+            fontSize: fontSize ?? CustomConsts.body,
           ),
           textAlign: textAlign,
           maxLines: maxLines,

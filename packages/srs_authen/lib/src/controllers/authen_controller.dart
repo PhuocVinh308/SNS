@@ -9,8 +9,9 @@ class AuthenController extends GetxController with AuthenInitController {
   @override
   void onInit() async {
     log('initialize Login Controller', name: AuthenConfig.packageName);
+    await init();
     super.onInit();
   }
 
-  final TextEditingController tc = TextEditingController();
+  funChangeLanguage(bool value) => coreChangeLanguage(value);
 }

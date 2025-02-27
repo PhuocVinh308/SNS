@@ -13,3 +13,4 @@ export 'package:firebase_core/firebase_core.dart';
 
 export 'package:google_fonts/google_fonts.dart';
 export 'package:dropdown_search/dropdown_search.dart';
+export 'package:font_awesome_flutter/font_awesome_flutter.dart';
