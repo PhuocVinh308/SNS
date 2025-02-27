@@ -5,7 +5,7 @@ export 'src/configs/package_config.dart';
 export 'src/configs/all_route.dart';
 
 // controllers
-export 'src/controllers/login_controller.dart';
+export 'src/controllers/authen_controller.dart';
 
 // core
 export 'src/core/init_package.dart';

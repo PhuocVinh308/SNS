@@ -1,4 +1,4 @@
-class LoginUtil {
+class AuthenUtil {
 //   //**STORAGE BOX KEY**//
 //   static const String _storageBoxKey = RemoveBgConfig.storageBox;
 //   static const String _storageKeyRoot = RemoveBgConfig.storageKeyRoot;
