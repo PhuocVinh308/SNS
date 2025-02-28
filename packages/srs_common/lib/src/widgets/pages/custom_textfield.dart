@@ -12,6 +12,8 @@ enum CustomInputType {
   phone,
   email,
   money,
+  username,
+  password,
   nonSpecialCharacters,
   nonSpecialCharactersAndNumber,
   nonSpecialCharactersAndVietnamese,
@@ -252,6 +254,16 @@ class CustomTextField extends StatelessWidget {
       case CustomInputType.nonSpecialCharactersAndVietnamese:
         if (!StringHelper.specialTextAndVietnamese.hasMatch(value)) {
           result = 'chuỗi chứa ký tự đặt biệt hoặc tiếng Việt có dấu!'.tr.toCapitalized();
+        }
+        break;
+      case CustomInputType.username:
+        if (value.trim().isEmpty) {
+          result = 'vui lòng không được để trống!'.tr.toCapitalized();
+        }
+        break;
+      case CustomInputType.password:
+        if (!StringHelper.passwordRegExp.hasMatch(value)) {
+          result = 'mật khẩu không hợp lệ!'.tr.toCapitalized();
         }
         break;
     }

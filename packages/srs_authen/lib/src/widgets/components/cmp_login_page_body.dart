@@ -23,6 +23,7 @@ class CmpLoginPageBody extends GetView<AuthenController> {
         CustomTextField(
           title: 'mật khẩu'.tr.toCapitalized(),
           hint: 'nhập mật khẩu'.tr.toCapitalized(),
+          customInputType: CustomInputType.password,
           prefixIcon: Icon(
             Icons.password_rounded,
           ),

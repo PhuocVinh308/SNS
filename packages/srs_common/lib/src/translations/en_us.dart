@@ -19,4 +19,5 @@ final Map<String, String> enUS = {
   'chuỗi chứa ký tự đặt biệt hoặc tiếng Việt có dấu!': '',
   'bạn đã nhập quá': '',
   'ký tự': '',
+  'mật khẩu không hợp lệ!': '',
 };
