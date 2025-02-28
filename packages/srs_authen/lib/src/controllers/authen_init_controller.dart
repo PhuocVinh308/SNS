@@ -3,8 +3,11 @@ import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 
 class AuthenInitController {
-  final TextEditingController tc = TextEditingController();
   Rx<bool> language = false.obs;
+
+  TextEditingController emailController = TextEditingController(text: "agrigo.vlg@gmail.com");
+  TextEditingController passwordController = TextEditingController(text: "AgriGo#12345");
+  Rx<bool> obscurePasswordLoginText = true.obs;
 
   init() async {
     try {
@@ -29,4 +32,6 @@ class AuthenInitController {
     Get.updateLocale(locale);
     StorageUtil().setLanguage(value);
   }
+
+  coreToggleLogin() => obscurePasswordLoginText.value = !obscurePasswordLoginText.value;
 }

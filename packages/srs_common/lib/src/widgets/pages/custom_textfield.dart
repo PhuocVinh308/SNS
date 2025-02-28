@@ -46,6 +46,8 @@ class CustomTextField extends StatelessWidget {
   final double? textFieldRadius;
   final Function(String)? onChanged;
   final VoidCallback? onEditingComplete;
+  final bool? obscureText;
+  final VoidCallback? toggle;
 
   const CustomTextField({
     Key? key,
@@ -75,6 +77,8 @@ class CustomTextField extends StatelessWidget {
     this.textFieldRadius,
     this.onEditingComplete,
     this.onChanged,
+    this.obscureText,
+    this.toggle,
   }) : super(key: key);
 
   @override
@@ -93,7 +97,7 @@ class CustomTextField extends StatelessWidget {
       },
       enabled: enabled ?? true,
       textCapitalization: upperCase ?? false ? TextCapitalization.characters : TextCapitalization.none,
-      textInputAction: textInputAction,
+      textInputAction: textInputAction ?? TextInputAction.done,
       cursorColor: cursorColor ?? CustomColors.color182731,
       maxLength: maxLength,
       minLines: minLines,
@@ -132,7 +136,27 @@ class CustomTextField extends StatelessWidget {
                 ),
               )
             : null,
-        suffixIcon: suffixIcon,
+        suffixIcon: suffixIcon ??
+            Visibility(
+              visible: CustomInputType.password == customInputType,
+              child: IconButton(
+                onPressed: toggle,
+                style: IconButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ),
+                splashRadius: 25,
+                padding: EdgeInsets.zero,
+                icon: obscureText ?? false
+                    ? Icon(
+                        Icons.visibility_off,
+                        color: CustomColors.color243DE2.withOpacity(0.5),
+                      )
+                    : Icon(
+                        Icons.visibility,
+                        color: CustomColors.color243DE2.withOpacity(0.5),
+                      ),
+              ),
+            ),
         prefixIcon: prefixIcon,
         hintStyle: GoogleFonts.roboto(
           fontSize: 14.sp,
@@ -176,6 +200,7 @@ class CustomTextField extends StatelessWidget {
         ),
       ),
       readOnly: readOnly,
+      obscureText: obscureText ?? false,
       validator: (value) {
         if (required == true) {
           String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');

@@ -14,4 +14,6 @@ class AuthenController extends GetxController with AuthenInitController {
   }
 
   funChangeLanguage(bool value) => coreChangeLanguage(value);
+
+  funToggleLogin() => coreToggleLogin();
 }

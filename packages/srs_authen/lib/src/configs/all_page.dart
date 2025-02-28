@@ -9,11 +9,18 @@ import 'all_route.dart';
 
 allPage() async {
   log('initialize All Page Route', name: AuthenConfig.packageName);
-  GetPageCenter.add(
+
+  List<GetPage<dynamic>> listPages = [
     GetPage(
       name: AllRoute.mainRoute,
       page: () => const LoginPage(),
       binding: AllBindings(),
     ),
-  );
+    GetPage(
+      name: AllRoute.registerRoute,
+      page: () => const RegisterPage(),
+      binding: AllBindings(),
+    ),
+  ];
+  GetPageCenter.addAll(listPages);
 }
