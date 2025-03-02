@@ -3,8 +3,8 @@ import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 
-class CmpLoginPageBody extends GetView<AuthenController> {
-  const CmpLoginPageBody({Key? key}) : super(key: key);
+class CmpRegisterPageBody extends GetView<AuthenController> {
+  const CmpRegisterPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +12,21 @@ class CmpLoginPageBody extends GetView<AuthenController> {
       return Column(
         children: [
           CustomTextField(
+            title: 'tên người dùng'.tr.toCapitalized(),
+            hint: 'nhập tên người dùng'.tr.toCapitalized(),
+            prefixIcon: const Icon(Icons.person_rounded),
+            customInputType: CustomInputType.username,
+            regex: true,
+            controller: controller.rgUserNameController,
+          ),
+          .025.sh.verticalSpace,
+          CustomTextField(
             title: 'email'.tr.toCapitalized(),
             hint: 'nhập email'.tr.toCapitalized(),
             prefixIcon: const Icon(Icons.email_rounded),
             customInputType: CustomInputType.email,
             regex: true,
-            controller: controller.emailController,
+            controller: controller.rgEmailController,
           ),
           .025.sh.verticalSpace,
           CustomTextField(
@@ -26,26 +35,22 @@ class CmpLoginPageBody extends GetView<AuthenController> {
             customInputType: CustomInputType.password,
             prefixIcon: const Icon(Icons.password_rounded),
             regex: true,
-            controller: controller.passwordController,
-            obscureText: controller.obscurePasswordLoginText.value,
-            toggle: () => {controller.funToggleLogin()},
+            controller: controller.rgPasswordController,
+            obscureText: controller.obscurePasswordRegisterText.value,
+            toggle: () => {controller.funToggleRegister()},
             maxLines: 1,
           ),
-          .03.sh.verticalSpace,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: CustomText(
-                  "${"quên mật khẩu".tr.toCapitalized()}?",
-                  textAlign: TextAlign.right,
-                  fontWeight: CustomConsts.medium,
-                  maxLines: 2,
-                  color: CustomColors.colorE89148,
-                  fontSize: CustomConsts.body,
-                ),
-              ),
-            ],
+          .025.sh.verticalSpace,
+          CustomTextField(
+            title: 'nhập lại mật khẩu'.tr.toCapitalized(),
+            hint: 'nhập lại mật khẩu'.tr.toCapitalized(),
+            customInputType: CustomInputType.password,
+            prefixIcon: const Icon(Icons.password_rounded),
+            regex: true,
+            controller: controller.rgRePasswordController,
+            obscureText: controller.obscurePasswordReRegisterText.value,
+            toggle: () => {controller.funToggleReRegister()},
+            maxLines: 1,
           ),
           .03.sh.verticalSpace,
           SizedBox(
@@ -53,14 +58,14 @@ class CmpLoginPageBody extends GetView<AuthenController> {
             height: 50.sp,
             child: MaterialButton(
               onPressed: () async {
-                await controller.funLoginWithUserNameEmail();
+                await controller.funRegisterWithUserNameEmail();
               },
               color: CustomColors.colorFC6B68,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.sp),
               ),
               child: CustomText(
-                'đăng nhập'.tr.toCapitalized(),
+                'đăng ký'.tr.toCapitalized(),
                 color: CustomColors.colorFFFFFF,
                 fontSize: CustomConsts.h4,
                 fontWeight: CustomConsts.medium,
@@ -85,18 +90,6 @@ class CmpLoginPageBody extends GetView<AuthenController> {
                   await controller.funSignInWithGoogle();
                 },
               ),
-              // SizedBox(width: 15.sp),
-              // SocialButton(
-              //   icon: FontAwesomeIcons.apple,
-              //   color: Colors.black,
-              //   onTap: () {},
-              // ),
-              // SizedBox(width: 15.sp),
-              // SocialButton(
-              //   icon: FontAwesomeIcons.facebook,
-              //   color: Colors.blue,
-              //   onTap: () {},
-              // ),
             ],
           ),
           .03.sh.verticalSpace,
@@ -106,7 +99,7 @@ class CmpLoginPageBody extends GetView<AuthenController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomText(
-                  "${'chưa có tài khoản'.tr.toCapitalized()}? ",
+                  "${'đã có tài khoản'.tr.toCapitalized()}? ",
                   fontSize: CustomConsts.body,
                   fontWeight: CustomConsts.regular,
                   color: CustomColors.colorFF0000,
@@ -114,12 +107,12 @@ class CmpLoginPageBody extends GetView<AuthenController> {
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(
-                      AllRoute.registerRoute,
+                      AllRoute.mainRoute,
                       arguments: [{}],
                     );
                   },
                   child: CustomText(
-                    "${'đăng ký ngay'.tr.toCapitalized()}!",
+                    "${'đăng nhập ngay'.tr.toCapitalized()}!",
                     fontSize: CustomConsts.body,
                     fontWeight: CustomConsts.medium,
                     color: CustomColors.color005AAB,

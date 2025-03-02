@@ -13,3 +13,6 @@ export 'src/core/init_package.dart';
 // widgets
 export 'src/widgets/pages/login_page.dart';
 export 'src/widgets/pages/register_page.dart';
+
+// services
+export 'src/services/authen_service.dart';

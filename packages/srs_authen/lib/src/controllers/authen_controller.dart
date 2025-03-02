@@ -16,4 +16,14 @@ class AuthenController extends GetxController with AuthenInitController {
   funChangeLanguage(bool value) => coreChangeLanguage(value);
 
   funToggleLogin() => coreToggleLogin();
+
+  funToggleRegister() => coreToggleRegister();
+
+  funToggleReRegister() => coreToggleReRegister();
+
+  funRegisterWithUserNameEmail() => coreRegisterWithUserNameEmail();
+
+  funLoginWithUserNameEmail() => coreLoginWithUserNameEmail();
+
+  funSignInWithGoogle() => coreSignInWithGoogle();
 }

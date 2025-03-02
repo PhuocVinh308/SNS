@@ -17,48 +17,10 @@ class LoginPage extends GetView<AuthenController> {
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: CustomColors.colorFFFFFF,
-            // body: Container(
-            //   height: 1.sh,
-            //   width: 1.sw,
-            //   decoration: const BoxDecoration(
-            //     image: DecorationImage(
-            //       image: AssetImage(
-            //         "assets/images/login_bg.jpg",
-            //       ),
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ),
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       MaterialButton(
-            //         onPressed: () {
-            //           SnackBarUtil.showSnackBar();
-            //         },
-            //         color: Colors.white,
-            //         child: const Text("Btn Test"),
-            //       ),
-            //       CustomTextField(
-            //         controller: controller.tc,
-            //         title: 'name',
-            //         customInputType: CustomInputType.int,
-            //         regex: true,
-            //       )
-            //     ],
-            //   ),
-            // ),
             body: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.sp),
               height: 1.sh,
               width: 1.sw,
-              // decoration: const BoxDecoration(
-              //   image: DecorationImage(
-              //     image: AssetImage(
-              //       "assets/images/login_bg.jpg",
-              //     ),
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
               child: SingleChildScrollView(
                 child: Stack(
                   children: [

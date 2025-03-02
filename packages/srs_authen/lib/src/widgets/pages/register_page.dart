@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:srs_authen/src/widgets/components/cmp_register_page_body.dart';
+import 'package:srs_authen/src/widgets/components/cmp_register_page_title.dart';
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common.dart';
@@ -23,7 +25,13 @@ class RegisterPage extends GetView<AuthenController> {
               child: SingleChildScrollView(
                 child: Stack(
                   children: [
-
+                    Column(
+                      children: [
+                        const CmpRegisterPageTitle(),
+                        .08.sh.verticalSpace,
+                        const CmpRegisterPageBody(),
+                      ],
+                    )
                   ],
                 ),
               ),
