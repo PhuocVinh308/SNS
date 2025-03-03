@@ -23,4 +23,8 @@ class CustomConsts {
   static double body = h5;
   static double title = h3;
   static double appBar = h2;
+
+  // key storage
+
+  static const String isLanguage = 'SRS_LANGUAGE';
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common_core.dart';
 
@@ -6,10 +7,10 @@ import 'package:srs_authen/srs_authen.dart' as srs_authen;
 
 class AppConfig {
   /// default locale
-  static Locale get locale => const Locale('vi');
+  static Locale get locale => Locale(StorageUtil().language ? 'vi' : 'en', StorageUtil().language ? 'VN' : 'US');
 
   /// fallback locale
-  static const fallbackLocale = Locale('en');
+  static const fallbackLocale = Locale('vi', 'VN');
 
   /// package name
   static const String appName = "agri_go";

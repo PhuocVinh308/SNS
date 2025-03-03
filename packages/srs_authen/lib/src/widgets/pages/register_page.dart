@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:srs_authen/src/widgets/components/authen_components.dart';
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common.dart';
 
-class LoginPage extends GetView<AuthenController> {
-  const LoginPage({Key? key}) : super(key: key);
+import '../components/authen_components.dart';
+
+class RegisterPage extends GetView<AuthenController> {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +27,9 @@ class LoginPage extends GetView<AuthenController> {
                   children: [
                     Column(
                       children: [
-                        const CmpLoginPageTitle(),
+                        const CmpRegisterPageTitle(),
                         .08.sh.verticalSpace,
-                        const CmpLoginPageBody(),
+                        const CmpRegisterPageBody(),
                       ],
                     ),
                     // Container ở góc trên phải

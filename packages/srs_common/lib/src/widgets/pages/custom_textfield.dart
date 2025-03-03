@@ -12,6 +12,8 @@ enum CustomInputType {
   phone,
   email,
   money,
+  username,
+  password,
   nonSpecialCharacters,
   nonSpecialCharactersAndNumber,
   nonSpecialCharactersAndVietnamese,
@@ -44,6 +46,9 @@ class CustomTextField extends StatelessWidget {
   final double? textFieldRadius;
   final Function(String)? onChanged;
   final VoidCallback? onEditingComplete;
+  final bool? obscureText;
+  final VoidCallback? toggle;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     Key? key,
@@ -73,6 +78,9 @@ class CustomTextField extends StatelessWidget {
     this.textFieldRadius,
     this.onEditingComplete,
     this.onChanged,
+    this.obscureText,
+    this.toggle,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -91,7 +99,7 @@ class CustomTextField extends StatelessWidget {
       },
       enabled: enabled ?? true,
       textCapitalization: upperCase ?? false ? TextCapitalization.characters : TextCapitalization.none,
-      textInputAction: textInputAction,
+      textInputAction: textInputAction ?? TextInputAction.done,
       cursorColor: cursorColor ?? CustomColors.color182731,
       maxLength: maxLength,
       minLines: minLines,
@@ -130,7 +138,27 @@ class CustomTextField extends StatelessWidget {
                 ),
               )
             : null,
-        suffixIcon: suffixIcon,
+        suffixIcon: suffixIcon ??
+            Visibility(
+              visible: CustomInputType.password == customInputType,
+              child: IconButton(
+                onPressed: toggle,
+                style: IconButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ),
+                splashRadius: 25,
+                padding: EdgeInsets.zero,
+                icon: obscureText ?? false
+                    ? Icon(
+                        Icons.visibility_off,
+                        color: CustomColors.color243DE2.withOpacity(0.5),
+                      )
+                    : Icon(
+                        Icons.visibility,
+                        color: CustomColors.color243DE2.withOpacity(0.5),
+                      ),
+              ),
+            ),
         prefixIcon: prefixIcon,
         hintStyle: GoogleFonts.roboto(
           fontSize: 14.sp,
@@ -174,19 +202,21 @@ class CustomTextField extends StatelessWidget {
         ),
       ),
       readOnly: readOnly,
-      validator: (value) {
-        if (required == true) {
-          String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');
-          if (result != '') return result;
-          return null;
-        } else if (regex == true) {
-          String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');
-          if (result != '') return result;
-          return null;
-        } else {
-          return null;
-        }
-      },
+      obscureText: obscureText ?? false,
+      validator: validator ??
+          (value) {
+            if (required == true) {
+              String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');
+              if (result != '') return result;
+              return null;
+            } else if (regex == true) {
+              String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');
+              if (result != '') return result;
+              return null;
+            } else {
+              return null;
+            }
+          },
     );
   }
 
@@ -252,6 +282,16 @@ class CustomTextField extends StatelessWidget {
       case CustomInputType.nonSpecialCharactersAndVietnamese:
         if (!StringHelper.specialTextAndVietnamese.hasMatch(value)) {
           result = 'chuỗi chứa ký tự đặt biệt hoặc tiếng Việt có dấu!'.tr.toCapitalized();
+        }
+        break;
+      case CustomInputType.username:
+        if (value.trim().isEmpty) {
+          result = 'vui lòng không được để trống!'.tr.toCapitalized();
+        }
+        break;
+      case CustomInputType.password:
+        if (!StringHelper.passwordRegExp.hasMatch(value)) {
+          result = 'mật khẩu không hợp lệ!'.tr.toCapitalized();
         }
         break;
     }

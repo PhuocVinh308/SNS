@@ -1,24 +1,17 @@
 import 'dart:developer';
 
 import 'package:srs_common/srs_common_core.dart';
-import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common_lib.dart';
-
+import 'package:srs_landing/srs_landing.dart';
 import '../bindings/all_binding.dart';
-import 'all_route.dart';
 
 allPage() async {
-  log('initialize All Page Route', name: AuthenConfig.packageName);
+  log('initialize All Page Route', name: LandingConfig.packageName);
 
   List<GetPage<dynamic>> listPages = [
     GetPage(
       name: AllRoute.mainRoute,
-      page: () => const LoginPage(),
-      binding: AllBindings(),
-    ),
-    GetPage(
-      name: AllRoute.registerRoute,
-      page: () => const RegisterPage(),
+      page: () => const LandingPage(),
       binding: AllBindings(),
     ),
   ];

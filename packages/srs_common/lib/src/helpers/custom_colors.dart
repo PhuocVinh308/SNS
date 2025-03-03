@@ -30,6 +30,9 @@ class CustomColors {
 
   static const Color color005AAB = Color(0xff005AAB);
 
+  static const Color color833162 = Color(0xff833162);
+  static const Color color999999 = Color(0xff999999);
+
 // success color
   static const Color color638E5A = Color(0xff638E5A);
 
@@ -49,4 +52,8 @@ class CustomColors {
   static const Color colorB6DFFF = Color(0xFFB6DFFF);
   static const Color colorDBEEBF = Color(0xFFDBEEBF);
   static const Color colorFBFFDC = Color(0xFFFBFFDC);
+
+  // button color
+  static const Color colorFC6B68 = Color(0xFFFC6B68);
+  static const Color color008C00 = Color(0xFF008C00);
 }
