@@ -48,6 +48,7 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onEditingComplete;
   final bool? obscureText;
   final VoidCallback? toggle;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     Key? key,
@@ -79,6 +80,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.obscureText,
     this.toggle,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -201,19 +203,20 @@ class CustomTextField extends StatelessWidget {
       ),
       readOnly: readOnly,
       obscureText: obscureText ?? false,
-      validator: (value) {
-        if (required == true) {
-          String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');
-          if (result != '') return result;
-          return null;
-        } else if (regex == true) {
-          String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');
-          if (result != '') return result;
-          return null;
-        } else {
-          return null;
-        }
-      },
+      validator: validator ??
+          (value) {
+            if (required == true) {
+              String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');
+              if (result != '') return result;
+              return null;
+            } else if (regex == true) {
+              String result = _validateInputText(type: customInputType ?? CustomInputType.text, value: value ?? '');
+              if (result != '') return result;
+              return null;
+            } else {
+              return null;
+            }
+          },
     );
   }
 

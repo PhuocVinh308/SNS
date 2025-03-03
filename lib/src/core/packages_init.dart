@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:srs_authen/srs_authen.dart' as srs_authen;
+import 'package:srs_landing/srs_landing.dart' as srs_landing;
 
 import '../config/app_config.dart';
 
 final _mapModule = {
   'srs_authen': srs_authen.initPackage(),
+  'srs_landing': srs_landing.initPackage(),
 };
 
 //

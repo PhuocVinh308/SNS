@@ -8,7 +8,7 @@ import 'authen_init_controller.dart';
 class AuthenController extends GetxController with AuthenInitController {
   @override
   void onInit() async {
-    log('initialize Login Controller', name: AuthenConfig.packageName);
+    log('initialize Controller', name: AuthenConfig.packageName);
     await init();
     super.onInit();
   }

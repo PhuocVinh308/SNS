@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common.dart';
+import 'package:srs_landing/srs_landing.dart';
+import '../components/landing_components.dart';
 
-import '../components/authen_components.dart';
-
-class RegisterPage extends GetView<AuthenController> {
-  const RegisterPage({Key? key}) : super(key: key);
+class LandingPage extends GetView<LandingController> {
+  const LandingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +23,12 @@ class RegisterPage extends GetView<AuthenController> {
               width: 1.sw,
               child: SingleChildScrollView(
                 child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        const CmpRegisterPageTitle(),
-                        .08.sh.verticalSpace,
-                        const CmpRegisterPageBody(),
-                      ],
-                    ),
-                    // Container ở góc trên phải
-                    Positioned(
-                      top: 10.sp,
-                      left: 0,
-                      child: const CmpSwitchLanguage(),
-                    ),
-                  ],
+                  children: [],
                 ),
               ),
+            ),
+            bottomNavigationBar: const CustomBottomAppBar(
+              index: 1,
             ),
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common.dart';
+import 'package:srs_landing/srs_landing.dart' as srs_landing;
 import 'package:srs_common/srs_common_lib.dart';
 
 class AuthenInitController {
@@ -51,9 +52,15 @@ class AuthenInitController {
 
   coreRegisterWithUserNameEmail() async {
     try {
+      DialogUtil.showLoading();
       final authen = await AuthenService().registerWithEmailPassword(email: rgEmailController.text, password: rgPasswordController.text);
-      print(authen.toString());
+      DialogUtil.hideLoading();
+      Get.toNamed(
+        AllRoute.mainRoute,
+        arguments: [{}],
+      );
     } catch (e) {
+      DialogUtil.hideLoading();
       if (e is FirebaseAuthException) {
         DialogUtil.catchException(msg: getErrorMessage(e.code));
       } else {
@@ -64,9 +71,15 @@ class AuthenInitController {
 
   coreLoginWithUserNameEmail() async {
     try {
+      DialogUtil.showLoading();
       final authen = await AuthenService().loginWithEmailPassword(email: emailController.text, password: passwordController.text);
-      print(authen.toString());
+      DialogUtil.hideLoading();
+      Get.offAndToNamed(
+        srs_landing.AllRoute.mainRoute,
+        arguments: [{}],
+      );
     } catch (e) {
+      DialogUtil.hideLoading();
       if (e is FirebaseAuthException) {
         DialogUtil.catchException(msg: getErrorMessage(e.code));
       } else {
@@ -77,9 +90,11 @@ class AuthenInitController {
 
   coreSignInWithGoogle() async {
     try {
+      DialogUtil.showLoading();
       final authen = await AuthenService().signInWithGoogle();
-      print(authen.toString());
+      DialogUtil.hideLoading();
     } catch (e) {
+      DialogUtil.hideLoading();
       if (e is FirebaseAuthException) {
         DialogUtil.catchException(msg: getErrorMessage(e.code));
       } else {

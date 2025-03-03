@@ -51,6 +51,15 @@ class CmpRegisterPageBody extends GetView<AuthenController> {
             obscureText: controller.obscurePasswordReRegisterText.value,
             toggle: () => {controller.funToggleReRegister()},
             maxLines: 1,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "vui lòng nhập lại mật khẩu!".tr.toCapitalized();
+              }
+              if (value != controller.rgPasswordController.text) {
+                return "mật khẩu không khớp!".tr.toCapitalized();
+              }
+              return null;
+            },
           ),
           .03.sh.verticalSpace,
           SizedBox(

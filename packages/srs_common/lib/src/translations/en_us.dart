@@ -20,4 +20,9 @@ final Map<String, String> enUS = {
   'bạn đã nhập quá': '',
   'ký tự': '',
   'mật khẩu không hợp lệ!': '',
+  'vui lòng nhập lại mật khẩu!': '',
+  'mật khẩu không khớp!': '',
+  'thông báo': '',
+  'trang chủ': '',
+  'cá nhân': '',
 };
