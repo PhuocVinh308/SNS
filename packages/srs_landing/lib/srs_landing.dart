@@ -17,3 +17,6 @@ export 'src/widgets/components/landing_components.dart';
 
 // services
 export 'src/services/landing_service.dart';
+
+// models
+export 'src/models/models.dart';

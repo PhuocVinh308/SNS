@@ -25,4 +25,6 @@ final Map<String, String> enUS = {
   'thông báo': '',
   'trang chủ': '',
   'cá nhân': '',
+  'dịch vụ': '',
+  'diễn đàn': '',
 };

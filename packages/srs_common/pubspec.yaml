@@ -12,6 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  srs_landing:
+    path: ../../packages/srs_landing
+
   get: ^4.7.2
   flutter_screenutil: ^5.9.3
   flutter_localization: ^0.3.1
@@ -26,6 +29,10 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   firebase_auth: ^5.5.1
   google_sign_in: ^6.2.2
+  carousel_slider: ^5.0.0
+  connectivity_plus: ^5.0.2
+  dio: ^5.5.0+1
+  flutter_staggered_animations: ^1.1.1
 
 dev_dependencies:
   flutter_test:
