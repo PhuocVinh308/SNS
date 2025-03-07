@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_landing/srs_landing.dart';
-import '../components/landing_components.dart';
 
 class LandingPage extends GetView<LandingController> {
   const LandingPage({Key? key}) : super(key: key);
@@ -23,12 +22,19 @@ class LandingPage extends GetView<LandingController> {
               width: 1.sw,
               child: SingleChildScrollView(
                 child: Stack(
-                  children: [],
+                  children: [
+                    Column(
+                      children: [
+                        LandingAppBar(),
+                        LandingBody(),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
             bottomNavigationBar: const CustomBottomAppBar(
-              index: 1,
+              index: 0,
             ),
           ),
         ),

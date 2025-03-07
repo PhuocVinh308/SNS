@@ -17,3 +17,8 @@ export 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 export 'package:firebase_auth/firebase_auth.dart';
 export 'package:google_sign_in/google_sign_in.dart';
+
+export 'package:carousel_slider/carousel_slider.dart';
+export 'package:connectivity_plus/connectivity_plus.dart';
+
+export 'package:flutter_staggered_animations/flutter_staggered_animations.dart';

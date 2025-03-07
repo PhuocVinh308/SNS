@@ -2,89 +2,125 @@ import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 
+import 'package:srs_landing/srs_landing.dart' as srs_landing;
+
 class CustomBottomAppBar extends StatelessWidget {
   const CustomBottomAppBar({
     Key? key,
     this.index,
     this.homeCallback,
-    this.notificationCallback,
-    this.personCallback,
     this.additionalHomeFunction,
-    this.additionalNotificationFunction,
-    this.additionalPersonFunction,
+    this.serviceCallback,
+    this.additionalServiceFunction,
+    this.forumCallback,
+    this.additionalForumFunction,
+    this.profileCallback,
+    this.additionalProfileFunction,
   }) : super(key: key);
 
   final int? index;
+
   final Function? homeCallback;
   final Function? additionalHomeFunction;
 
-  final Function? notificationCallback;
-  final Function? additionalNotificationFunction;
+  final Function? serviceCallback;
+  final Function? additionalServiceFunction;
 
-  final Function? personCallback;
-  final Function? additionalPersonFunction;
+  final Function? forumCallback;
+  final Function? additionalForumFunction;
 
-  static final String _homeMainRoute = "/srs_landing/main-route";
-  static final String _notificationMainRoute = "/srs_landing/main-route";
-  static final String _personMainRoute = "/srs_landing/main-route";
+  final Function? profileCallback;
+  final Function? additionalProfileFunction;
 
-  static const double _iconsSize = 30;
-  static const Color _iconsColorsActive = CustomColors.color833162;
+  static const String _homeRoute = srs_landing.AllRoute.mainRoute;
+  static final String _serviceRoute = "/srs_landing/main-route";
+  static final String _forumRoute = "/srs_landing/main-route";
+  static final String _profileRoute = "/srs_landing/main-route";
+
+  static final double _textSize = 14.sp;
+  static final double _iconsSize = 25.sp;
+  static const Color _iconsColorsActive = CustomColors.color06b252;
   static const Color _iconsColorsNonActive = CustomColors.color999999;
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      color: CustomColors.colorE9E7E7,
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 5.sp,
-      height: kBottomNavigationBarHeight,
-      padding: EdgeInsets.zero,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _itemBottomAppBar(
-            title: 'thông báo'.tr.toCapitalized(),
-            iconData: Icons.notifications_outlined,
-            indexBtn: 0,
-            onTap: () {
-              if (Get.currentRoute != _notificationMainRoute) {
-                additionalNotificationFunction?.call();
-                Get.offAllNamed(_notificationMainRoute)?.then((value) {
-                  notificationCallback?.call();
-                });
-              }
-            },
-          ),
-          _itemBottomAppBar(
-            title: 'trang chủ'.tr.toCapitalized(),
-            iconData: Icons.house_outlined,
-            indexBtn: 1,
-            onTap: () {
-              if (Get.currentRoute != _homeMainRoute) {
-                additionalHomeFunction?.call();
-                Get.offAllNamed(_homeMainRoute)?.then((value) {
-                  homeCallback?.call();
-                });
-              }
-            },
-          ),
-          _itemBottomAppBar(
-            title: 'cá nhân'.tr.toCapitalized(),
-            iconData: Icons.person,
-            indexBtn: 2,
-            onTap: () {
-              if (Get.currentRoute != _personMainRoute) {
-                additionalPersonFunction?.call();
-                Get.offAllNamed(_personMainRoute)?.then((value) {
-                  personCallback?.call();
-                });
-              }
-            },
+    return Container(
+      decoration: BoxDecoration(
+        color: CustomColors.colorFFFFFF,
+        boxShadow: [
+          BoxShadow(
+            color: CustomColors.color000000.withOpacity(0.1), // Màu bóng
+            spreadRadius: 0,
+            blurRadius: 10,
+            offset: const Offset(0, -4), // Bóng phía trên
           ),
         ],
+      ),
+      child: BottomAppBar(
+        color: CustomColors.colorFFFFFF,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 5.sp,
+        height: kBottomNavigationBarHeight + 14.sp,
+        padding: EdgeInsets.zero,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _itemBottomAppBar(
+              title: 'trang chủ'.tr.toCapitalized(),
+              iconData: FontAwesomeIcons.house,
+              indexBtn: 0,
+              onTap: () {
+                if (Get.currentRoute != _homeRoute) {
+                  additionalHomeFunction?.call();
+                  Get.offAllNamed(_homeRoute)?.then((value) {
+                    homeCallback?.call();
+                  });
+                }
+              },
+            ),
+            _itemBottomAppBar(
+              title: 'dịch vụ'.tr.toCapitalized(),
+              iconData: FontAwesomeIcons.store,
+              indexBtn: 1,
+              onTap: () {
+                if (Get.currentRoute != _serviceRoute) {
+                  additionalServiceFunction?.call();
+                  Get.offAllNamed(_serviceRoute)?.then((value) {
+                    serviceCallback?.call();
+                  });
+                }
+              },
+            ),
+            _itemBottomAppBar(
+              title: 'diễn đàn'.tr.toCapitalized(),
+              iconData: FontAwesomeIcons.comments,
+              indexBtn: 2,
+              onTap: () {
+                if (Get.currentRoute != _forumRoute) {
+                  additionalForumFunction?.call();
+                  Get.offAllNamed(_forumRoute)?.then((value) {
+                    forumCallback?.call();
+                  });
+                }
+              },
+            ),
+            _itemBottomAppBar(
+              title: 'cá nhân'.tr.toCapitalized(),
+              iconData: FontAwesomeIcons.user,
+              indexBtn: 2,
+              onTap: () {
+                if (Get.currentRoute != _profileRoute) {
+                  additionalProfileFunction?.call();
+                  Get.offAllNamed(_profileRoute)?.then((value) {
+                    profileCallback?.call();
+                  });
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -98,26 +134,30 @@ class CustomBottomAppBar extends StatelessWidget {
           onPressed: () {
             onTap?.call();
           },
-          icon: Icon(
-            iconData,
-            color: index == null || index == indexBtn ? _iconsColorsActive : _iconsColorsNonActive,
+          icon: Column(
+            children: [
+              FaIcon(
+                iconData,
+                color: index == null || index == indexBtn ? _iconsColorsActive : _iconsColorsNonActive,
+              ),
+              Text(
+                title ?? '',
+                style: GoogleFonts.roboto(
+                  fontSize: _textSize,
+                  fontWeight: FontWeight.w400,
+                  color: index == null || index == indexBtn ? _iconsColorsActive : _iconsColorsNonActive,
+                ),
+              ),
+            ],
           ),
           iconSize: _iconsSize,
-          padding: EdgeInsets.zero,
+          // padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
           // override default min size of 48px
           style: const ButtonStyle(
             tapTargetSize: MaterialTapTargetSize.shrinkWrap, // the '2023' part
           ),
           splashRadius: _iconsSize,
-        ),
-        Text(
-          title ?? '',
-          style: GoogleFonts.roboto(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w400,
-            color: index == null || index == indexBtn ? _iconsColorsActive : _iconsColorsNonActive,
-          ),
         ),
       ],
     );

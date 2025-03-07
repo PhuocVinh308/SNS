@@ -19,6 +19,8 @@ class CustomConsts {
   static double h4 = 18.0.sp;
   static double h5 = 16.0.sp;
   static double h6 = 14.0.sp;
+  static double h7 = 12.0.sp;
+  static double h8 = 10.0.sp;
 
   static double body = h5;
   static double title = h3;

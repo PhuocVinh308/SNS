@@ -14,6 +14,9 @@ class CustomColors {
   static const Color colorD9D9D9 = Color(0xffD9D9D9);
   static const Color color8B8B8B = Color(0xff8B8B8B);
   static const Color colorEEEEEE = Color(0xFFEEEEEE);
+  static const Color colorB8B7B7 = Color(0xFFB8B7B7);
+  static const Color color234D97 = Color(0xFF234D97);
+  static const Color colorA7D4EC = Color(0xFFA7D4EC);
 
   /// text field dropdown
   static const Color color182731 = Color(0xFF182731);
@@ -32,6 +35,7 @@ class CustomColors {
 
   static const Color color833162 = Color(0xff833162);
   static const Color color999999 = Color(0xff999999);
+  static const Color color06b252 = Color(0xff06b252);
 
 // success color
   static const Color color638E5A = Color(0xff638E5A);
