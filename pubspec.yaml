@@ -18,6 +18,8 @@ dependencies:
     path: packages/srs_authen
   srs_common:
     path: packages/srs_common
+  srs_forum:
+    path: packages/srs_forum
   srs_landing:
     path: packages/srs_landing
 

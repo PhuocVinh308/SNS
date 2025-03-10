@@ -208,9 +208,10 @@ class LandingBody extends GetView<LandingController> {
   _buildMenus() {
     return Obx(() {
       return SizedBox(
-        height: .5.sh.sp,
+        height: .22.sh.spMax + 5.spMax,
         child: GridView.count(
-          crossAxisCount: 2,
+          scrollDirection: Axis.horizontal,
+          crossAxisCount: 1,
           mainAxisSpacing: 8.sp,
           crossAxisSpacing: 10.sp,
           childAspectRatio: 1.0,
@@ -288,8 +289,9 @@ class LandingBody extends GetView<LandingController> {
 
   _buildNews() {
     return SizedBox(
-      height: .5.sh.sp,
+      height: .25.sh.spMax,
       child: ListView.separated(
+        scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 5.sp),
         itemBuilder: (context, index) {
           return AnimationConfiguration.staggeredList(
@@ -300,7 +302,8 @@ class LandingBody extends GetView<LandingController> {
               child: FadeInAnimation(
                 child: Container(
                   padding: EdgeInsets.all(15.sp),
-                  height: 200.sp,
+                  height: .1.sh.spMax,
+                  width: (1.sw - 55.sp).spMax,
                   decoration: BoxDecoration(
                     color: CustomColors.colorFFFFFF,
                     boxShadow: [
@@ -392,7 +395,7 @@ class LandingBody extends GetView<LandingController> {
             ),
           );
         },
-        separatorBuilder: (context, value) => SizedBox(height: 15.sp),
+        separatorBuilder: (context, value) => SizedBox(width: 15.sp),
         itemCount: 10,
       ),
     );
