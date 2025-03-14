@@ -17,20 +17,16 @@ class ForumPage extends GetView<ForumController> {
             resizeToAvoidBottomInset: false,
             backgroundColor: CustomColors.colorFFFFFF,
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.sp),
+              padding: EdgeInsets.only(bottom: 10.sp),
               height: 1.sh,
               width: 1.sw,
-              child: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        ForumAppBar(),
-                        ForumBody(),
-                      ],
-                    )
-                  ],
-                ),
+              child: const Column(
+                children: [
+                  ForumAppBar(),
+                  Expanded(
+                    child: ForumBody(),
+                  ),
+                ],
               ),
             ),
             bottomNavigationBar: const CustomBottomAppBar(

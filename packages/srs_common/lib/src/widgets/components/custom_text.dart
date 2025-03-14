@@ -10,7 +10,7 @@ class CustomText extends Text {
     FontWeight fontWeight = CustomConsts.medium,
     double? fontSize,
     TextAlign textAlign = TextAlign.left,
-    int maxLines = 1,
+    int? maxLines,
   }) : super(
           text,
           key: key,
@@ -21,5 +21,6 @@ class CustomText extends Text {
           ),
           textAlign: textAlign,
           maxLines: maxLines,
+          overflow: TextOverflow.ellipsis,
         );
 }

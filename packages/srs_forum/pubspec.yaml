@@ -14,6 +14,8 @@ dependencies:
 
   srs_common:
     path: ../../packages/srs_common
+  srs_landing:
+    path: ../../packages/srs_landing
 
 dev_dependencies:
   flutter_test:

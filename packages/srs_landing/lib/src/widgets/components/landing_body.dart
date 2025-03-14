@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_landing/srs_landing.dart';
+import 'package:srs_forum/srs_forum.dart' as srs_forum;
 
 class LandingBody extends GetView<LandingController> {
   const LandingBody({Key? key}) : super(key: key);
@@ -18,7 +19,12 @@ class LandingBody extends GetView<LandingController> {
         15.verticalSpace,
         _buildMenus(),
         15.verticalSpace,
-        _buildTitleBtn('thông tin nổi bật'.tr.toCapitalized(), () {}),
+        _buildTitleBtn('thông tin nổi bật'.tr.toCapitalized(), () {
+          Get.offAndToNamed(
+            srs_forum.AllRoute.mainRoute,
+            arguments: [{}],
+          );
+        }),
         15.verticalSpace,
         _buildNews(),
       ],
@@ -52,7 +58,7 @@ class LandingBody extends GetView<LandingController> {
             color: CustomColors.colorFFFFFF,
             size: 25.sp,
           ),
-        )
+        ),
       ],
     );
   }
@@ -207,48 +213,35 @@ class LandingBody extends GetView<LandingController> {
 
   _buildMenus() {
     return Obx(() {
-      return SizedBox(
-        height: .22.sh.spMax + 5.spMax,
-        child: GridView.count(
-          scrollDirection: Axis.horizontal,
-          crossAxisCount: 1,
-          mainAxisSpacing: 8.sp,
-          crossAxisSpacing: 10.sp,
-          childAspectRatio: 1.0,
-          children: List.generate(
-            controller.menus.length,
-            (int index) {
-              var data = controller.menus[index];
-              return AnimationConfiguration.staggeredGrid(
-                position: index,
-                duration: const Duration(milliseconds: 375),
-                columnCount: 2,
-                child: SizedBox(
-                  child: ScaleAnimation(
-                    child: FadeInAnimation(
-                      child: _itemMenu(
-                        image: data.image,
-                        title: data.name,
-                        onTap: () {
-                          if (data.route == null || data.route == "") {
-                            SnackBarUtil.showSnackBar(
-                              message: '${'chức năng đang phát triển'.tr.toCapitalized()}!',
-                              status: CustomSnackBarStatus.warning,
-                            );
-                          } else {
-                            Get.toNamed(data.route!);
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: _buildListMenu(),
         ),
       );
     });
+  }
+
+  List<Widget> _buildListMenu() {
+    List<Widget> list = [];
+    for (var data in controller.menus) {
+      var item = _itemMenu(
+        image: data.image,
+        title: data.name,
+        onTap: () {
+          if (data.route == null || data.route == "") {
+            SnackBarUtil.showSnackBar(
+              message: '${'chức năng đang phát triển'.tr.toCapitalized()}!',
+              status: CustomSnackBarStatus.warning,
+            );
+          } else {
+            Get.toNamed(data.route!);
+          }
+        },
+      );
+      list.add(item);
+    }
+    return list;
   }
 
   _itemMenu({String? image, String? title, Function? onTap}) {
@@ -258,7 +251,10 @@ class LandingBody extends GetView<LandingController> {
       },
       borderRadius: BorderRadius.circular(16.sp),
       child: Container(
+        width: .5.sw.spMax,
+        height: .22.sh.spMax + 5.spMax,
         padding: EdgeInsets.all(5.sp),
+        margin: EdgeInsets.all(5.sp),
         decoration: BoxDecoration(
           color: CustomColors.colorFFFFFF,
           border: Border.all(color: Colors.grey.shade300, width: 1.5),
@@ -289,125 +285,153 @@ class LandingBody extends GetView<LandingController> {
 
   _buildNews() {
     return SizedBox(
-      height: .25.sh.spMax,
-      child: ListView.separated(
+      child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 5.sp),
-        itemBuilder: (context, index) {
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: Container(
-                  padding: EdgeInsets.all(15.sp),
-                  height: .1.sh.spMax,
-                  width: (1.sw - 55.sp).spMax,
-                  decoration: BoxDecoration(
-                    color: CustomColors.colorFFFFFF,
-                    boxShadow: [
-                      BoxShadow(
-                        color: CustomColors.color000000.withOpacity(0.1), // Màu bóng
-                        spreadRadius: 2,
-                        blurRadius: 10,
-                        offset: const Offset(0, -4),
+        child: Row(
+          children: _buildListForum(),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildListForum() {
+    List<Widget> list = [
+      _itemForums(),
+      _itemForums(),
+    ];
+
+    return list;
+  }
+
+  _itemForums() {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        width: (1.sw - 55.sp).spMax,
+        padding: EdgeInsets.all(15.sp),
+        margin: EdgeInsets.all(5.sp),
+        decoration: BoxDecoration(
+          color: CustomColors.colorFFFFFF,
+          border: Border(
+            bottom: BorderSide(
+              color: CustomColors.color000000.withOpacity(0.1),
+              width: 2.0.sp,
+            ),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: CustomColors.color06b252.withOpacity(.3),
+                      radius: 30.sp,
+                      child: Image.asset(
+                        'assets/images/farmer.png',
+                        fit: BoxFit.cover,
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CustomText(
-                                    'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
-                                    fontSize: CustomConsts.title,
-                                    fontWeight: CustomConsts.semiBold,
-                                    maxLines: 2,
-                                  ),
-                                  5.verticalSpace,
-                                  CustomText(
-                                    'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
-                                    maxLines: 2,
-                                    color: CustomColors.color313131.withOpacity(.8),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            10.horizontalSpace,
-                            Image.asset(
-                              'assets/images/farmer.png',
-                              fit: BoxFit.cover,
-                              width: 100.spMax,
-                              height: 100.spMax,
-                            ),
-                          ],
-                        ),
-                      ),
-                      20.verticalSpace,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                    10.horizontalSpace,
+                    Expanded(
+                      child: Column(
                         children: [
-                          _itemNoteNews(
-                            FaIcon(
-                              FontAwesomeIcons.message,
-                              color: CustomColors.color313131,
-                              size: 25.sp,
-                            ),
-                            '99+',
+                          CustomText(
+                            'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
+                            fontSize: CustomConsts.title,
+                            fontWeight: CustomConsts.semiBold,
+                            maxLines: 2,
                           ),
-                          _itemNoteNews(
-                            FaIcon(
-                              FontAwesomeIcons.heart,
-                              color: CustomColors.color313131,
-                              size: 25.sp,
-                            ),
-                            '99+',
-                          ),
-                          _itemNoteNews(
-                            FaIcon(
-                              FontAwesomeIcons.eye,
-                              color: CustomColors.color313131,
-                              size: 25.sp,
-                            ),
-                            '99+',
-                          ),
-                          _itemNoteNews(
-                            FaIcon(
-                              FontAwesomeIcons.clock,
-                              color: CustomColors.color313131,
-                              size: 25.sp,
-                            ),
-                            '6d',
+                          5.verticalSpace,
+                          Row(
+                            children: [
+                              CustomText(
+                                'nguyễn văn a',
+                                maxLines: 1,
+                                color: CustomColors.color313131.withOpacity(.7),
+                              ),
+                              CustomText(
+                                ' - ',
+                                maxLines: 1,
+                                color: CustomColors.color313131.withOpacity(.7),
+                              ),
+                              CustomText(
+                                '1h ago',
+                                maxLines: 1,
+                                color: CustomColors.color313131.withOpacity(.7),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
+                10.verticalSpace,
+                CustomText(
+                  'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
+                  maxLines: 6,
+                  color: CustomColors.color313131.withOpacity(.8),
+                ),
+              ],
             ),
-          );
-        },
-        separatorBuilder: (context, value) => SizedBox(width: 15.sp),
-        itemCount: 10,
+            20.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _itemNoteNews(
+                  FaIcon(
+                    FontAwesomeIcons.message,
+                    color: CustomColors.color313131,
+                    size: 25.sp,
+                  ),
+                  '99+',
+                ),
+                _itemNoteNews(
+                  FaIcon(
+                    FontAwesomeIcons.heart,
+                    color: CustomColors.color313131,
+                    size: 25.sp,
+                  ),
+                  '99+',
+                ),
+                _itemNoteNews(
+                  FaIcon(
+                    FontAwesomeIcons.eye,
+                    color: CustomColors.color313131,
+                    size: 25.sp,
+                  ),
+                  '99+',
+                ),
+                // _itemNoteNews(
+                //   FaIcon(
+                //     FontAwesomeIcons.clock,
+                //     color: CustomColors.color313131,
+                //     size: 25.sp,
+                //   ),
+                //   '6d',
+                // ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   _itemNoteNews(Widget? icon, String? title) {
-    return Row(
-      children: [
-        icon ?? const SizedBox(),
-        10.horizontalSpace,
-        CustomText(title ?? ""),
-      ],
+    return Padding(
+      padding: EdgeInsets.only(right: 20.sp),
+      child: Row(
+        children: [
+          icon ?? const SizedBox(),
+          10.horizontalSpace,
+          CustomText(title ?? ""),
+        ],
+      ),
     );
   }
 }

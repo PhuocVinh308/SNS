@@ -14,6 +14,11 @@ allPage() async {
       page: () => const ForumPage(),
       binding: AllBindings(),
     ),
+    GetPage(
+      name: AllRoute.contentRoute,
+      page: () => const ForumContentPage(),
+      binding: AllBindings(),
+    ),
   ];
   GetPageCenter.addAll(listPages);
 }
