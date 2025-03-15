@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_landing/srs_landing.dart';
+import 'package:srs_forum/srs_forum.dart' as srs_forum;
 
 class LandingInitController {
   // banner
@@ -43,7 +44,37 @@ class LandingInitController {
           id: 1,
           name: 'diễn đàn'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
-          route: '',
+          route: srs_forum.AllRoute.mainRoute,
+        ),
+        MenuModel(
+          id: 1,
+          name: 'diễn đàn'.tr.toCapitalized(),
+          image: 'assets/images/forum.png',
+          route: srs_forum.AllRoute.mainRoute,
+        ),
+        MenuModel(
+          id: 1,
+          name: 'diễn đàn'.tr.toCapitalized(),
+          image: 'assets/images/forum.png',
+          route: srs_forum.AllRoute.mainRoute,
+        ),
+        MenuModel(
+          id: 1,
+          name: 'diễn đàn'.tr.toCapitalized(),
+          image: 'assets/images/forum.png',
+          route: srs_forum.AllRoute.mainRoute,
+        ),
+        MenuModel(
+          id: 1,
+          name: 'diễn đàn'.tr.toCapitalized(),
+          image: 'assets/images/forum.png',
+          route: srs_forum.AllRoute.mainRoute,
+        ),
+        MenuModel(
+          id: 1,
+          name: 'diễn đàn diễn đàn diễn đàn'.tr.toCapitalized(),
+          image: 'assets/images/forum.png',
+          route: srs_forum.AllRoute.mainRoute,
         ),
       ];
     } catch (e) {
