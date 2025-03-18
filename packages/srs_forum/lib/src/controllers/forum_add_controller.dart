@@ -12,4 +12,6 @@ class ForumAddController extends GetxController with ForumAddInitController {
     await init();
     super.onInit();
   }
+
+  funAddPost() async => await coreAddPost();
 }

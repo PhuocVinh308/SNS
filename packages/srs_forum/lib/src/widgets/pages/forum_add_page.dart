@@ -13,20 +13,110 @@ class ForumAddPage extends GetView<ForumAddController> {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           resizeToAvoidBottomInset: true,
-          backgroundColor: CustomColors.colorF2F2F2,
-          body: Container(
-            padding: EdgeInsets.only(bottom: 10.sp),
-            height: 1.sh,
-            width: 1.sw,
-            child: Form(
-              key: controller.addNewKey,
-              autovalidateMode: controller.validate.value,
-              child: Column(
-                children: [
-                  _appbar(),
-                  ForumAddBody(),
-                ],
-              ),
+          backgroundColor: CustomColors.colorFFFFFF,
+          body: Form(
+            key: controller.addNewKey,
+            autovalidateMode: controller.validate.value,
+            child: Column(
+              children: [
+                _appbar(),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15.sp),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 15.sp),
+                            child: Row(
+                              children: [
+                                CustomText(
+                                  "${'loại diễn đàn'.tr.toCapitalized()} (*)",
+                                  fontWeight: CustomConsts.semiBold,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                          _buildOptionForums(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 15.sp),
+                            child: Row(
+                              children: [
+                                CustomText(
+                                  "${'tiêu đề'.tr.toCapitalized()} (*)",
+                                  fontWeight: CustomConsts.semiBold,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                          CustomTextField(
+                            controller: controller.titleController,
+                            autoValidate: controller.validate.value,
+                            regex: true,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 15.sp),
+                            child: Row(
+                              children: [
+                                CustomText(
+                                  "${'nội dung'.tr.toCapitalized()} (*)",
+                                  fontWeight: CustomConsts.semiBold,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                          CustomTextField(
+                            controller: controller.contentController,
+                            autoValidate: controller.validate.value,
+                            minLines: 6,
+                            regex: true,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 15.sp),
+                            child: Row(
+                              children: [
+                                CustomText(
+                                  "${'ảnh đính kèm (nếu có)'.tr.toCapitalized()} (*)",
+                                  fontWeight: CustomConsts.semiBold,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                          MaterialButton(
+                            onPressed: () {},
+                            color: CustomColors.color06b252,
+                            disabledColor: CustomColors.color8B8B8B,
+                            elevation: 1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.sp),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 5.sp),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  color: CustomColors.colorFFFFFF,
+                                ),
+                                5.horizontalSpace,
+                                CustomText(
+                                  'thêm hình ảnh'.tr.toCapitalized(),
+                                  color: CustomColors.colorFFFFFF,
+                                  fontWeight: CustomConsts.bold,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ),
@@ -69,7 +159,7 @@ class ForumAddPage extends GetView<ForumAddController> {
               ),
               Expanded(
                 child: CustomText(
-                  'tạo bài đăng'.tr.toCapitalized(),
+                  'tạo bài viết'.tr.toCapitalized(),
                   color: CustomColors.colorFFFFFF,
                   fontWeight: CustomConsts.bold,
                   fontSize: CustomConsts.appBar,
@@ -77,17 +167,19 @@ class ForumAddPage extends GetView<ForumAddController> {
                 ),
               ),
               SizedBox(
-                width: 70,
-                height: 30,
+                width: 70.sp,
+                height: 30.sp,
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await controller.funAddPost();
+                  },
                   color: CustomColors.color005AAB,
                   disabledColor: CustomColors.color8B8B8B,
                   elevation: 1,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(5.sp),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: EdgeInsets.symmetric(horizontal: 5.sp),
                   child: CustomText(
                     'đăng'.tr.toCapitalized(),
                     color: CustomColors.colorFFFFFF,
@@ -100,5 +192,86 @@ class ForumAddPage extends GetView<ForumAddController> {
         ],
       ),
     );
+  }
+
+  _buildOptionForums() {
+    double swLangHeight = .06.sh.sp;
+    double swLangWidth = .3.sw.sp;
+    double swLangRadius = 20.sp;
+    return Obx(() {
+      return Container(
+        width: swLangWidth * 2,
+        height: swLangHeight + 5.sp,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(swLangRadius),
+          color: CustomColors.colorEDEDFE,
+        ),
+        child: Stack(
+          children: [
+            // Nền trượt động
+            AnimatedAlign(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              alignment: controller.options.value ? Alignment.centerLeft : Alignment.centerRight,
+              child: Container(
+                width: swLangWidth,
+                height: swLangHeight,
+                decoration: BoxDecoration(
+                  color: CustomColors.color06b252,
+                  borderRadius: BorderRadius.circular(swLangRadius),
+                  boxShadow: [
+                    BoxShadow(
+                      color: CustomColors.color000000.withOpacity(.04),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Nút chọn VN
+            Align(
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: () {
+                  controller.options.value = true;
+                  // controller.funChangeLanguage(true);
+                },
+                child: Container(
+                  width: swLangWidth,
+                  height: swLangHeight,
+                  alignment: Alignment.center,
+                  child: CustomText(
+                    'nông dân'.tr.toCapitalized(),
+                    fontWeight: CustomConsts.semiBold,
+                    color: !controller.options.value ? CustomColors.color5B596D : CustomColors.colorFFFFFF,
+                  ),
+                ),
+              ),
+            ),
+            // Nút chọn US
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+                  controller.options.value = false;
+                  // controller.funChangeLanguage(false);
+                },
+                child: Container(
+                  width: swLangWidth,
+                  height: swLangHeight,
+                  alignment: Alignment.center,
+                  child: CustomText(
+                    'vật tư'.tr.toCapitalized(),
+                    fontWeight: CustomConsts.semiBold,
+                    color: controller.options.value ? CustomColors.color5B596D : CustomColors.colorFFFFFF,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
