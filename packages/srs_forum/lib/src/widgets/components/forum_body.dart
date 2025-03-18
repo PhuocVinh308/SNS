@@ -44,12 +44,7 @@ class ForumBody extends GetView<ForumController> {
                 ),
                 InkWell(
                   onTap: () {
-                    CustomReusableMbs(
-                      context: context,
-                      child: Column(
-                        children: [],
-                      ),
-                    ).showMbs();
+                    Get.toNamed(AllRoute.addRoute);
                   },
                   child: Container(
                     height: .06.sh.sp,

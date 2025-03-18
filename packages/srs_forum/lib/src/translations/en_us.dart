@@ -6,4 +6,13 @@ final Map<String, String> enUS = {
   'chi tiết bài đăng': 'post details',
   'chi tiết': 'details',
   'trả lời': 'replies',
+  'thêm mới': 'add new',
+  'tạo bài đăng': 'create post',
+  'chọn loại bài đăng': 'choose type  post',
+  'loại bài đăng': 'type  post',
+  'tiêu đề': 'title',
+  'nội dung': 'content',
+  'thông tin thêm': 'more information',
+  'ảnh đính kèm (nếu có)': 'attached photo (if any)',
+  'đăng': 'post',
 };
