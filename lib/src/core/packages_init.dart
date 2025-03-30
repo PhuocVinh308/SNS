@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:srs_authen/srs_authen.dart' as srs_authen;
 import 'package:srs_landing/srs_landing.dart' as srs_landing;
 import 'package:srs_forum/srs_forum.dart' as srs_forum;
+import 'package:srs_calendar/srs_calendar.dart' as srs_calendar;
+import 'package:srs_diary/srs_diary.dart' as srs_diary;
+import 'package:srs_disease/srs_disease.dart' as srs_disease;
 
 import '../config/app_config.dart';
 
@@ -10,6 +13,9 @@ final _mapModule = {
   'srs_authen': srs_authen.initPackage(),
   'srs_landing': srs_landing.initPackage(),
   'srs_forum': srs_forum.initPackage(),
+  'srs_calendar': srs_calendar.initPackage(),
+  'srs_diary': srs_diary.initPackage(),
+  'srs_disease': srs_disease.initPackage(),
 };
 
 //

@@ -22,6 +22,12 @@ dependencies:
     path: packages/srs_forum
   srs_landing:
     path: packages/srs_landing
+  srs_calendar:
+    path: packages/srs_calendar
+  srs_diary:
+    path: packages/srs_diary
+  srs_disease:
+    path: packages/srs_disease
 
 dev_dependencies:
   flutter_test:

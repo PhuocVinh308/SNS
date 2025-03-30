@@ -3,6 +3,9 @@ import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_landing/srs_landing.dart';
 import 'package:srs_forum/srs_forum.dart' as srs_forum;
+import 'package:srs_calendar/srs_calendar.dart' as srs_calendar;
+import 'package:srs_diary/srs_diary.dart' as srs_diary;
+import 'package:srs_disease/srs_disease.dart' as srs_disease;
 
 class LandingInitController {
   // banner
@@ -60,21 +63,21 @@ class LandingInitController {
         ),
         MenuModel(
           id: 1,
-          name: 'diễn đàn'.tr.toCapitalized(),
+          name: 'Nhận biết bệnh trên lá lúa'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
-          route: srs_forum.AllRoute.mainRoute,
+          route: srs_disease.AllRouteDisease.diseaseMainRoute,
         ),
         MenuModel(
           id: 1,
-          name: 'diễn đàn'.tr.toCapitalized(),
+          name: 'Sổ tay nông nghiệp'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
-          route: srs_forum.AllRoute.mainRoute,
+          route: srs_diary.AllRouteDiary.diaryMainRoute,
         ),
         MenuModel(
           id: 1,
-          name: 'diễn đàn diễn đàn diễn đàn'.tr.toCapitalized(),
+          name: 'Lịch thời vụ'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
-          route: srs_forum.AllRoute.mainRoute,
+          route: srs_calendar.AllRoute.mainRoute,
         ),
       ];
     } catch (e) {

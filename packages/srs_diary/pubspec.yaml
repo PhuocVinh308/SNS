@@ -1,4 +1,4 @@
-name: srs_landing
+name: srs_diary
 description: "A new Flutter package project."
 publish_to: 'none'
 version: 0.0.1
@@ -14,14 +14,8 @@ dependencies:
 
   srs_common:
     path: ../../packages/srs_common
-  srs_forum:
-    path: ../../packages/srs_forum
-  srs_calendar:
-    path: ../../packages/srs_calendar
-  srs_diary:
-    path: ../../packages/srs_diary
-  srs_disease:
-    path: ../../packages/srs_disease
+  srs_landing:
+    path: ../../packages/srs_landing
 
 dev_dependencies:
   flutter_test:

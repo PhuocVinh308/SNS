@@ -681,10 +681,31 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  srs_calendar:
+    dependency: "direct main"
+    description:
+      path: "packages/srs_calendar"
+      relative: true
+    source: path
+    version: "0.0.1"
   srs_common:
     dependency: "direct main"
     description:
       path: "packages/srs_common"
+      relative: true
+    source: path
+    version: "0.0.1"
+  srs_diary:
+    dependency: "direct main"
+    description:
+      path: "packages/srs_diary"
+      relative: true
+    source: path
+    version: "0.0.1"
+  srs_disease:
+    dependency: "direct main"
+    description:
+      path: "packages/srs_disease"
       relative: true
     source: path
     version: "0.0.1"
