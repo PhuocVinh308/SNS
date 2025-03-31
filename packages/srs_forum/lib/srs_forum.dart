@@ -21,6 +21,7 @@ export 'src/widgets/components/forum_components.dart';
 
 // services
 export 'src/services/forum_service.dart';
+export 'src/services/date_time_strings.dart';
 
 // models
 export 'src/models/models.dart';

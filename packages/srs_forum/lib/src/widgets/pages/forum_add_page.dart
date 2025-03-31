@@ -79,7 +79,7 @@ class ForumAddPage extends GetView<ForumAddController> {
                             child: Row(
                               children: [
                                 CustomText(
-                                  "${'ảnh đính kèm (nếu có)'.tr.toCapitalized()} (*)",
+                                  'ảnh đính kèm (nếu có)'.tr.toCapitalized(),
                                   fontWeight: CustomConsts.semiBold,
                                   textAlign: TextAlign.start,
                                 ),
@@ -87,7 +87,17 @@ class ForumAddPage extends GetView<ForumAddController> {
                             ),
                           ),
                           MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _bottomSheetShowCameraOrGallery(context, onTapCamera: () async {
+                                await controller.corePickImage(ImageSource.camera).then((value) {
+                                  Get.back();
+                                });
+                              }, onTapGallery: () async {
+                                await controller.corePickImage(ImageSource.gallery).then((value) {
+                                  Get.back();
+                                });
+                              });
+                            },
                             color: CustomColors.color06b252,
                             disabledColor: CustomColors.color8B8B8B,
                             elevation: 1,
@@ -171,7 +181,7 @@ class ForumAddPage extends GetView<ForumAddController> {
                 height: 30.sp,
                 child: MaterialButton(
                   onPressed: () async {
-                    await controller.funAddPost();
+                    await controller.funPostForum();
                   },
                   color: CustomColors.color005AAB,
                   disabledColor: CustomColors.color8B8B8B,
@@ -273,5 +283,94 @@ class ForumAddPage extends GetView<ForumAddController> {
         ),
       );
     });
+  }
+
+  _bottomSheetShowCameraOrGallery(
+    BuildContext context, {
+    Function? onTapCamera,
+    Function? onTapGallery,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(10),
+          topLeft: Radius.circular(10),
+        ),
+      ),
+      isScrollControlled: true,
+      enableDrag: true,
+      useSafeArea: true,
+      builder: (c) {
+        return Container(
+          height: 100.sp,
+          width: 1.sw,
+          margin: EdgeInsets.all(20.sp),
+          child: Column(
+            children: [
+              Text(
+                'chọn hình ảnh'.tr.toCapitalized(),
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: CustomColors.color005AAB,
+                ),
+              ),
+              SizedBox(height: 5.sp),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        await onTapCamera?.call();
+                      },
+                      icon: Row(
+                        children: [
+                          Icon(
+                            Icons.camera_alt_rounded,
+                            size: 25.sp,
+                          ),
+                          5.horizontalSpace,
+                          Text(
+                            'máy ảnh'.tr.toCapitalized(),
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        await onTapGallery?.call();
+                      },
+                      icon: Row(
+                        children: [
+                          Icon(
+                            Icons.image,
+                            size: 25.sp,
+                          ),
+                          5.horizontalSpace,
+                          Text(
+                            'thư viện'.tr.toCapitalized(),
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 }

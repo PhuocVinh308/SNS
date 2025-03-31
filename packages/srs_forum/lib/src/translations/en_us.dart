@@ -21,4 +21,11 @@ final Map<String, String> enUS = {
   'thêm hình ảnh': 'add picture',
   'chưa nhập đầy đủ thông tin': 'not filled in all the information',
   'loại diễn đàn': 'type forum',
+  'định dạng ngày không hợp lệ': 'invalid date format',
+  'định dạng ngày tháng hoặc thời gian không hợp lệ': 'invalid date or time format',
+  'không phân tích được ngày': 'failed to parse date',
+  'đăng tin thành công': 'posted successfully',
+  'chọn hình ảnh': 'choose image',
+  'máy ảnh': 'camera',
+  'thư viện': 'gallery',
 };

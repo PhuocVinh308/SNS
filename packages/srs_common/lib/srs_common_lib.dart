@@ -22,3 +22,5 @@ export 'package:carousel_slider/carousel_slider.dart';
 export 'package:connectivity_plus/connectivity_plus.dart';
 
 export 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
+export 'package:image_picker/image_picker.dart';

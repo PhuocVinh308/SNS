@@ -31,4 +31,10 @@ class DialogUtil {
       onCallback: onCallback,
     );
   }
+
+  static void showDownloadProgressSnackBar({required RxDouble progress}) {
+    SnackBarUtil.showDownloadProgressSnackBar(
+      progress: progress,
+    );
+  }
 }

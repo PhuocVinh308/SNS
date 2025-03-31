@@ -29,4 +29,7 @@ class CustomConsts {
   // key storage
 
   static const String isLanguage = 'SRS_LANGUAGE';
+
+  // folder google drive id
+  static const String googleDriveFolderId = '11w74T9PCGl_yWwyVd5cb2SkJ52-C_HMM';
 }

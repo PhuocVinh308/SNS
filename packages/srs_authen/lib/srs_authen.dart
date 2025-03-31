@@ -16,3 +16,6 @@ export 'src/widgets/pages/register_page.dart';
 
 // services
 export 'src/services/authen_service.dart';
+
+// models
+export 'src/models/models.dart';

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "agrigosrs",
+  "private_key_id": "a13319dbd96c3628aadba2a4c8d87d6b05120947",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDBCsyejtBbqwqe\niUDQe1FiAJ5OF5N94tI4PgKsRq20Vzpzm8D1idDWbstO9+G1TtsDAIEoRsgGprDW\n/MJCTmeA2UdsEM5PYBmX859ORya8yW+xt1+7tNh5950ii6QbeNjfXTUsZawPUTQO\nFElF8OPu0obnNf9h4nmzvO0rpHsgsJPkd0FCfLRXfN/i9GE3zaqTcAM6GPu0zizi\nM/F+AZf7lBM32k1ADCw3Ck+HcV7CUlUaTzjJKc8aaTuD1a1zqOrL4NnOhF4OhlU8\nsvBxmFkHe8g/LwibT18/AJf+vVEdft2gaux0EByTAZjyw6sY6q6LUapjZxRp8FEP\ncAcLOuLhAgMBAAECggEAAfsa42uivrYQG1VcOWdyi9dmyHVceZe4wYP9YggtoyKc\nAnCwN7TM1E55vpszkTk4bRz1tlSXm93dBa+9TJHiZQOVxImdnFnnmVQSJ+r5/kjw\n4Pl5PYNbD1FXpvGY4wFH9G7P6181t0iFiLlzkQiqRhqZ8MhwkPASgKIpKt/6tXil\n0TZxyFh9uffpZ9+zNhqrNzMr9N/KE2wZ0pUf8C1xfnKpoaXo7l/694ujR1+Vb7qn\nQjF75L6RmcJWVmYagUyH2c75eYjpcG1LLAZGi/T+87Fz3Y+5yPrHra8zkf52L5Ic\n1xzWsM7nN55MEPbvsklTJ8VxzMbj3Qx37lWtjzsxYwKBgQDt5YTJ96rxJfGXVPYg\n6QhTZCgSym52gMM9Z+tkl+R5YDS90Km1+ntQFkwixfaGuTxWvu8MCEDU99CTfNEw\nHLpBE1rJLKWhMwSMnL8EzO9FcwnT+tkSxOyRwyGJcxSrlMmA9YNqsQYexIom2ur5\nroVLTaGbcO/ziERfTO1HQuoXvwKBgQDPu3gVKNXsIYDc6CvmKeQ+TQQe3EDnVdrg\nwIlyU8qjsTOGxZR8hDg5Ycwi2qgGjGHxF4Y1bAkDJXmYVIGTdJxhpS0SJsRKhxmi\nDl3o49XW+0McCqEzbXygxNCvTcmyRisFyg0T4gcgcG+SWbOEOLXr3VclIclMroke\n8awXj7CtXwKBgFUXAB0BUgo5CSWYxQRWdZzmORMnhsUqHytKjT6IubbUO2kdRmaJ\ntiuaHhdd+WSMwtFAL9584TuLe/YU8fmkfNYj5xgHuSJkTh9BPW2pI3gSwpQoqBX3\ni6pDQi6Yk+8fI8fViPDTap38rHFjYiJ2UsTxenlPtvPDbLktmb0gaPyfAoGAdglJ\nH4TXoVgcN+n438zX84qhl8OBYbHIMENXFk6Ea2UKKT9lsycSJ5DphLiIF0h3cp3y\nVbKwoEgQAr2p7xaosVdA9/ptOQfxScMuG2IypPia1nk3xdglo9iR17q0rAbw9VYs\n/ipF8GnTC+7KcYwj2wUnOmMrVdYq9hlOtwif1LMCgYEA5wHil2W1oK/ZcvDaoCJi\n9A5tRFDMcLtScEtmITfJOorcG/MzudUHwosual55R8NSxl5Bq1tSeZIE93VNOCvo\n9rACxnZ+EF53B+I62vK2rSOFUnudB1qZ0XJ0p6dc88WxQH3/1gF1uE1kKIJgrSqd\nXl0AnibWwrms/ogXA3ISa9M=\n-----END PRIVATE KEY-----\n",
+  "client_email": "drive-storage-service@agrigosrs.iam.gserviceaccount.com",
+  "client_id": "116819751869589567113",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/drive-storage-service%40agrigosrs.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

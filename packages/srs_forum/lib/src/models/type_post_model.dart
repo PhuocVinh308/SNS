@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class TypePost {
+class TypePostModel {
   String? id;
   String? name;
 
-  TypePost({
+  TypePostModel({
     this.id,
     this.name,
   });
 
-  TypePost.fromJson(dynamic json) {
+  TypePostModel.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
   }
