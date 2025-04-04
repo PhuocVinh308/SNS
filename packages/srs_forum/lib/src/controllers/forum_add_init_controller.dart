@@ -51,6 +51,7 @@ class ForumAddInitController {
           title: titleController.value.text,
           content: contentController.value.text,
           usernameCreated: CustomGlobals().userInfo.username,
+          fullNameCreated: CustomGlobals().userInfo.fullName,
           isDelete: false,
         );
 
@@ -63,6 +64,7 @@ class ForumAddInitController {
           postModel.fileId = "";
           postModel.fileUrl = "";
         }
+        final postForumRes = await service.postForum(postModel);
         DialogUtil.hideLoading();
         DialogUtil.catchException(msg: "${"đăng tin thành công".tr.toCapitalized()}!", status: CustomSnackBarStatus.success);
       } else {
@@ -80,6 +82,7 @@ class ForumAddInitController {
       ForumLikeSeenPostModel postLikeSeenModel = ForumLikeSeenPostModel(
         postId: postId,
         usernameCreated: CustomGlobals().userInfo.username,
+        fullNameCreated: CustomGlobals().userInfo.fullName,
         isDelete: false,
       );
       final postLikeRes = await service.postForumLikeOrSeenSubCollectionToDocument(
@@ -101,6 +104,7 @@ class ForumAddInitController {
       ForumLikeSeenPostModel postLikeSeenModel = ForumLikeSeenPostModel(
         postId: postId,
         usernameCreated: CustomGlobals().userInfo.username,
+        fullNameCreated: CustomGlobals().userInfo.fullName,
         isDelete: false,
       );
       final postSeenRes = await service.postForumLikeOrSeenSubCollectionToDocument(

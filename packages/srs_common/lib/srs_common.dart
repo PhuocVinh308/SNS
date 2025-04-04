@@ -17,8 +17,12 @@ export 'src/helpers/custom_colors.dart';
 export 'src/helpers/custom_consts.dart';
 export 'src/helpers/string_helper.dart';
 export 'src/helpers/custom_globals.dart';
+export 'src/helpers/api_exceptions.dart';
 
 // utils
 export 'src/utils/common_utils.dart';
 // services
-export 'src/services/drive_service.dart';
+export 'src/services/common_services.dart';
+
+// model
+export 'src/models/models.dart';

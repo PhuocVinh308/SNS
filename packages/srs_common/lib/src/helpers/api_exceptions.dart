@@ -1,6 +1,6 @@
-import 'package:asxh_common/src/helper/string_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:srs_common/srs_common.dart';
 
 class DioExceptions implements Exception {
   late String message;
@@ -8,22 +8,22 @@ class DioExceptions implements Exception {
   DioExceptions.fromDioException(DioException? e) {
     switch (e?.type) {
       case DioExceptionType.cancel:
-        message = "yeu cau toi may chu api da bi huy!".tr.toCapitalized();
+        message = "yêu cầu tới máy chủ api đã bị hủy!".tr.toCapitalized();
         break;
       case DioExceptionType.connectionTimeout:
-        message = "het thoi gian ket noi voi may chu api!".tr.toCapitalized();
+        message = "hết thời gian kết nối tới máy chủ api!".tr.toCapitalized();
         break;
       case DioExceptionType.receiveTimeout:
-        message = "het thoi gian nhan ket noi voi may chu api!".tr.toCapitalized();
+        message = "hết thời gian nhận kết nối với máy chủ api!".tr.toCapitalized();
         break;
       case DioExceptionType.badResponse:
         message = _handleError(e);
         break;
       case DioExceptionType.sendTimeout:
-        message = "het thoi gian gui ket noi voi may chu api!".tr.toCapitalized();
+        message = "hết thời gian gửi kết nối với máy chủ api!".tr.toCapitalized();
         break;
       default:
-        message = "da xay ra loi!".tr.toCapitalized();
+        message = 'đã xảy ra lỗi!'.tr.toCapitalized();
         break;
     }
   }
@@ -34,23 +34,23 @@ class DioExceptions implements Exception {
     } else {
       switch (e?.response?.statusCode) {
         case 400:
-          return 'cu phap khong hop le!'.tr.toCapitalized();
+          return 'cú pháp không hợp lệ!'.tr.toCapitalized();
         case 401:
-          return 'khong co tham quyen!'.tr.toCapitalized();
+          return 'không có thẩm quyền!'.tr.toCapitalized();
         case 403:
-          return 'khong co quyen truy cap vao phan noi dung!'.tr.toCapitalized();
+          return 'không có quyền truy cập vào phần nội dung!'.tr.toCapitalized();
         case 404:
-          return 'khong tim thay noi dung!'.tr.toCapitalized();
+          return 'không tìm thấy nội dung!'.tr.toCapitalized();
         case 409:
-          return 'du lieu bi trung lap!'.tr.toCapitalized();
+          return 'dữ liệu bị trùng lập!'.tr.toCapitalized();
         case 500:
-          return 'may chu dang ban xu ly!'.tr.toCapitalized();
+          return 'máy chủ bận xử lý!'.tr.toCapitalized();
         case 502:
-          return 'co loi xay ra o may chu!'.tr.toCapitalized();
+          return 'có lỗi xảy ra ở máy chủ!'.tr.toCapitalized();
         case 503:
-          return 'may chu khong kha dung!'.tr.toCapitalized();
+          return 'máy chủ không khả dụng!'.tr.toCapitalized();
         default:
-          return 'da xay ra loi!'.tr.toCapitalized();
+          return 'đã xảy ra lỗi!'.tr.toCapitalized();
       }
     }
   }

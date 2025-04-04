@@ -1,6 +1,7 @@
-import 'package:srs_authen/src/controllers/authen_init_controller.dart';
+import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
+import 'dart:math';
 
 class AuthenService {
   final firebaseAuth = FirebaseAuth.instance;
@@ -24,7 +25,46 @@ class AuthenService {
       }
 
       UserCredential? userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      // code ex remember delete
+      final random = Random();
+      int number = 100 + random.nextInt(900);
+      LoginResponseModel response = LoginResponseModel(
+        data: UserResponseModel(
+          user: UserInfoModel(
+            username: 'abc$number',
+            fullName: 'nguyen van $number',
+          ),
+        ),
+      );
+      CustomGlobals().setUserInfo(response.data?.user);
+      CustomGlobals().setToken(response.data?.token);
+      //
       return userCredential;
+    } on FirebaseAuthException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<LoginResponseModel?> loginWithEmailPasswordV2({String? username, String? password}) async {
+    try {
+      if ((username == null || username.isEmpty) || (password == null || password.isEmpty)) {
+        throw Exception('tài khoản hoặc mật khẩu không hợp lệ!'.tr.toCapitalized());
+      }
+
+      // call api
+      // code ex remember delete
+      final random = Random();
+      int number = 100 + random.nextInt(900);
+      LoginResponseModel response = LoginResponseModel(
+        data: UserResponseModel(
+          user: UserInfoModel(
+            username: 'abc$number',
+            fullName: 'nguyen van $number',
+          ),
+        ),
+      );
+      //
+      return response;
     } on FirebaseAuthException catch (e) {
       rethrow;
     }

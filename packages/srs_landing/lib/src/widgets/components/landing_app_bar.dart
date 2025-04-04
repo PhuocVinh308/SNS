@@ -24,13 +24,15 @@ class LandingAppBar extends GetView<LandingController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  "${'xin chào'.tr.toCapitalized()} ${"abcxyz".toTitleCase()}" + "!",
-                  fontWeight: CustomConsts.bold,
-                  fontSize: CustomConsts.h3,
-                  textAlign: TextAlign.left,
-                  maxLines: 1,
-                ),
+                Obx(() {
+                  return CustomText(
+                    "${'xin chào'.tr.toCapitalized()} ${(controller.userModel.value.fullName ?? "").toTitleCase()}" "!",
+                    fontWeight: CustomConsts.bold,
+                    fontSize: CustomConsts.h3,
+                    textAlign: TextAlign.left,
+                    maxLines: 1,
+                  );
+                }),
                 CustomText(
                   "${'tận hưởng dịch vụ của chúng tôi'.tr.toCapitalized()}!",
                   fontWeight: CustomConsts.medium,

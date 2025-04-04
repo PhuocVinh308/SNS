@@ -2,6 +2,7 @@ class ForumLikeSeenPostModel {
   String? postId;
   String? documentId;
   String? usernameCreated;
+  String? fullNameCreated;
   String? createdDate;
   bool? isDelete;
 
@@ -9,6 +10,7 @@ class ForumLikeSeenPostModel {
     this.postId,
     this.documentId,
     this.usernameCreated,
+    this.fullNameCreated,
     this.createdDate,
     this.isDelete,
   });
@@ -17,6 +19,7 @@ class ForumLikeSeenPostModel {
     postId = json['postId'];
     documentId = json['documentId'];
     usernameCreated = json['usernameCreated'];
+    fullNameCreated = json['fullNameCreated'];
     createdDate = json['createdDate'];
     isDelete = json['isDelete'];
   }
@@ -26,6 +29,7 @@ class ForumLikeSeenPostModel {
     map['postId'] = postId;
     map['documentId'] = documentId;
     map['usernameCreated'] = usernameCreated;
+    map['fullNameCreated'] = fullNameCreated;
     map['createdDate'] = createdDate;
     map['isDelete'] = isDelete;
     return map;

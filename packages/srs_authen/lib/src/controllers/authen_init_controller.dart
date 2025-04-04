@@ -88,6 +88,27 @@ class AuthenInitController {
     }
   }
 
+  coreLoginWithUserNameEmailV2() async {
+    try {
+      DialogUtil.showLoading();
+      final response = await AuthenService().loginWithEmailPasswordV2(username: emailController.text, password: passwordController.text);
+      CustomGlobals().setUserInfo(response?.data?.user);
+      CustomGlobals().setToken(response?.data?.token);
+      DialogUtil.hideLoading();
+      Get.offAndToNamed(
+        srs_landing.AllRoute.mainRoute,
+        arguments: [{}],
+      );
+    } catch (e) {
+      DialogUtil.hideLoading();
+      if (e is FirebaseAuthException) {
+        DialogUtil.catchException(msg: getErrorMessage(e.code));
+      } else {
+        DialogUtil.catchException(obj: e);
+      }
+    }
+  }
+
   coreSignInWithGoogle() async {
     try {
       DialogUtil.showLoading();

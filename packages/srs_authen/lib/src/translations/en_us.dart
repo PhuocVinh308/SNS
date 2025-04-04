@@ -26,4 +26,5 @@ final Map<String, String> enUS = {
   'người dùng bị vô hiệu hóa': "user disabled",
   'có quá nhiều yêu cầu đăng nhập vào tài khoản này': "too many requests to log into this account",
   'lỗi máy chủ, vui lòng thử lại sau': "server error, please try again later",
+  'tài khoản hoặc mật khẩu không hợp lệ!': "invalid username or password!",
 };

@@ -1,19 +1,16 @@
-import 'package:asxh_common/src/core/api_exceptions.dart';
-import 'package:asxh_common/src/helper/string_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-
-import 'snack_bar_util.dart';
+import 'package:srs_common/srs_common.dart';
 
 class ApiUtil {
   static throwHttpException({String? message, Object? object}) {
-    String msg = message ?? 'da xay ra loi!'.tr.toCapitalized();
+    String msg = message ?? 'đã xảy ra lỗi!'.tr.toCapitalized();
     if (object is DioException) {
       msg = DioExceptions.fromDioException(object).message;
     }
     SnackBarUtil.showSnackBar(
       message: msg,
-      isSuccess: false,
+      status: CustomSnackBarStatus.error,
     );
   }
 }

@@ -32,4 +32,9 @@ class CustomConsts {
 
   // folder google drive id
   static const String googleDriveFolderId = '11w74T9PCGl_yWwyVd5cb2SkJ52-C_HMM';
+
+  // api const
+  static const int apiReceiveTimeout = 30;
+  static const int apiConnectTimeout = 30;
+  static const int networkCheckTime = 3;
 }

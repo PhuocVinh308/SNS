@@ -16,6 +16,8 @@ dependencies:
     path: ../../packages/srs_common
   srs_forum:
     path: ../../packages/srs_forum
+  srs_authen:
+    path: ../../packages/srs_authen
 
 dev_dependencies:
   flutter_test:

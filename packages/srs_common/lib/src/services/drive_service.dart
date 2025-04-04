@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib_1.dart' as drive;
 import 'package:srs_common/srs_common_lib_2.dart' as auth;
 import 'package:srs_common/srs_common_lib_3.dart' as http;
@@ -17,8 +19,11 @@ class DriveService {
   }
 
   Future<auth.ServiceAccountCredentials> _getServiceAccountCredentials() async {
-    final jsonString = await rootBundle.loadString('assets/resource/agrigosrs-a13319dbd96c.json');
-    return auth.ServiceAccountCredentials.fromJson(jsonString);
+    // final jsonString = await rootBundle.loadString('assets/resource/service_account.json');
+    final model = CustomGlobals().driveServiceModel;
+    final data = model.toJson();
+    String formattedKey = _decodeKey(data['key']);
+    return auth.ServiceAccountCredentials.fromJson(formattedKey);
   }
 
   Future<String> uploadFile(File file, {String? folderId}) async {
@@ -81,5 +86,13 @@ class DriveService {
 
   Future<String> getFileUrl(String fileId) async {
     return 'https://drive.google.com/uc?export=view&id=$fileId';
+  }
+
+  String _encodeKey(String key) {
+    return base64Encode(utf8.encode(key));
+  }
+
+  String _decodeKey(String key) {
+    return utf8.decode(base64Decode(key));
   }
 }

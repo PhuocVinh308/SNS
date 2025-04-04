@@ -3,6 +3,7 @@ import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_landing/srs_landing.dart';
 import 'package:srs_forum/srs_forum.dart' as srs_forum;
+import 'package:srs_authen/srs_authen.dart' as srs_authen;
 
 class LandingInitController {
   // banner
@@ -12,12 +13,24 @@ class LandingInitController {
   // menu
   RxList<MenuModel> menus = RxList<MenuModel>();
 
+  // userName
+  Rx<srs_authen.UserInfoModel> userModel = srs_authen.UserInfoModel().obs;
+
   init() async {
     try {
       await _initBanner();
       await _initMenus();
+      await initUserModel();
     } catch (e) {
       DialogUtil.catchException(obj: e);
+    }
+  }
+
+  initUserModel() async {
+    try {
+      userModel.value = CustomGlobals().userInfo;
+    } catch (e) {
+      rethrow;
     }
   }
 

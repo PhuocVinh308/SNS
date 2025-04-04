@@ -1,23 +1,20 @@
 import 'dart:io';
 
-import 'package:asxh_common/src/config/common_app_config.dart';
-import 'package:asxh_common/src/core/auth_interceptor.dart';
-import 'package:asxh_common/src/utils/common_util.dart';
-import 'package:awesome_dio_interceptor/awesome_dio_interceptor.dart';
-import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
-import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:dio/io.dart' as io;
+import 'package:srs_common/srs_common.dart';
+import 'package:srs_common/srs_common_lib.dart';
 
-class BaseApiController {
-  Dio _dio = Dio();
+class ApiService {
+  dio.Dio _dio = dio.Dio();
 
-  BaseApiController() {
-    BaseOptions options = BaseOptions(
-      receiveTimeout: Duration(seconds: CommonAppConfig.apiReceiveTimeout),
-      connectTimeout: Duration(seconds: CommonAppConfig.apiConnectTimeout),
+  ApiService() {
+    dio.BaseOptions options = dio.BaseOptions(
+      receiveTimeout: const Duration(seconds: CustomConsts.apiReceiveTimeout),
+      connectTimeout: const Duration(seconds: CustomConsts.apiConnectTimeout),
     );
-    _dio = Dio(options);
-    _dio.httpClientAdapter = IOHttpClientAdapter(
+    _dio = dio.Dio(options);
+    _dio.httpClientAdapter = io.IOHttpClientAdapter(
       createHttpClient: () {
         // Don't trust any certificate just because their root cert is trusted.
         final HttpClient client = HttpClient(context: SecurityContext(withTrustedRoots: false));
@@ -27,7 +24,6 @@ class BaseApiController {
       },
     );
     _dio.interceptors.clear();
-    _dio.interceptors.add(AuthInterceptor());
     _dio.interceptors.add(AwesomeDioInterceptor(
       logRequestTimeout: false,
       logRequestHeaders: false,
@@ -39,16 +35,16 @@ class BaseApiController {
   Future<dynamic> getHttp({
     required String api,
     Map<String, dynamic>? queryParams,
-    Options? options,
+    dio.Options? options,
     Object? data,
-    CancelToken? cancelToken,
+    dio.CancelToken? cancelToken,
     Function(int, int)? onReceiveProgress,
   }) async {
     try {
-      Response<dynamic> response = await _dio.get(
+      dio.Response<dynamic> response = await _dio.get(
         api,
         queryParameters: queryParams,
-        options: options ?? Options(headers: {'authorization': 'Bearer ${CommonUtil.accessToken}'}),
+        options: options ?? dio.Options(headers: {'authorization': 'Bearer ${CustomGlobals().token}'}),
         data: data,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
@@ -62,17 +58,17 @@ class BaseApiController {
   Future<dynamic> postHttp({
     required String api,
     Map<String, dynamic>? queryParams,
-    Options? options,
+    dio.Options? options,
     Object? data,
-    CancelToken? cancelToken,
+    dio.CancelToken? cancelToken,
     Function(int, int)? onReceiveProgress,
     Function(int, int)? onSendProgress,
   }) async {
     try {
-      Response<dynamic> response = await _dio.post(
+      dio.Response<dynamic> response = await _dio.post(
         api,
         queryParameters: queryParams,
-        options: options ?? Options(headers: {'authorization': 'Bearer ${CommonUtil.accessToken}'}),
+        options: options ?? dio.Options(headers: {'authorization': 'Bearer ${CustomGlobals().token}'}),
         data: data,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
@@ -87,17 +83,17 @@ class BaseApiController {
   Future<dynamic> putHttp({
     required String api,
     Map<String, dynamic>? queryParams,
-    Options? options,
+    dio.Options? options,
     Object? data,
-    CancelToken? cancelToken,
+    dio.CancelToken? cancelToken,
     Function(int, int)? onReceiveProgress,
     Function(int, int)? onSendProgress,
   }) async {
     try {
-      Response<dynamic> response = await _dio.put(
+      dio.Response<dynamic> response = await _dio.put(
         api,
         queryParameters: queryParams,
-        options: options ?? Options(headers: {'authorization': 'Bearer ${CommonUtil.accessToken}'}),
+        options: options ?? dio.Options(headers: {'authorization': 'Bearer ${CustomGlobals().token}'}),
         data: data,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
@@ -112,15 +108,15 @@ class BaseApiController {
   Future<dynamic> deleteHttp({
     required String api,
     Map<String, dynamic>? queryParams,
-    Options? options,
+    dio.Options? options,
     Object? data,
-    CancelToken? cancelToken,
+    dio.CancelToken? cancelToken,
   }) async {
     try {
-      Response<dynamic> response = await _dio.delete(
+      dio.Response<dynamic> response = await _dio.delete(
         api,
         queryParameters: queryParams,
-        options: options ?? Options(headers: {'authorization': 'Bearer ${CommonUtil.accessToken}'}),
+        options: options ?? dio.Options(headers: {'authorization': 'Bearer ${CustomGlobals().token}'}),
         data: data,
         cancelToken: cancelToken,
       );

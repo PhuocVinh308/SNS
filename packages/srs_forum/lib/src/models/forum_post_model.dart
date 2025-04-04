@@ -4,6 +4,7 @@ class ForumPostModel {
   String? content;
   String? documentId;
   String? usernameCreated;
+  String? fullNameCreated;
   String? fileId;
   String? fileUrl;
   String? createdDate;
@@ -15,6 +16,7 @@ class ForumPostModel {
     this.content,
     this.documentId,
     this.usernameCreated,
+    this.fullNameCreated,
     this.fileId,
     this.fileUrl,
     this.createdDate,
@@ -27,6 +29,7 @@ class ForumPostModel {
     content = json['content'];
     documentId = json['documentId'];
     usernameCreated = json['usernameCreated'];
+    fullNameCreated = json['fullNameCreated'];
     fileId = json['fileId'];
     fileUrl = json['fileUrl'];
     createdDate = json['createdDate'];
@@ -40,6 +43,7 @@ class ForumPostModel {
     map['content'] = content;
     map['documentId'] = documentId;
     map['usernameCreated'] = usernameCreated;
+    map['fullNameCreated'] = fullNameCreated;
     map['fileId'] = fileId;
     map['fileUrl'] = fileUrl;
     map['createdDate'] = createdDate;
