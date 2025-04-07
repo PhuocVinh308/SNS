@@ -28,4 +28,5 @@ final Map<String, String> enUS = {
   'chọn hình ảnh': 'choose image',
   'máy ảnh': 'camera',
   'thư viện': 'gallery',
+  'đang cập nhật...': 'updating...',
 };

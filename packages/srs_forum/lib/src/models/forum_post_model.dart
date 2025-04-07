@@ -9,6 +9,10 @@ class ForumPostModel {
   String? fileUrl;
   String? createdDate;
   bool? isDelete;
+  //
+  dynamic countCmt;
+  dynamic countLike;
+  dynamic countSeen;
 
   ForumPostModel({
     this.tag,

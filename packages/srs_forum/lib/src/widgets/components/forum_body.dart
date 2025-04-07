@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
+import 'package:srs_forum/src/controllers/forum_init_controller.dart';
 import 'package:srs_forum/srs_forum.dart';
 
 class ForumBody extends GetView<ForumController> {
@@ -66,7 +67,9 @@ class ForumBody extends GetView<ForumController> {
           ),
           15.verticalSpace,
           Expanded(
-            child: _buildNews(),
+            child: Obx(() {
+              return _buildNews();
+            }),
           )
         ],
       ),
@@ -112,9 +115,9 @@ class ForumBody extends GetView<ForumController> {
             Align(
               alignment: Alignment.centerLeft,
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   controller.options.value = true;
-                  // controller.funChangeLanguage(true);
+                  await controller.funCoreChangeTypePost();
                 },
                 child: Container(
                   width: swLangWidth,
@@ -132,9 +135,9 @@ class ForumBody extends GetView<ForumController> {
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   controller.options.value = false;
-                  // controller.funChangeLanguage(false);
+                  await controller.funCoreChangeTypePost();
                 },
                 child: Container(
                   width: swLangWidth,
@@ -164,26 +167,31 @@ class ForumBody extends GetView<ForumController> {
           child: SlideAnimation(
             verticalOffset: 50.0,
             child: FadeInAnimation(
-              child: _itemForums(),
+              child: _itemForums(controller.forumPostsSorted[index]),
             ),
           ),
         );
       },
       separatorBuilder: (context, value) => SizedBox(height: 15.sp),
-      itemCount: 10,
+      itemCount: controller.forumPostsSorted.length,
     );
   }
 
-  _itemForums() {
+  _itemForums(ForumPostModel data) {
     return GestureDetector(
       onTap: () {
         Get.toNamed(
           AllRoute.contentRoute,
-          arguments: [{}],
+          arguments: [
+            {
+              'data': data,
+              'isBackMain': false,
+            },
+          ],
         );
       },
       child: Container(
-        padding: EdgeInsets.all(15.sp),
+        padding: EdgeInsets.symmetric(vertical: 15.sp, horizontal: 5.sp),
         decoration: BoxDecoration(
           color: CustomColors.colorFFFFFF,
           border: Border(
@@ -197,6 +205,7 @@ class ForumBody extends GetView<ForumController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,32 +221,37 @@ class ForumBody extends GetView<ForumController> {
                     10.horizontalSpace,
                     Expanded(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
+                            (data.title ?? 'đang cập nhật...'.tr).toCapitalized(),
                             fontSize: CustomConsts.title,
                             fontWeight: CustomConsts.semiBold,
                             maxLines: 2,
+                            textAlign: TextAlign.start,
                           ),
                           5.verticalSpace,
-                          Row(
-                            children: [
-                              CustomText(
-                                'nguyễn văn a',
-                                maxLines: 1,
-                                color: CustomColors.color313131.withOpacity(.7),
-                              ),
-                              CustomText(
-                                ' - ',
-                                maxLines: 1,
-                                color: CustomColors.color313131.withOpacity(.7),
-                              ),
-                              CustomText(
-                                '1h ago',
-                                maxLines: 1,
-                                color: CustomColors.color313131.withOpacity(.7),
-                              ),
-                            ],
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                CustomText(
+                                  data.fullNameCreated ?? 'đang cập nhật...'.tr.toCapitalized(),
+                                  maxLines: 1,
+                                  color: CustomColors.color313131.withOpacity(.7),
+                                ),
+                                CustomText(
+                                  ' - ',
+                                  maxLines: 1,
+                                  color: CustomColors.color313131.withOpacity(.7),
+                                ),
+                                CustomText(
+                                  controller.funGetTimeCreate(data.createdDate),
+                                  maxLines: 1,
+                                  color: CustomColors.color313131.withOpacity(.7),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -246,10 +260,33 @@ class ForumBody extends GetView<ForumController> {
                 ),
                 10.verticalSpace,
                 CustomText(
-                  'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
+                  data.content ?? 'đang cập nhật...'.tr.toCapitalized(),
                   maxLines: 6,
                   color: CustomColors.color313131.withOpacity(.8),
+                  textAlign: TextAlign.start,
                 ),
+                Visibility(
+                  visible: data.fileUrl != null && data.fileUrl != '',
+                  child: Column(
+                    children: [
+                      10.verticalSpace,
+                      Container(
+                        alignment: Alignment.center,
+                        child: CachedNetworkImage(
+                          imageUrl: data.fileUrl ?? '',
+                          placeholder: (context, url) => const CircularProgressIndicator(
+                            color: CustomColors.color005AAB,
+                          ),
+                          errorWidget: (context, url, error) => Icon(
+                            Icons.cloud_off,
+                            size: 50.sp,
+                            color: CustomColors.colorD9D9D9,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
             20.verticalSpace,
@@ -262,7 +299,7 @@ class ForumBody extends GetView<ForumController> {
                     color: CustomColors.color313131,
                     size: 25.sp,
                   ),
-                  '99+',
+                  data.countCmt.toString(),
                 ),
                 _itemNoteNews(
                   FaIcon(
@@ -270,7 +307,7 @@ class ForumBody extends GetView<ForumController> {
                     color: CustomColors.color313131,
                     size: 25.sp,
                   ),
-                  '99+',
+                  data.countLike.toString(),
                 ),
                 _itemNoteNews(
                   FaIcon(
@@ -278,7 +315,7 @@ class ForumBody extends GetView<ForumController> {
                     color: CustomColors.color313131,
                     size: 25.sp,
                   ),
-                  '99+',
+                  data.countSeen.toString(),
                 ),
                 // _itemNoteNews(
                 //   FaIcon(

@@ -159,6 +159,18 @@ class ForumService {
       rethrow;
     }
   }
+
+  Future<int> fetchCountFireStoreDataBySubCollectionSync({
+    required String documentId,
+    required String subCollectionPath,
+  }) async {
+    try {
+      final querySnapshot = await forumCollection.doc(documentId).collection(subCollectionPath).get();
+      return querySnapshot.size;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 enum ForumCollectionSub { cmt, like, seen }

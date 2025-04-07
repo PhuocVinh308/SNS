@@ -38,9 +38,6 @@ class ForumContentBody extends GetView<ForumContentController> {
         color: CustomColors.colorFFFFFF,
         borderRadius: BorderRadius.circular(15.sp),
       ),
-      constraints: BoxConstraints(
-        minHeight: 300.sp,
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -61,7 +58,7 @@ class ForumContentBody extends GetView<ForumContentController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      'Nguyen van A',
+                      controller.data.fullNameCreated ?? 'đang cập nhật...'.tr.toCapitalized(),
                       fontSize: CustomConsts.title,
                       fontWeight: CustomConsts.semiBold,
                       maxLines: 1,
@@ -69,7 +66,7 @@ class ForumContentBody extends GetView<ForumContentController> {
                     ),
                     5.verticalSpace,
                     CustomText(
-                      '1h ago',
+                      controller.funGetTimeCreate(controller.data.createdDate),
                       maxLines: 1,
                       color: CustomColors.color313131.withOpacity(.7),
                       textAlign: TextAlign.start,
@@ -89,7 +86,7 @@ class ForumContentBody extends GetView<ForumContentController> {
           ),
           15.verticalSpace,
           CustomText(
-            'Nguyen van A',
+            (controller.data.title ?? 'đang cập nhật...'.tr).toCapitalized(),
             fontSize: CustomConsts.h2,
             fontWeight: CustomConsts.semiBold,
             textAlign: TextAlign.start,
@@ -97,9 +94,31 @@ class ForumContentBody extends GetView<ForumContentController> {
           ),
           15.verticalSpace,
           CustomText(
-            'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
+            controller.data.content ?? 'đang cập nhật...'.tr.toCapitalized(),
             color: CustomColors.color313131.withOpacity(.8),
             maxLines: 100,
+          ),
+          Visibility(
+            visible: controller.data.fileUrl != null && controller.data.fileUrl != '',
+            child: Column(
+              children: [
+                15.verticalSpace,
+                Container(
+                  alignment: Alignment.center,
+                  child: CachedNetworkImage(
+                    imageUrl: controller.data.fileUrl ?? '',
+                    placeholder: (context, url) => const CircularProgressIndicator(
+                      color: CustomColors.color005AAB,
+                    ),
+                    errorWidget: (context, url, error) => Icon(
+                      Icons.cloud_off,
+                      size: 50.sp,
+                      color: CustomColors.colorD9D9D9,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           15.verticalSpace,
           Row(
@@ -153,9 +172,6 @@ class ForumContentBody extends GetView<ForumContentController> {
       decoration: BoxDecoration(
         color: CustomColors.colorFFFFFF,
         borderRadius: BorderRadius.circular(15.sp),
-      ),
-      constraints: BoxConstraints(
-        minHeight: 100.sp,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
