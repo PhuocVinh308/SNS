@@ -11,11 +11,10 @@ class ForumAddController extends GetxController with ForumAddInitController {
     log('initialize Controller', name: ForumConfig.packageName);
     await init();
     super.onInit();
-    await initPostSeen();
   }
 
   funPostForum() async => await corePostForum();
   funPostLike({required String postId}) async => await corePostLike(postId: postId);
-  funPostSeen({required String postId}) async => await corePostSeen(postId: postId);
+
   funPickImage(ImageSource src) async => await corePickImage(src);
 }

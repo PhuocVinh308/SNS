@@ -188,7 +188,9 @@ class ForumBody extends GetView<ForumController> {
               'isBackMain': false,
             },
           ],
-        );
+        )?.then((value) async {
+          await controller.initSyncForumPost();
+        });
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 15.sp, horizontal: 5.sp),

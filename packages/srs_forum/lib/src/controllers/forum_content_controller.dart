@@ -13,8 +13,14 @@ class ForumContentController extends GetxController with ForumContentInitControl
     data = Get.arguments[0]['data'] ?? ForumPostModel();
     isBackMain = Get.arguments[0]['isBackMain'] ?? false;
     await init();
+    await initPostSeen(postId: data.documentId);
     super.onInit();
   }
 
   funGetTimeCreate(String? value) => coreGetTimeCreate(value);
+  funPostSeen({required String postId}) async => await corePostSeen(postId: postId);
+  funPickImage(ImageSource src) async => await corePickImage(src);
+  funRefreshSelect() => coreRefreshSelect();
+
+  funPostReply() async => await corePostReply();
 }

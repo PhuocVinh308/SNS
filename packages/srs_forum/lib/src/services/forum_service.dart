@@ -34,9 +34,9 @@ class ForumService {
     }
   }
 
-  Future<DateTimeStrings> postForumLikeOrSeenSubCollectionToDocument({
-    required ForumLikeSeenCollectionSub type,
-    required ForumLikeSeenPostModel dataChild,
+  Future<DateTimeStrings> postForumChild({
+    required ForumCollectionSub type,
+    required ForumPostChildModel dataChild,
   }) async {
     // Lấy reference đến document cha
     DocumentReference documentFather = forumCollection.doc(dataChild.postId);
@@ -46,19 +46,24 @@ class ForumService {
       late String documentIdChild;
       late String createdDateChild;
       switch (type) {
-        case ForumLikeSeenCollectionSub.like:
+        case ForumCollectionSub.like:
           collectionNameChild = 'ct_like';
           documentIdChild = result.postLikeFormat;
           createdDateChild = result.standardFormat;
           break;
-        case ForumLikeSeenCollectionSub.seen:
+        case ForumCollectionSub.seen:
           collectionNameChild = 'ct_seen';
           documentIdChild = result.postSeenFormat;
           createdDateChild = result.standardFormat;
           break;
+        case ForumCollectionSub.cmt:
+          collectionNameChild = 'ct_cmt';
+          documentIdChild = result.postCmtFormat;
+          createdDateChild = result.standardFormat;
+          break;
         default:
-          collectionNameChild = 'ct_like';
-          documentIdChild = result.postLikeFormat;
+          collectionNameChild = 'ct_seen';
+          documentIdChild = result.postSeenFormat;
           createdDateChild = result.standardFormat;
           break;
       }
@@ -79,14 +84,14 @@ class ForumService {
         return result;
       } else {
         // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
-        return await postForumLikeOrSeenSubCollectionToDocument(type: type, dataChild: dataChild);
+        return await postForumChild(type: type, dataChild: dataChild);
       }
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<DateTimeStrings> addSubCollectionToDocument({
+  Future<DateTimeStrings> _addSubCollectionToDocument({
     required String fatherId,
     required ForumCollectionSub type,
     Map<String, dynamic>? dataChild,
@@ -135,7 +140,7 @@ class ForumService {
         return result;
       } else {
         // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
-        return await addSubCollectionToDocument(fatherId: fatherId, type: type, dataChild: dataChild);
+        return await _addSubCollectionToDocument(fatherId: fatherId, type: type, dataChild: dataChild);
       }
     } catch (e) {
       rethrow;
@@ -174,5 +179,3 @@ class ForumService {
 }
 
 enum ForumCollectionSub { cmt, like, seen }
-
-enum ForumLikeSeenCollectionSub { like, seen }

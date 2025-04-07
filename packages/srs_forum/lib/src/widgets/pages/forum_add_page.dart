@@ -89,11 +89,11 @@ class ForumAddPage extends GetView<ForumAddController> {
                           MaterialButton(
                             onPressed: () {
                               _bottomSheetShowCameraOrGallery(context, onTapCamera: () async {
-                                await controller.corePickImage(ImageSource.camera).then((value) {
+                                await controller.funPickImage(ImageSource.camera).then((value) {
                                   Get.back();
                                 });
                               }, onTapGallery: () async {
-                                await controller.corePickImage(ImageSource.gallery).then((value) {
+                                await controller.funPickImage(ImageSource.gallery).then((value) {
                                   Get.back();
                                 });
                               });

@@ -25,6 +25,7 @@ final Map<String, String> enUS = {
   'định dạng ngày tháng hoặc thời gian không hợp lệ': 'invalid date or time format',
   'không phân tích được ngày': 'failed to parse date',
   'đăng tin thành công': 'posted successfully',
+  'bình luận thành công': 'comment successfully',
   'chọn hình ảnh': 'choose image',
   'máy ảnh': 'camera',
   'thư viện': 'gallery',

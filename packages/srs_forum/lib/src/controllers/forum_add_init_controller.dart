@@ -34,13 +34,6 @@ class ForumAddInitController {
     }
   }
 
-  initPostSeen({String? postId}) async {
-    if (postId == null || postId.isEmpty) return;
-    await Future.delayed(const Duration(seconds: 10), () async {
-      await corePostSeen(postId: postId);
-    });
-  }
-
   corePostForum() async {
     try {
       if (addNewKey.currentState?.validate() == true) {
@@ -79,40 +72,18 @@ class ForumAddInitController {
   corePostLike({required String postId}) async {
     try {
       DialogUtil.showLoading();
-      ForumLikeSeenPostModel postLikeSeenModel = ForumLikeSeenPostModel(
+      ForumPostChildModel postLikeSeenModel = ForumPostChildModel(
         postId: postId,
         usernameCreated: CustomGlobals().userInfo.username,
         fullNameCreated: CustomGlobals().userInfo.fullName,
         isDelete: false,
       );
-      final postLikeRes = await service.postForumLikeOrSeenSubCollectionToDocument(
-        type: ForumLikeSeenCollectionSub.like,
+      final postLikeRes = await service.postForumChild(
+        type: ForumCollectionSub.like,
         dataChild: postLikeSeenModel,
       );
       DialogUtil.hideLoading();
       return postLikeRes;
-    } catch (e) {
-      DialogUtil.hideLoading();
-      DialogUtil.catchException(obj: e);
-      rethrow;
-    }
-  }
-
-  corePostSeen({required String postId}) async {
-    try {
-      DialogUtil.showLoading();
-      ForumLikeSeenPostModel postLikeSeenModel = ForumLikeSeenPostModel(
-        postId: postId,
-        usernameCreated: CustomGlobals().userInfo.username,
-        fullNameCreated: CustomGlobals().userInfo.fullName,
-        isDelete: false,
-      );
-      final postSeenRes = await service.postForumLikeOrSeenSubCollectionToDocument(
-        type: ForumLikeSeenCollectionSub.seen,
-        dataChild: postLikeSeenModel,
-      );
-      DialogUtil.hideLoading();
-      return postSeenRes;
     } catch (e) {
       DialogUtil.hideLoading();
       DialogUtil.catchException(obj: e);
