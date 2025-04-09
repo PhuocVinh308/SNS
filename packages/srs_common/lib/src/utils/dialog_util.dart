@@ -22,6 +22,7 @@ class DialogUtil {
     CustomSnackBarStatus? status,
     int? maxLine,
     Function? onCallback,
+    int? snackBarShowTime,
   }) {
     String errorMessage = 'đã xảy ra lỗi!'.tr.toCapitalized();
     SnackBarUtil.showSnackBar(
@@ -29,6 +30,7 @@ class DialogUtil {
       status: status ?? CustomSnackBarStatus.error,
       maxLine: maxLine ?? 3,
       onCallback: onCallback,
+      snackBarShowTime: snackBarShowTime,
     );
   }
 

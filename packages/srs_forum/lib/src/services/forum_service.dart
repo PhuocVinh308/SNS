@@ -192,7 +192,7 @@ class ForumService {
     late Query query;
 
     if (tag != null && tag != '') {
-      query = forumCollection.where("tag", isEqualTo: tag).orderBy("createdDate", descending: true).limit(_limit);
+      query = forumCollection.where("tag", isEqualTo: tag).limit(_limit);
     } else {
       query = forumCollection.orderBy("createdDate", descending: true).limit(_limit);
     }
@@ -230,6 +230,24 @@ class ForumService {
     post.countSeen = subCounts[2].count ?? 0;
 
     return post;
+  }
+
+  void fetchCmtSync({
+    String? documentId,
+    required Function(QuerySnapshot) onListen,
+  }) {
+    try {
+      forumCollection.doc(documentId).collection('ct_cmt').orderBy('createdDate', descending: true).snapshots().listen(
+        (QuerySnapshot snapshot) {
+          onListen(snapshot)?.call;
+        },
+        onError: (error) {
+          throw Exception('Error listening to FireStore: $error');
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 

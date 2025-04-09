@@ -64,8 +64,8 @@ class ForumInitController {
     isLoading = true;
     DialogUtil.showLoading();
     try {
-      // final newPosts = await service.fetchForumPosts(tag: options.value ? "NONG_DAN" : "VAT_TU");
-      final newPosts = await service.fetchForumPosts();
+      final newPosts = await service.fetchForumPosts(tag: options.value ? "NONG_DAN" : "VAT_TU");
+      // final newPosts = await service.fetchForumPosts();
       forumPosts.addAll(newPosts);
     } finally {
       isLoading = false;
@@ -90,16 +90,5 @@ class ForumInitController {
     }
   }
 
-  coreChangeTypePost() async {
-    try {
-      DialogUtil.showLoading();
-      Future.delayed(const Duration(milliseconds: 300), () async {
-        await initSyncForumPost();
-      });
-      DialogUtil.hideLoading();
-    } catch (e) {
-      DialogUtil.hideLoading();
-      DialogUtil.catchException(obj: e);
-    }
-  }
+  coreChangeTypePost() async => await initSyncForumPost();
 }

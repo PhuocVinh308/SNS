@@ -59,7 +59,15 @@ class ForumAddInitController {
         }
         final postForumRes = await service.postForum(postModel);
         DialogUtil.hideLoading();
-        DialogUtil.catchException(msg: "${"đăng tin thành công".tr.toCapitalized()}!", status: CustomSnackBarStatus.success);
+
+        DialogUtil.catchException(
+          msg: "${"đăng tin thành công".tr.toCapitalized()}!",
+          status: CustomSnackBarStatus.success,
+          onCallback: () {
+            Get.back(closeOverlays: true);
+          },
+          snackBarShowTime: 1,
+        );
       } else {
         DialogUtil.catchException(msg: "${"chưa nhập đầy đủ thông tin".tr.toCapitalized()}!");
       }

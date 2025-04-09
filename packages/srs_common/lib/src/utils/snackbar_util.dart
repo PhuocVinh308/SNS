@@ -17,6 +17,7 @@ class SnackBarUtil {
     int? maxLine,
     Widget? trailing,
     Function? onCallback,
+    int? snackBarShowTime,
   }) {
     if (!_isSnackBarVisible) {
       _isSnackBarVisible = true;
@@ -61,7 +62,7 @@ class SnackBarUtil {
           isDismissible: false,
           forwardAnimationCurve: Curves.elasticOut,
           reverseAnimationCurve: Curves.elasticOut,
-          duration: Duration(seconds: _snackBarShowTime),
+          duration: Duration(seconds: snackBarShowTime ?? _snackBarShowTime),
           animationDuration: Duration(seconds: _snackBarAnimationTime),
           boxShadows: const [
             BoxShadow(
@@ -74,7 +75,7 @@ class SnackBarUtil {
         ),
       );
       Future.delayed(
-        Duration(seconds: _snackBarShowTime + 1),
+        Duration(seconds: (snackBarShowTime ?? _snackBarShowTime) + 1),
         () {
           _isSnackBarVisible = false;
           onCallback?.call();

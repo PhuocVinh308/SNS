@@ -8,6 +8,7 @@ class ForumPostChildModel {
   String? content;
   String? fileUrl;
   String? fileId;
+  int? countLike;
 
   ForumPostChildModel({
     this.postId,

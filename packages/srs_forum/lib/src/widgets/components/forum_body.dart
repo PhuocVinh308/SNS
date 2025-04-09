@@ -45,7 +45,9 @@ class ForumBody extends GetView<ForumController> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(AllRoute.addRoute);
+                    Get.toNamed(AllRoute.addRoute)?.then((value) async {
+                      await controller.funSyncForumPost();
+                    });
                   },
                   child: Container(
                     height: .06.sh.sp,
@@ -197,7 +199,7 @@ class ForumBody extends GetView<ForumController> {
             },
           ],
         )?.then((value) async {
-          // await controller.initSyncForumPost();
+          await controller.funSyncForumPost();
         });
       },
       child: Container(

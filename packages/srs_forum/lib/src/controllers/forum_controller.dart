@@ -15,4 +15,6 @@ class ForumController extends GetxController with ForumInitController {
 
   funGetTimeCreate(String? value) => coreGetTimeCreate(value);
   funCoreChangeTypePost() async => coreChangeTypePost();
+
+  funSyncForumPost() async => await initSyncForumPost();
 }

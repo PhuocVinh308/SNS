@@ -23,4 +23,5 @@ class ForumContentController extends GetxController with ForumContentInitControl
   funRefreshSelect() => coreRefreshSelect();
 
   funPostReply() async => await corePostReply();
+  funGetTagPost() => coreGetTagPost();
 }

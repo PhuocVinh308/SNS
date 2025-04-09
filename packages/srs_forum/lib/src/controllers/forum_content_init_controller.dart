@@ -23,9 +23,12 @@ class ForumContentInitController {
   Rxn<String> imageOriginalName = Rxn<String>();
   Rxn<Uint8List> imageOriginalBytes = Rxn<Uint8List>();
 
+  RxList<ForumPostChildModel> postCmts = <ForumPostChildModel>[].obs;
+
   init() async {
     try {
       await _initGoogleDriveService();
+      await initSyncCmt();
     } catch (e) {
       DialogUtil.catchException(obj: e);
     }
@@ -159,5 +162,46 @@ class ForumContentInitController {
     } catch (e) {
       DialogUtil.catchException(obj: e);
     }
+  }
+
+  coreGetTagPost() {
+    if (data.tag == null || data.tag == '') return 'đang cập nhật...'.tr.toCapitalized();
+
+    switch (data.tag) {
+      case 'NONG_DAN':
+        return '#${'nông dân'.tr.toCapitalized()}';
+      case 'VAT_TU':
+        return '#${'vật tư'.tr.toCapitalized()}';
+      default:
+        return 'đang cập nhật...'.tr.toCapitalized();
+    }
+  }
+
+  initSyncCmt() async {
+    try {
+      DialogUtil.showLoading();
+      service.fetchCmtSync(
+        documentId: data.documentId,
+        onListen: (snapshot) async {
+          final cmts = await Future.wait(snapshot.docs.map(_mapDocToCmt));
+          postCmts.value = cmts.toList();
+        },
+      );
+    } catch (e) {
+      rethrow;
+    } finally {
+      DialogUtil.hideLoading();
+    }
+  }
+
+  Future<ForumPostChildModel> _mapDocToCmt(DocumentSnapshot doc) async {
+    final cmt = ForumPostChildModel.fromJson(doc.data() as Map<String, dynamic>);
+
+    final subCounts = await Future.wait([
+      doc.reference.collection('ct_like').count().get(),
+    ]);
+    cmt.countLike = subCounts[0].count ?? 0;
+
+    return cmt;
   }
 }
