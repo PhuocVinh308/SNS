@@ -7,15 +7,32 @@ import 'package:intl/intl.dart';
 class ForumInitController {
   Rx<bool> options = true.obs;
   RxList<ForumPostModel> forumPosts = <ForumPostModel>[].obs;
-  RxList<ForumPostModel> forumPostsSorted = <ForumPostModel>[].obs;
 
   final service = ForumService();
+
+  final ScrollController scrollController = ScrollController();
+  bool isLoading = false;
+  bool get hasMore => service.hasMore;
+
   init() async {
     try {
       await initSyncEnv();
+      await initScrollController();
       await initSyncForumPost();
     } catch (e) {
       DialogUtil.catchException(obj: e);
+    }
+  }
+
+  initScrollController() async {
+    try {
+      scrollController.addListener(() {
+        if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 200) {
+          fetchMorePosts();
+        }
+      });
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -36,43 +53,23 @@ class ForumInitController {
     }
   }
 
-  initSyncForumPost() async {
+  Future<void> initSyncForumPost() async {
+    forumPosts.clear();
+    service.resetPagination();
+    await fetchMorePosts();
+  }
+
+  Future<void> fetchMorePosts() async {
+    if (isLoading || !service.hasMore) return;
+    isLoading = true;
+    DialogUtil.showLoading();
     try {
-      service.fetchFireStoreDataByCollectionSync(
-        collectionPath: "tb_forum",
-        // onListen: (snapshot) {
-        //   forumPosts.value = snapshot.docs.map((doc) => ForumPostModel.fromJson(doc.data() as Map<String, dynamic>)).toList();
-        // },
-        onListen: (snapshot) async {
-          final posts = await Future.wait(
-            snapshot.docs.map((doc) async {
-              final post = ForumPostModel.fromJson(doc.data() as Map<String, dynamic>);
-              // Chỉ lấy số lượng comments
-              final commentsCount = (await doc.reference.collection('ct_cmt').count().get()).count ?? 0;
-              post.countCmt = commentsCount;
-              // Chỉ lấy số lượng like
-              final likesCount = (await doc.reference.collection('ct_like').count().get()).count ?? 0;
-              post.countLike = likesCount;
-              // Chỉ lấy số lượng like
-              final seensCount = (await doc.reference.collection('ct_seen').count().get()).count ?? 0;
-              post.countSeen = seensCount;
-              return post;
-            }),
-          );
-          forumPosts.value = posts;
-          if (options.value) {
-            var list = forumPosts.toList();
-            list.removeWhere((data) => data.tag != "NONG_DAN");
-            forumPostsSorted.value = list.toList();
-          } else {
-            var list = forumPosts.toList();
-            list.removeWhere((data) => data.tag != "VAT_TU");
-            forumPostsSorted.value = list.toList();
-          }
-        },
-      );
-    } catch (e) {
-      rethrow;
+      // final newPosts = await service.fetchForumPosts(tag: options.value ? "NONG_DAN" : "VAT_TU");
+      final newPosts = await service.fetchForumPosts();
+      forumPosts.addAll(newPosts);
+    } finally {
+      isLoading = false;
+      DialogUtil.hideLoading();
     }
   }
 

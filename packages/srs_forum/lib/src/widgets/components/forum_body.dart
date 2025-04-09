@@ -160,20 +160,28 @@ class ForumBody extends GetView<ForumController> {
   _buildNews() {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 5.sp, vertical: 5.sp),
+      controller: controller.scrollController,
       itemBuilder: (context, index) {
-        return AnimationConfiguration.staggeredList(
-          position: index,
-          duration: const Duration(milliseconds: 375),
-          child: SlideAnimation(
-            verticalOffset: 50.0,
-            child: FadeInAnimation(
-              child: _itemForums(controller.forumPostsSorted[index]),
+        if (index < controller.forumPosts.length) {
+          final post = controller.forumPosts[index];
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(milliseconds: 375),
+            child: SlideAnimation(
+              verticalOffset: 50.0,
+              child: FadeInAnimation(
+                child: _itemForums(post),
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          return const Center(
+            child: SizedBox(),
+          );
+        }
       },
       separatorBuilder: (context, value) => SizedBox(height: 15.sp),
-      itemCount: controller.forumPostsSorted.length,
+      itemCount: controller.forumPosts.length + (controller.hasMore ? 1 : 0),
     );
   }
 
@@ -189,7 +197,7 @@ class ForumBody extends GetView<ForumController> {
             },
           ],
         )?.then((value) async {
-          await controller.initSyncForumPost();
+          // await controller.initSyncForumPost();
         });
       },
       child: Container(

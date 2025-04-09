@@ -4,6 +4,10 @@ import 'package:srs_forum/srs_forum.dart';
 class ForumService {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   CollectionReference forumCollection = FirebaseFirestore.instance.collection('tb_forum');
+  final int _limit = 10;
+  DocumentSnapshot? _lastDoc;
+  bool _hasMore = true;
+  bool get hasMore => _hasMore;
 
   Future<DateTimeStrings> postForum(ForumPostModel data) async {
     try {
@@ -175,6 +179,57 @@ class ForumService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  void resetPagination() {
+    _lastDoc = null;
+    _hasMore = true;
+  }
+
+  Future<List<ForumPostModel>> fetchForumPosts({String? tag}) async {
+    if (!_hasMore) return [];
+
+    late Query query;
+
+    if (tag != null && tag != '') {
+      query = forumCollection.where("tag", isEqualTo: tag).orderBy("createdDate", descending: true).limit(_limit);
+    } else {
+      query = forumCollection.orderBy("createdDate", descending: true).limit(_limit);
+    }
+
+    if (_lastDoc != null) {
+      query = query.startAfterDocument(_lastDoc!);
+    }
+
+    final snapshot = await query.get();
+
+    if (snapshot.docs.isEmpty) {
+      _hasMore = false;
+      return [];
+    }
+
+    _lastDoc = snapshot.docs.last;
+
+    final posts = await Future.wait(snapshot.docs.map(_mapDocToPost));
+    if (snapshot.docs.length < _limit) _hasMore = false;
+
+    return posts;
+  }
+
+  Future<ForumPostModel> _mapDocToPost(DocumentSnapshot doc) async {
+    final post = ForumPostModel.fromJson(doc.data() as Map<String, dynamic>);
+
+    final subCounts = await Future.wait([
+      doc.reference.collection('ct_cmt').count().get(),
+      doc.reference.collection('ct_like').count().get(),
+      doc.reference.collection('ct_seen').count().get(),
+    ]);
+
+    post.countCmt = subCounts[0].count ?? 0;
+    post.countLike = subCounts[1].count ?? 0;
+    post.countSeen = subCounts[2].count ?? 0;
+
+    return post;
   }
 }
 
