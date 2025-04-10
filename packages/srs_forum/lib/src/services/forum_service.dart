@@ -189,17 +189,17 @@ class ForumService {
   Future<List<ForumPostModel>> fetchForumPosts({String? tag}) async {
     if (!_hasMore) return [];
 
-    late Query query;
+    Query query = forumCollection.orderBy("createdDate", descending: true);
 
-    if (tag != null && tag != '') {
-      query = forumCollection.where("tag", isEqualTo: tag).limit(_limit);
-    } else {
-      query = forumCollection.orderBy("createdDate", descending: true).limit(_limit);
+    if (tag?.isNotEmpty == true) {
+      query = query.where("tag", isEqualTo: tag);
     }
 
     if (_lastDoc != null) {
       query = query.startAfterDocument(_lastDoc!);
     }
+
+    query = query.limit(_limit);
 
     final snapshot = await query.get();
 
@@ -209,11 +209,9 @@ class ForumService {
     }
 
     _lastDoc = snapshot.docs.last;
+    _hasMore = snapshot.docs.length == _limit;
 
-    final posts = await Future.wait(snapshot.docs.map(_mapDocToPost));
-    if (snapshot.docs.length < _limit) _hasMore = false;
-
-    return posts;
+    return Future.wait(snapshot.docs.map(_mapDocToPost));
   }
 
   Future<ForumPostModel> _mapDocToPost(DocumentSnapshot doc) async {

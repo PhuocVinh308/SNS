@@ -26,7 +26,17 @@ class ForumContentBody extends GetView<ForumContentController> {
             15.verticalSpace,
             Obx(() {
               return Column(
-                children: _buildReplies(),
+                children: _buildReplies().isNotEmpty
+                    ? _buildReplies()
+                    : [
+                        Center(
+                          child: Image.asset(
+                            'assets/images/empty_data.png',
+                            width: .5.sw,
+                            height: .5.sh,
+                          ),
+                        ),
+                      ],
               );
             }),
           ],
