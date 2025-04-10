@@ -24,4 +24,8 @@ class ForumContentController extends GetxController with ForumContentInitControl
 
   funPostReply() async => await corePostReply();
   funGetTagPost() => coreGetTagPost();
+
+  funGetCurrentPostLike() => coreGetCurrentPostLike();
+
+  funPostLikePost() async => await corePostLikePost();
 }

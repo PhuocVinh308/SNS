@@ -88,14 +88,18 @@ class ForumContentBody extends GetView<ForumContentController> {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.favorite_border,
-                  color: CustomColors.color833162,
-                  size: 35.sp,
-                ),
-              ),
+              Obx(() {
+                return IconButton(
+                  onPressed: () async {
+                    await controller.funPostLikePost();
+                  },
+                  icon: Icon(
+                    controller.funGetCurrentPostLike() ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                    color: CustomColors.color833162,
+                    size: 35.sp,
+                  ),
+                );
+              }),
             ],
           ),
           15.verticalSpace,

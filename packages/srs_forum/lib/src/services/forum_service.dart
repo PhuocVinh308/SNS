@@ -1,3 +1,4 @@
+import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_forum/srs_forum.dart';
 
@@ -90,6 +91,37 @@ class ForumService {
         // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
         return await postForumChild(type: type, dataChild: dataChild);
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteForumChildDocument({
+    required ForumCollectionSub type,
+    required ForumPostChildModel dataChild,
+    String? documentIdChild,
+  }) async {
+    // Lấy reference đến document cha
+    DocumentReference documentFather = forumCollection.doc(dataChild.postId);
+    try {
+      late String collectionNameChild;
+      switch (type) {
+        case ForumCollectionSub.like:
+          collectionNameChild = 'ct_like';
+          break;
+        case ForumCollectionSub.seen:
+          collectionNameChild = 'ct_seen';
+          break;
+        case ForumCollectionSub.cmt:
+          collectionNameChild = 'ct_cmt';
+          break;
+        default:
+          collectionNameChild = 'ct_seen';
+          break;
+      }
+      CollectionReference childCollection = documentFather.collection(collectionNameChild);
+      DocumentReference childRef = childCollection.doc(documentIdChild);
+      final docSnapshotChild = await childRef.delete();
     } catch (e) {
       rethrow;
     }
@@ -236,6 +268,24 @@ class ForumService {
   }) {
     try {
       forumCollection.doc(documentId).collection('ct_cmt').orderBy('createdDate', descending: true).snapshots().listen(
+        (QuerySnapshot snapshot) {
+          onListen(snapshot)?.call;
+        },
+        onError: (error) {
+          throw Exception('Error listening to FireStore: $error');
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void fetchLikeSync({
+    String? documentId,
+    required Function(QuerySnapshot) onListen,
+  }) {
+    try {
+      forumCollection.doc(documentId).collection('ct_like').where('usernameCreated', isEqualTo: CustomGlobals().userInfo.username).snapshots().listen(
         (QuerySnapshot snapshot) {
           onListen(snapshot)?.call;
         },

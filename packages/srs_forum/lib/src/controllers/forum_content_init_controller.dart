@@ -25,12 +25,19 @@ class ForumContentInitController {
 
   RxList<ForumPostChildModel> postCmts = <ForumPostChildModel>[].obs;
 
+  // like
+  Rx<ForumPostChildModel> currentPostLikeModel = ForumPostChildModel().obs;
+
   init() async {
     try {
+      DialogUtil.showLoading();
       await _initGoogleDriveService();
       await initSyncCmt();
+      await initSyncLike();
     } catch (e) {
       DialogUtil.catchException(obj: e);
+    } finally {
+      DialogUtil.hideLoading();
     }
   }
 
@@ -179,7 +186,6 @@ class ForumContentInitController {
 
   initSyncCmt() async {
     try {
-      DialogUtil.showLoading();
       service.fetchCmtSync(
         documentId: data.documentId,
         onListen: (snapshot) async {
@@ -189,8 +195,6 @@ class ForumContentInitController {
       );
     } catch (e) {
       rethrow;
-    } finally {
-      DialogUtil.hideLoading();
     }
   }
 
@@ -203,5 +207,62 @@ class ForumContentInitController {
     cmt.countLike = subCounts[0].count ?? 0;
 
     return cmt;
+  }
+
+  initSyncLike() async {
+    try {
+      service.fetchLikeSync(
+        documentId: data.documentId,
+        onListen: (snapshot) async {
+          final likes = await Future.wait(snapshot.docs.map(_mapDocToCmt));
+          currentPostLikeModel.value = likes.first;
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ForumPostChildModel> _mapDocToLike(DocumentSnapshot doc) async {
+    final like = ForumPostChildModel.fromJson(doc.data() as Map<String, dynamic>);
+    return like;
+  }
+
+  coreGetCurrentPostLike() {
+    try {
+      return (currentPostLikeModel.value.documentId == null ? false : true);
+    } catch (e) {
+      DialogUtil.catchException(obj: e);
+    }
+  }
+
+  corePostLikePost() async {
+    try {
+      DialogUtil.showLoading();
+      ForumPostChildModel postModel = ForumPostChildModel(
+        postId: data.documentId,
+        usernameCreated: CustomGlobals().userInfo.username,
+        fullNameCreated: CustomGlobals().userInfo.fullName,
+        isDelete: false,
+      );
+      if (currentPostLikeModel.value.documentId == null) {
+        final postLikeRes = await service.postForumChild(
+          type: ForumCollectionSub.like,
+          dataChild: postModel,
+        );
+        currentPostLikeModel.value = ForumPostChildModel(documentId: postLikeRes.postLikeFormat);
+      } else {
+        final deleteLikeRes = await service.deleteForumChildDocument(
+          type: ForumCollectionSub.like,
+          dataChild: postModel,
+          documentIdChild: currentPostLikeModel.value.documentId,
+        );
+        currentPostLikeModel.value = ForumPostChildModel();
+      }
+    } catch (e) {
+      DialogUtil.catchException(obj: e);
+    } finally {
+      DialogUtil.hideLoading();
+    }
   }
 }
