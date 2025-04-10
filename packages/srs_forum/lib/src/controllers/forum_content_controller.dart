@@ -28,4 +28,6 @@ class ForumContentController extends GetxController with ForumContentInitControl
   funGetCurrentPostLike() => coreGetCurrentPostLike();
 
   funPostLikePost() async => await corePostLikePost();
+
+  funPostLikeCmtPost(String? documentCmtId) async => await corePostLikeCmtPost(documentCmtId);
 }

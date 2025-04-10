@@ -248,7 +248,9 @@ class ForumContentBody extends GetView<ForumContentController> {
           Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await controller.funPostLikeCmtPost(data.documentId);
+                },
                 icon: const Icon(
                   Icons.favorite_border,
                 ),

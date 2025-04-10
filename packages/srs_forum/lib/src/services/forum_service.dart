@@ -10,7 +10,10 @@ class ForumService {
   bool _hasMore = true;
   bool get hasMore => _hasMore;
 
-  Future<DateTimeStrings> postForum(ForumPostModel data) async {
+  Future<DateTimeStrings> postForum(ForumPostModel data, {int retryCount = 1}) async {
+    if (retryCount >= 3) {
+      throw Exception('Không thể tạo document mới sau 3 lần thử.');
+    }
     try {
       DateTimeStrings result = generateBothDateTimeStrings();
       String documentId = result.postForumFormat;
@@ -32,17 +35,20 @@ class ForumService {
         return result;
       } else {
         // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
-        return await postForum(data);
+        return await postForum(
+          data,
+          retryCount: retryCount + 1,
+        );
       }
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<DateTimeStrings> postForumChild({
-    required ForumCollectionSub type,
-    required ForumPostChildModel dataChild,
-  }) async {
+  Future<DateTimeStrings> postForumChild({required ForumCollectionSub type, required ForumPostChildModel dataChild, int retryCount = 1}) async {
+    if (retryCount >= 3) {
+      throw Exception('Không thể tạo document mới sau 3 lần thử.');
+    }
     // Lấy reference đến document cha
     DocumentReference documentFather = forumCollection.doc(dataChild.postId);
     try {
@@ -89,7 +95,11 @@ class ForumService {
         return result;
       } else {
         // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
-        return await postForumChild(type: type, dataChild: dataChild);
+        return await postForumChild(
+          type: type,
+          dataChild: dataChild,
+          retryCount: retryCount + 1,
+        );
       }
     } catch (e) {
       rethrow;
@@ -127,62 +137,6 @@ class ForumService {
     }
   }
 
-  Future<DateTimeStrings> _addSubCollectionToDocument({
-    required String fatherId,
-    required ForumCollectionSub type,
-    Map<String, dynamic>? dataChild,
-  }) async {
-    // Lấy reference đến document cha
-    DocumentReference documentFather = forumCollection.doc(fatherId);
-    try {
-      DateTimeStrings result = generateBothDateTimeStrings();
-      late String collectionNameChild;
-      late String documentIdChild;
-      late String createdDateChild;
-      switch (type) {
-        case ForumCollectionSub.cmt:
-          collectionNameChild = 'ct_cmt';
-          documentIdChild = result.postCmtFormat;
-          createdDateChild = result.standardFormat;
-          break;
-        case ForumCollectionSub.like:
-          collectionNameChild = 'ct_like';
-          documentIdChild = result.postLikeFormat;
-          createdDateChild = result.standardFormat;
-          break;
-        case ForumCollectionSub.seen:
-          collectionNameChild = 'ct_seen';
-          documentIdChild = result.postSeenFormat;
-          createdDateChild = result.standardFormat;
-          break;
-        default:
-          collectionNameChild = 'ct_cmt';
-          documentIdChild = result.postCmtFormat;
-          createdDateChild = result.standardFormat;
-          break;
-      }
-      CollectionReference childCollection = documentFather.collection(collectionNameChild);
-      DocumentReference childRef = childCollection.doc(documentIdChild);
-
-      final docSnapshotChild = await childRef.get();
-      if (!docSnapshotChild.exists) {
-        // Sử dụng data được truyền vào hoặc empty map nếu null
-        final dataToSave = {
-          'documentId': documentIdChild,
-          'createdDate': createdDateChild,
-          ...?dataChild, // Spread operator với null check
-        };
-        await childRef.set(dataToSave);
-        return result;
-      } else {
-        // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
-        return await _addSubCollectionToDocument(fatherId: fatherId, type: type, dataChild: dataChild);
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   void fetchFireStoreDataByCollectionSync({
     required String collectionPath,
     required Function(QuerySnapshot) onListen,
@@ -196,18 +150,6 @@ class ForumService {
           throw Exception('Error listening to FireStore: $error');
         },
       );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<int> fetchCountFireStoreDataBySubCollectionSync({
-    required String documentId,
-    required String subCollectionPath,
-  }) async {
-    try {
-      final querySnapshot = await forumCollection.doc(documentId).collection(subCollectionPath).get();
-      return querySnapshot.size;
     } catch (e) {
       rethrow;
     }
@@ -293,6 +235,52 @@ class ForumService {
           throw Exception('Error listening to FireStore: $error');
         },
       );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<DateTimeStrings> postLikeCmt({
+    required ForumPostChildModel dataChild,
+    String? documentCmtId,
+    int retryCount = 0,
+  }) async {
+    if (retryCount >= 3) {
+      throw Exception('Không thể tạo document mới sau 3 lần thử.');
+    }
+    // Lấy reference đến document cha
+    DocumentReference documentFather = forumCollection.doc(dataChild.postId);
+    try {
+      DateTimeStrings result = generateBothDateTimeStrings();
+
+      String documentIdChild = result.postLikeFormat;
+      String createdDateChild = result.standardFormat;
+
+      CollectionReference childCollection = documentFather.collection('ct_cmt');
+      DocumentReference cmtDocument = childCollection.doc(documentCmtId);
+      CollectionReference cmtCollection = cmtDocument.collection('ct_like');
+      DocumentReference childRef = cmtCollection.doc(documentIdChild);
+
+      final docSnapshotChild = await childRef.get();
+      if (!docSnapshotChild.exists) {
+        // Sử dụng data được truyền vào hoặc empty map nếu null
+        dataChild.documentId = documentIdChild;
+        dataChild.createdDate = createdDateChild;
+        final dataToSave = {
+          // 'documentId': documentIdChild,
+          // 'createdDate': createdDateChild,
+          ...dataChild.toJson(), // Spread operator với null check
+        };
+        await childRef.set(dataToSave);
+        return result;
+      } else {
+        // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
+        return await postLikeCmt(
+          dataChild: dataChild,
+          documentCmtId: documentCmtId,
+          retryCount: retryCount + 1,
+        );
+      }
     } catch (e) {
       rethrow;
     }
