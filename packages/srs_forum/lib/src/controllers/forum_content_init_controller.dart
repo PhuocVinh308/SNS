@@ -1,9 +1,9 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_forum/srs_forum.dart';
-import 'package:intl/intl.dart';
 
 class ForumContentInitController {
   final service = ForumService();
@@ -258,42 +258,6 @@ class ForumContentInitController {
           documentIdChild: currentPostLikeModel.value.documentId,
         );
         currentPostLikeModel.value = ForumPostChildModel();
-      }
-    } catch (e) {
-      DialogUtil.catchException(obj: e);
-    } finally {
-      DialogUtil.hideLoading();
-    }
-  }
-
-  corePostLikeCmtPost(String? documentCmtId) async {
-    try {
-      DialogUtil.showLoading();
-      ForumPostChildModel postModel = ForumPostChildModel(
-        postId: data.documentId,
-        usernameCreated: CustomGlobals().userInfo.username,
-        fullNameCreated: CustomGlobals().userInfo.fullName,
-        isDelete: false,
-      );
-
-      final postLikeCmtRes = await service.postLikeCmt(
-        dataChild: postModel,
-        documentCmtId: documentCmtId,
-      );
-      // currentPostLikeModel.value = ForumPostChildModel(documentId: postLikeCmtRes.postLikeFormat);
-      if (currentPostLikeModel.value.documentId == null) {
-        // final postLikeRes = await service.postForumChild(
-        //   type: ForumCollectionSub.like,
-        //   dataChild: postModel,
-        // );
-        // currentPostLikeModel.value = ForumPostChildModel(documentId: postLikeRes.postLikeFormat);
-      } else {
-        // final deleteLikeRes = await service.deleteForumChildDocument(
-        //   type: ForumCollectionSub.like,
-        //   dataChild: postModel,
-        //   documentIdChild: currentPostLikeModel.value.documentId,
-        // );
-        // currentPostLikeModel.value = ForumPostChildModel();
       }
     } catch (e) {
       DialogUtil.catchException(obj: e);

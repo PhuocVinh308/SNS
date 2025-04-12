@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_forum/srs_forum.dart';
 
@@ -18,16 +17,18 @@ class ForumContentController extends GetxController with ForumContentInitControl
   }
 
   funGetTimeCreate(String? value) => coreGetTimeCreate(value);
+
   funPostSeen({required String postId}) async => await corePostSeen(postId: postId);
+
   funPickImage(ImageSource src) async => await corePickImage(src);
+
   funRefreshSelect() => coreRefreshSelect();
 
   funPostReply() async => await corePostReply();
+
   funGetTagPost() => coreGetTagPost();
 
   funGetCurrentPostLike() => coreGetCurrentPostLike();
 
   funPostLikePost() async => await corePostLikePost();
-
-  funPostLikeCmtPost(String? documentCmtId) async => await corePostLikeCmtPost(documentCmtId);
 }

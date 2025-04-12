@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
-import 'package:srs_landing/srs_landing.dart' as srs_landing;
-import 'package:srs_forum/src/widgets/components/forum_content_body.dart';
 import 'package:srs_forum/srs_forum.dart';
+import 'package:srs_landing/srs_landing.dart' as srs_landing;
 
 class ForumContentPage extends GetView<ForumContentController> {
   const ForumContentPage({Key? key}) : super(key: key);

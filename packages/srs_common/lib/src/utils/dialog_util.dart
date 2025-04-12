@@ -1,6 +1,5 @@
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
-import 'package:srs_common/src/utils/snackbar_util.dart';
 import 'package:srs_common/srs_common.dart';
 
 class DialogUtil {

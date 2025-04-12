@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:srs_authen/srs_authen.dart';
-import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common.dart';
+import 'package:srs_common/srs_common_lib.dart';
 
 import '../components/authen_components.dart';
 

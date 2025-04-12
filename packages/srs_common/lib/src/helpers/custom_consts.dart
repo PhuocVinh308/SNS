@@ -1,5 +1,6 @@
-import 'package:srs_common/srs_common_lib.dart';
 import 'dart:ui';
+
+import 'package:srs_common/srs_common_lib.dart';
 
 class CustomConsts {
   // font weight
@@ -12,6 +13,7 @@ class CustomConsts {
   static const FontWeight bold = FontWeight.w700;
   static const FontWeight extraBold = FontWeight.w800;
   static const FontWeight black = FontWeight.w900;
+
   // font size
   static double h1 = 32.0.sp;
   static double h2 = 24.0.sp;

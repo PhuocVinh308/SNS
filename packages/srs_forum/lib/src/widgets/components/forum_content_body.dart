@@ -244,23 +244,6 @@ class ForumContentBody extends GetView<ForumContentController> {
               ],
             ),
           ),
-          10.verticalSpace,
-          Row(
-            children: [
-              IconButton(
-                onPressed: () async {
-                  await controller.funPostLikeCmtPost(data.documentId);
-                },
-                icon: const Icon(
-                  Icons.favorite_border,
-                ),
-              ),
-              5.horizontalSpace,
-              CustomText(
-                data.countLike.toString(),
-              ),
-            ],
-          ),
         ],
       ),
     );

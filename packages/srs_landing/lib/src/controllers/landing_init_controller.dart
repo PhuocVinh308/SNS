@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:srs_authen/srs_authen.dart' as srs_authen;
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
-import 'package:srs_landing/srs_landing.dart';
 import 'package:srs_forum/srs_forum.dart' as srs_forum;
-import 'package:srs_authen/srs_authen.dart' as srs_authen;
+import 'package:srs_landing/srs_landing.dart';
 
 class LandingInitController {
   // banner
   final CarouselSliderController bannerController = CarouselSliderController();
   Rx<int> bannerCurrentIndex = 0.obs;
   RxList<String> bannerImgList = RxList<String>();
+
   // menu
   RxList<MenuModel> menus = RxList<MenuModel>();
 

@@ -8,6 +8,7 @@ class ForumService {
   final int _limit = 10;
   DocumentSnapshot? _lastDoc;
   bool _hasMore = true;
+
   bool get hasMore => _hasMore;
 
   Future<DateTimeStrings> postForum(ForumPostModel data, {int retryCount = 1}) async {
@@ -235,52 +236,6 @@ class ForumService {
           throw Exception('Error listening to FireStore: $error');
         },
       );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<DateTimeStrings> postLikeCmt({
-    required ForumPostChildModel dataChild,
-    String? documentCmtId,
-    int retryCount = 0,
-  }) async {
-    if (retryCount >= 3) {
-      throw Exception('Không thể tạo document mới sau 3 lần thử.');
-    }
-    // Lấy reference đến document cha
-    DocumentReference documentFather = forumCollection.doc(dataChild.postId);
-    try {
-      DateTimeStrings result = generateBothDateTimeStrings();
-
-      String documentIdChild = result.postLikeFormat;
-      String createdDateChild = result.standardFormat;
-
-      CollectionReference childCollection = documentFather.collection('ct_cmt');
-      DocumentReference cmtDocument = childCollection.doc(documentCmtId);
-      CollectionReference cmtCollection = cmtDocument.collection('ct_like');
-      DocumentReference childRef = cmtCollection.doc(documentIdChild);
-
-      final docSnapshotChild = await childRef.get();
-      if (!docSnapshotChild.exists) {
-        // Sử dụng data được truyền vào hoặc empty map nếu null
-        dataChild.documentId = documentIdChild;
-        dataChild.createdDate = createdDateChild;
-        final dataToSave = {
-          // 'documentId': documentIdChild,
-          // 'createdDate': createdDateChild,
-          ...dataChild.toJson(), // Spread operator với null check
-        };
-        await childRef.set(dataToSave);
-        return result;
-      } else {
-        // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
-        return await postLikeCmt(
-          dataChild: dataChild,
-          documentCmtId: documentCmtId,
-          retryCount: retryCount + 1,
-        );
-      }
     } catch (e) {
       rethrow;
     }

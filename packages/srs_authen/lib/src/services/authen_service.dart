@@ -1,7 +1,8 @@
+import 'dart:math';
+
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
-import 'dart:math';
 
 class AuthenService {
   final firebaseAuth = FirebaseAuth.instance;

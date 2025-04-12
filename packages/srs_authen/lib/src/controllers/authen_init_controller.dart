@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common.dart';
-import 'package:srs_landing/srs_landing.dart' as srs_landing;
 import 'package:srs_common/srs_common_lib.dart';
+import 'package:srs_landing/srs_landing.dart' as srs_landing;
 
 class AuthenInitController {
   Rx<bool> language = false.obs;

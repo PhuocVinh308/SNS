@@ -21,6 +21,7 @@ class ForumPostChildModel {
     this.fileUrl,
     this.fileId,
   });
+
   ForumPostChildModel.fromJson(dynamic json) {
     postId = json['postId'];
     documentId = json['documentId'];

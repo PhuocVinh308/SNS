@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_forum/srs_forum.dart';
-import 'package:intl/intl.dart';
 
 class ForumInitController {
   Rx<bool> options = true.obs;
@@ -12,6 +12,7 @@ class ForumInitController {
 
   final ScrollController scrollController = ScrollController();
   bool isLoading = false;
+
   bool get hasMore => service.hasMore;
 
   init() async {

@@ -13,16 +13,13 @@ class DriveServiceModel {
 
   DriveServiceModel({
     this.key,
-
   });
 
   factory DriveServiceModel.fromJson(Map<String, dynamic> json) => DriveServiceModel(
-    key: json["key"],
-
+        key: json["key"],
       );
 
   Map<String, dynamic> toJson() => {
         "key": key,
-
       };
 }
