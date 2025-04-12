@@ -12,4 +12,6 @@ class LandingController extends GetxController with LandingInitController {
     await init();
     super.onInit();
   }
+
+  funGetTimeCreate(String? value) => coreGetTimeCreate(value);
 }

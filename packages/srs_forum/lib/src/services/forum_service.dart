@@ -240,6 +240,24 @@ class ForumService {
       rethrow;
     }
   }
+
+  void fetchForumPostNewSync({
+    int limit = 5,
+    required Function(QuerySnapshot) onListen,
+  }) {
+    try {
+      forumCollection.orderBy('createdDate', descending: true).limit(limit).snapshots().listen(
+        (QuerySnapshot snapshot) {
+          onListen(snapshot)?.call;
+        },
+        onError: (error) {
+          throw Exception('Error listening to FireStore: $error');
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 enum ForumCollectionSub { cmt, like, seen }

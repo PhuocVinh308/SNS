@@ -328,14 +328,6 @@ class ForumBody extends GetView<ForumController> {
                   ),
                   data.countSeen.toString(),
                 ),
-                // _itemNoteNews(
-                //   FaIcon(
-                //     FontAwesomeIcons.clock,
-                //     color: CustomColors.color313131,
-                //     size: 25.sp,
-                //   ),
-                //   '6d',
-                // ),
               ],
             ),
           ],

@@ -3,6 +3,7 @@ import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_forum/srs_forum.dart' as srs_forum;
 import 'package:srs_landing/srs_landing.dart';
+import 'package:intl/intl.dart';
 
 class LandingInitController {
   // banner
@@ -15,12 +16,14 @@ class LandingInitController {
 
   // userName
   Rx<srs_authen.UserInfoModel> userModel = srs_authen.UserInfoModel().obs;
+  RxList<srs_forum.ForumPostModel> newPosts = <srs_forum.ForumPostModel>[].obs;
 
   init() async {
     try {
       await _initBanner();
       await _initMenus();
       await initUserModel();
+      await initSyncNewPost();
     } catch (e) {
       DialogUtil.catchException(obj: e);
     }
@@ -92,6 +95,32 @@ class LandingInitController {
       ];
     } catch (e) {
       rethrow;
+    }
+  }
+
+  initSyncNewPost() async {
+    try {
+      await srs_forum.ForumHelper.initNewForumPost();
+      newPosts.value = srs_forum.ForumHelper.listNewPost;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  coreGetTimeCreate(String? value) {
+    if (value == null) return 'đang cập nhật...'.tr.toCapitalized();
+    try {
+      // Phân tích chuỗi ngày giờ
+      DateTime dateTime = DateTime.parse(value);
+      // Định dạng giờ: HH:mm:ss (24h)
+      String formattedTime = DateFormat('HH:mm:ss').format(dateTime);
+      // Định dạng ngày: dd/MM/yyyy
+      String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+      // Kết hợp lại
+      String finalFormattedDateTime = "$formattedTime $formattedDate";
+      return finalFormattedDateTime;
+    } catch (e) {
+      return 'đang cập nhật...'.tr.toCapitalized();
     }
   }
 }

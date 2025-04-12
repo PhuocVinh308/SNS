@@ -26,7 +26,9 @@ class LandingBody extends GetView<LandingController> {
           );
         }),
         15.verticalSpace,
-        _buildNews(),
+        Obx(() {
+          return _buildNews();
+        }),
       ],
     );
   }
@@ -295,20 +297,20 @@ class LandingBody extends GetView<LandingController> {
   }
 
   List<Widget> _buildListForum() {
-    List<Widget> list = [
-      _itemForums(),
-      _itemForums(),
-    ];
-
+    List<Widget> list = [];
+    for (var data in controller.newPosts) {
+      var item = _itemForums(data);
+      list.add(item);
+    }
     return list;
   }
 
-  _itemForums() {
+  _itemForums(srs_forum.ForumPostModel data) {
     return GestureDetector(
       onTap: () {},
       child: Container(
         width: (1.sw - 55.sp).spMax,
-        padding: EdgeInsets.all(15.sp),
+        padding: EdgeInsets.all(5.sp),
         margin: EdgeInsets.all(5.sp),
         decoration: BoxDecoration(
           color: CustomColors.colorFFFFFF,
@@ -323,6 +325,7 @@ class LandingBody extends GetView<LandingController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,32 +341,37 @@ class LandingBody extends GetView<LandingController> {
                     10.horizontalSpace,
                     Expanded(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
+                            (data.title ?? 'đang cập nhật...'.tr).toCapitalized(),
                             fontSize: CustomConsts.title,
                             fontWeight: CustomConsts.semiBold,
                             maxLines: 2,
+                            textAlign: TextAlign.start,
                           ),
                           5.verticalSpace,
-                          Row(
-                            children: [
-                              CustomText(
-                                'nguyễn văn a',
-                                maxLines: 1,
-                                color: CustomColors.color313131.withOpacity(.7),
-                              ),
-                              CustomText(
-                                ' - ',
-                                maxLines: 1,
-                                color: CustomColors.color313131.withOpacity(.7),
-                              ),
-                              CustomText(
-                                '1h ago',
-                                maxLines: 1,
-                                color: CustomColors.color313131.withOpacity(.7),
-                              ),
-                            ],
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                CustomText(
+                                  data.fullNameCreated ?? 'đang cập nhật...'.tr.toCapitalized(),
+                                  maxLines: 1,
+                                  color: CustomColors.color313131.withOpacity(.7),
+                                ),
+                                CustomText(
+                                  ' - ',
+                                  maxLines: 1,
+                                  color: CustomColors.color313131.withOpacity(.7),
+                                ),
+                                CustomText(
+                                  controller.funGetTimeCreate(data.createdDate),
+                                  maxLines: 1,
+                                  color: CustomColors.color313131.withOpacity(.7),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -372,9 +380,10 @@ class LandingBody extends GetView<LandingController> {
                 ),
                 10.verticalSpace,
                 CustomText(
-                  'Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media Glowrose-Mobile-App-Topics/attachments/1344796?mode=media',
+                  data.content ?? 'đang cập nhật...'.tr.toCapitalized(),
                   maxLines: 6,
                   color: CustomColors.color313131.withOpacity(.8),
+                  textAlign: TextAlign.start,
                 ),
               ],
             ),
@@ -388,7 +397,7 @@ class LandingBody extends GetView<LandingController> {
                     color: CustomColors.color313131,
                     size: 25.sp,
                   ),
-                  '99+',
+                  data.countCmt.toString(),
                 ),
                 _itemNoteNews(
                   FaIcon(
@@ -396,7 +405,7 @@ class LandingBody extends GetView<LandingController> {
                     color: CustomColors.color313131,
                     size: 25.sp,
                   ),
-                  '99+',
+                  data.countLike.toString(),
                 ),
                 _itemNoteNews(
                   FaIcon(
@@ -404,16 +413,8 @@ class LandingBody extends GetView<LandingController> {
                     color: CustomColors.color313131,
                     size: 25.sp,
                   ),
-                  '99+',
+                  data.countSeen.toString(),
                 ),
-                // _itemNoteNews(
-                //   FaIcon(
-                //     FontAwesomeIcons.clock,
-                //     color: CustomColors.color313131,
-                //     size: 25.sp,
-                //   ),
-                //   '6d',
-                // ),
               ],
             ),
           ],

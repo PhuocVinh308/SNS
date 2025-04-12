@@ -19,3 +19,5 @@ export 'src/widgets/pages/forum_add_page.dart';
 export 'src/widgets/pages/forum_content_page.dart';
 // widgets
 export 'src/widgets/pages/forum_page.dart';
+// helpers
+export 'src/helpers/forum_helper.dart';
