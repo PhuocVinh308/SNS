@@ -30,4 +30,5 @@ final Map<String, String> enUS = {
   'máy ảnh': 'camera',
   'thư viện': 'gallery',
   'đang cập nhật...': 'updating...',
+  'tìm kiếm': 'search',
 };

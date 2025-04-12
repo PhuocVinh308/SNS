@@ -20,12 +20,7 @@ class ForumBody extends GetView<ForumController> {
                 _buildOptionForums(),
                 InkWell(
                   onTap: () {
-                    CustomReusableMbs(
-                      context: context,
-                      child: Column(
-                        children: [],
-                      ),
-                    ).showMbs();
+                    Get.toNamed(AllRoute.searchRoute)?.then((value) async {});
                   },
                   child: Container(
                     height: .06.sh.sp,
