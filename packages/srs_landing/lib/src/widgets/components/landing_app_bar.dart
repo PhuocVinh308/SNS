@@ -12,14 +12,14 @@ class LandingAppBar extends GetView<LandingController> {
       padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
       child: Row(
         children: [
-          IconButton(
-            onPressed: () {},
-            icon: const FaIcon(
-              FontAwesomeIcons.bars,
-              color: CustomColors.color833162,
-            ),
-          ),
-          5.horizontalSpace,
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const FaIcon(
+          //     FontAwesomeIcons.bars,
+          //     color: CustomColors.color833162,
+          //   ),
+          // ),
+          // 5.horizontalSpace,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -18,4 +18,6 @@ class ForumController extends GetxController with ForumInitController {
   funCoreChangeTypePost() async => coreChangeTypePost();
 
   funSyncForumPost() async => await initSyncForumPost();
+  funClearSearch() async => await coreClearSearch();
+  funSearchPost() async => await coreSearchPost();
 }

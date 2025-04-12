@@ -15,11 +15,21 @@ class ForumInitController {
 
   bool get hasMore => service.hasMore;
 
+  // search
+  TextEditingController searchController = TextEditingController();
+
+  RxList<ForumPostModel> forumSearchPosts = <ForumPostModel>[].obs;
+  final ScrollController scrollSearchController = ScrollController();
+  bool isSearchLoading = false;
+  bool get hasMoreSearch => service.hasMoreSearch;
+
   init() async {
     try {
       await initSyncEnv();
       await initScrollController();
+      await initScrollSearchController();
       await initSyncForumPost();
+      await initSyncForumSearchPost();
     } catch (e) {
       DialogUtil.catchException(obj: e);
     }
@@ -92,4 +102,42 @@ class ForumInitController {
   }
 
   coreChangeTypePost() async => await initSyncForumPost();
+
+  coreClearSearch() async {
+    searchController.clear();
+    forumSearchPosts.clear();
+  }
+
+  initScrollSearchController() async {
+    try {
+      scrollSearchController.addListener(() {
+        if (scrollSearchController.position.pixels >= scrollSearchController.position.maxScrollExtent - 200) {
+          fetchMoreSearchPosts();
+        }
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> initSyncForumSearchPost() async {
+    forumSearchPosts.clear();
+    service.resetSearchPagination();
+    await fetchMoreSearchPosts();
+  }
+
+  Future<void> fetchMoreSearchPosts() async {
+    if (isSearchLoading || !service.hasMoreSearch) return;
+    isSearchLoading = true;
+    DialogUtil.showLoading();
+    try {
+      final newPosts = await service.fetchForumSearchPosts(keyword: searchController.value.text.trim());
+      forumSearchPosts.addAll(newPosts);
+    } finally {
+      isSearchLoading = false;
+      DialogUtil.hideLoading();
+    }
+  }
+
+  coreSearchPost() async => initSyncForumSearchPost();
 }

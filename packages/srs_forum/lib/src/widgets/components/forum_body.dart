@@ -20,7 +20,9 @@ class ForumBody extends GetView<ForumController> {
                 _buildOptionForums(),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(AllRoute.searchRoute)?.then((value) async {});
+                    Get.toNamed(AllRoute.searchRoute)?.then((value) async {
+                      // await controller.funClearSearch();
+                    });
                   },
                   child: Container(
                     height: .06.sh.sp,
@@ -31,7 +33,7 @@ class ForumBody extends GetView<ForumController> {
                     ),
                     alignment: Alignment.center,
                     child: FaIcon(
-                      FontAwesomeIcons.filter,
+                      FontAwesomeIcons.magnifyingGlass,
                       color: CustomColors.colorFFFFFF,
                       size: 25.sp,
                     ),

@@ -11,6 +11,11 @@ class ForumService {
 
   bool get hasMore => _hasMore;
 
+  //search
+  DocumentSnapshot? _lastDocSearch;
+  bool _hasMoreSearch = true;
+  bool get hasMoreSearch => _hasMoreSearch;
+
   Future<DateTimeStrings> postForum(ForumPostModel data, {int retryCount = 1}) async {
     if (retryCount >= 3) {
       throw Exception('Không thể tạo document mới sau 3 lần thử.');
@@ -161,6 +166,11 @@ class ForumService {
     _hasMore = true;
   }
 
+  void resetSearchPagination() {
+    _lastDocSearch = null;
+    _hasMoreSearch = true;
+  }
+
   Future<List<ForumPostModel>> fetchForumPosts({String? tag}) async {
     if (!_hasMore) return [];
 
@@ -185,6 +195,35 @@ class ForumService {
 
     _lastDoc = snapshot.docs.last;
     _hasMore = snapshot.docs.length == _limit;
+
+    return Future.wait(snapshot.docs.map(_mapDocToPost));
+  }
+
+  Future<List<ForumPostModel>> fetchForumSearchPosts({String? keyword}) async {
+    if (!_hasMoreSearch) return [];
+
+    Query query = forumCollection.orderBy("createdDate", descending: true);
+
+    if (keyword?.isNotEmpty == true) {
+      final keywordLower = keyword?.toLowerCase();
+      query = query.where("title", isGreaterThanOrEqualTo: keywordLower).where('title', isLessThanOrEqualTo: '$keywordLower\uf8ff');
+    }
+
+    if (_lastDocSearch != null) {
+      query = query.startAfterDocument(_lastDocSearch!);
+    }
+
+    query = query.limit(_limit);
+
+    final snapshot = await query.get();
+
+    if (snapshot.docs.isEmpty) {
+      _hasMoreSearch = false;
+      return [];
+    }
+
+    _lastDocSearch = snapshot.docs.last;
+    _hasMoreSearch = snapshot.docs.length == _limit;
 
     return Future.wait(snapshot.docs.map(_mapDocToPost));
   }
