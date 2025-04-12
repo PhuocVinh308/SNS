@@ -18,6 +18,8 @@ dependencies:
     path: ../../packages/srs_forum
   srs_authen:
     path: ../../packages/srs_authen
+  srs_setting:
+    path: ../../packages/srs_setting
 
 
   get: ^4.7.2

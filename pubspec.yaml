@@ -24,6 +24,8 @@ dependencies:
     path: packages/srs_landing
   srs_notification:
     path: packages/srs_notification
+  srs_setting:
+    path: packages/srs_setting
 
 dev_dependencies:
   flutter_test:
