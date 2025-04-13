@@ -17,4 +17,6 @@ class ForumAddController extends GetxController with ForumAddInitController {
   funPostLike({required String postId}) async => await corePostLike(postId: postId);
 
   funPickImage(ImageSource src) async => await corePickImage(src);
+
+  funRefreshSelect() => coreRefreshSelect();
 }

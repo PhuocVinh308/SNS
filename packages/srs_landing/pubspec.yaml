@@ -18,6 +18,8 @@ dependencies:
     path: ../../packages/srs_forum
   srs_authen:
     path: ../../packages/srs_authen
+  srs_notification:
+    path: ../../packages/srs_notification
 
 dev_dependencies:
   flutter_test:

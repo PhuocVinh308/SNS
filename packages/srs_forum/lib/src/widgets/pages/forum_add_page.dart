@@ -20,112 +20,142 @@ class ForumAddPage extends GetView<ForumAddController> {
             child: Column(
               children: [
                 _appbar(),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15.sp),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.sp),
-                            child: Row(
-                              children: [
-                                CustomText(
-                                  "${'loại diễn đàn'.tr.toCapitalized()} (*)",
-                                  fontWeight: CustomConsts.semiBold,
-                                  textAlign: TextAlign.start,
-                                ),
-                              ],
+                Obx(() {
+                  return Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.sp),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 15.sp),
+                              child: Row(
+                                children: [
+                                  CustomText(
+                                    "${'loại diễn đàn'.tr.toCapitalized()} (*)",
+                                    fontWeight: CustomConsts.semiBold,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          _buildOptionForums(),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.sp),
-                            child: Row(
-                              children: [
-                                CustomText(
-                                  "${'tiêu đề'.tr.toCapitalized()} (*)",
-                                  fontWeight: CustomConsts.semiBold,
-                                  textAlign: TextAlign.start,
-                                ),
-                              ],
+                            _buildOptionForums(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 15.sp),
+                              child: Row(
+                                children: [
+                                  CustomText(
+                                    "${'tiêu đề'.tr.toCapitalized()} (*)",
+                                    fontWeight: CustomConsts.semiBold,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          CustomTextField(
-                            controller: controller.titleController,
-                            autoValidate: controller.validate.value,
-                            regex: true,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.sp),
-                            child: Row(
-                              children: [
-                                CustomText(
-                                  "${'nội dung'.tr.toCapitalized()} (*)",
-                                  fontWeight: CustomConsts.semiBold,
-                                  textAlign: TextAlign.start,
-                                ),
-                              ],
+                            CustomTextField(
+                              controller: controller.titleController,
+                              autoValidate: controller.validate.value,
+                              regex: true,
                             ),
-                          ),
-                          CustomTextField(
-                            controller: controller.contentController,
-                            autoValidate: controller.validate.value,
-                            minLines: 6,
-                            regex: true,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.sp),
-                            child: Row(
-                              children: [
-                                CustomText(
-                                  'ảnh đính kèm (nếu có)'.tr.toCapitalized(),
-                                  fontWeight: CustomConsts.semiBold,
-                                  textAlign: TextAlign.start,
-                                ),
-                              ],
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 15.sp),
+                              child: Row(
+                                children: [
+                                  CustomText(
+                                    "${'nội dung'.tr.toCapitalized()} (*)",
+                                    fontWeight: CustomConsts.semiBold,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              _bottomSheetShowCameraOrGallery(context, onTapCamera: () async {
-                                await controller.funPickImage(ImageSource.camera).then((value) {
-                                  Get.back();
+                            CustomTextField(
+                              controller: controller.contentController,
+                              autoValidate: controller.validate.value,
+                              minLines: 6,
+                              regex: true,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 15.sp),
+                              child: Row(
+                                children: [
+                                  CustomText(
+                                    'ảnh đính kèm (nếu có)'.tr.toCapitalized(),
+                                    fontWeight: CustomConsts.semiBold,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (controller.imageOriginalBytes.value != null)
+                              Container(
+                                // height: .5.sh - 50,
+                                padding: EdgeInsets.only(top: 5.sp),
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(5.sp),
+                                      child: Image.memory(
+                                        controller.imageOriginalBytes.value!,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          controller.funRefreshSelect();
+                                        },
+                                        icon: const FaIcon(
+                                          FontAwesomeIcons.circleXmark,
+                                          color: CustomColors.colorFFFFFF,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            MaterialButton(
+                              onPressed: () {
+                                _bottomSheetShowCameraOrGallery(context, onTapCamera: () async {
+                                  await controller.funPickImage(ImageSource.camera).then((value) {
+                                    Get.back();
+                                  });
+                                }, onTapGallery: () async {
+                                  await controller.funPickImage(ImageSource.gallery).then((value) {
+                                    Get.back();
+                                  });
                                 });
-                              }, onTapGallery: () async {
-                                await controller.funPickImage(ImageSource.gallery).then((value) {
-                                  Get.back();
-                                });
-                              });
-                            },
-                            color: CustomColors.color06b252,
-                            disabledColor: CustomColors.color8B8B8B,
-                            elevation: 1,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.sp),
+                              },
+                              color: CustomColors.color06b252,
+                              disabledColor: CustomColors.color8B8B8B,
+                              elevation: 1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.sp),
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 5.sp),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.add,
+                                    color: CustomColors.colorFFFFFF,
+                                  ),
+                                  5.horizontalSpace,
+                                  CustomText(
+                                    'thêm hình ảnh'.tr.toCapitalized(),
+                                    color: CustomColors.colorFFFFFF,
+                                    fontWeight: CustomConsts.bold,
+                                  ),
+                                ],
+                              ),
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 5.sp),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  color: CustomColors.colorFFFFFF,
-                                ),
-                                5.horizontalSpace,
-                                CustomText(
-                                  'thêm hình ảnh'.tr.toCapitalized(),
-                                  color: CustomColors.colorFFFFFF,
-                                  fontWeight: CustomConsts.bold,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                )
+                  );
+                })
               ],
             ),
           ),

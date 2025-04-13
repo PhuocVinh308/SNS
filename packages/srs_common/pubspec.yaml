@@ -48,6 +48,8 @@ dependencies:
   curl_logger_dio_interceptor: ^1.0.0
   internet_connection_checker: ^1.0.0+1
   cached_network_image: ^3.4.1
+  flutter_local_notifications: ^18.0.1
+  firebase_messaging: ^15.2.5
 
 dev_dependencies:
   flutter_test:

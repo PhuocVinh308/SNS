@@ -21,4 +21,24 @@ class CustomGlobals {
   DriveServiceModel get driveServiceModel => _driveServiceModel;
 
   void setDriveServiceModel(DriveServiceModel model) => _driveServiceModel = model;
+
+  // fcm
+  static FcmServiceModel _fcmServiceModel = FcmServiceModel();
+
+  FcmServiceModel get fcmServiceModel => _fcmServiceModel;
+
+  void setFcmServiceModel(FcmServiceModel model) => _fcmServiceModel = model;
+
+  // notification
+  static bool _notificationEnable = false;
+
+  bool get notificationEnable => _notificationEnable;
+
+  void setNotificationEnable(bool value) => _notificationEnable = value;
+
+  static String _notificationToken = '';
+
+  String get notificationToken => _notificationToken;
+
+  void setNotificationToken(String value) => _notificationToken = value;
 }

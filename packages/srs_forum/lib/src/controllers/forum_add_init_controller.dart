@@ -143,6 +143,8 @@ class ForumAddInitController {
     progress.value = 0.0;
   }
 
+  coreRefreshSelect() => _refreshSelect();
+
   _initGoogleDriveService() async {
     try {
       await _driveService.initialize();

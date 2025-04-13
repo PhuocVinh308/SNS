@@ -12,4 +12,14 @@ class NotificationController extends GetxController with NotificationInitControl
     await init();
     super.onInit();
   }
+
+  @override
+  void onClose() {
+    didReceiveLocalNotificationStream.close();
+    selectNotificationStream.close();
+    thongBaoSubscription?.cancel();
+    steamNotificationOnMessage?.cancel();
+    steamNotificationOnMessageOpenedApp?.cancel();
+    super.onClose();
+  }
 }

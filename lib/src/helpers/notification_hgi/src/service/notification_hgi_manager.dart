@@ -14,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:http/http.dart' as http;
 
+import '../../notification_hgi.dart';
+
 /// Streams are created so that app can respond to notification-related events
 /// since the plugin is initialised in the `main` function
 final StreamController<ReceivedNotificationHgi> didReceiveLocalNotificationStream = StreamController<ReceivedNotificationHgi>.broadcast();

@@ -9,4 +9,6 @@ initPackage() async {
   log('initialize Package', name: NotificationConfig.packageName);
   await allPage();
   await initAppTranslations();
+
+  await NotificationService().initNotification();
 }

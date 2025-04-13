@@ -2,6 +2,7 @@ import 'package:srs_authen/srs_authen.dart' as srs_authen;
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_forum/srs_forum.dart' as srs_forum;
+import 'package:srs_notification/srs_notification.dart' as srs_notification;
 import 'package:srs_landing/srs_landing.dart';
 import 'package:intl/intl.dart';
 
@@ -17,6 +18,8 @@ class LandingInitController {
   // userName
   Rx<srs_authen.UserInfoModel> userModel = srs_authen.UserInfoModel().obs;
   RxList<srs_forum.ForumPostModel> newPosts = <srs_forum.ForumPostModel>[].obs;
+  // notification
+  final notificationController = Get.put(srs_notification.NotificationController());
 
   init() async {
     try {
@@ -24,6 +27,7 @@ class LandingInitController {
       await _initMenus();
       await initUserModel();
       await initSyncNewPost();
+      await notificationController.initFirebaseMessage();
     } catch (e) {
       DialogUtil.catchException(obj: e);
     }

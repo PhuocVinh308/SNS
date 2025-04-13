@@ -22,3 +22,6 @@ export 'package:hive/hive.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:internet_connection_checker/internet_connection_checker.dart';
 export 'package:path_provider/path_provider.dart';
+export 'package:flutter_local_notifications/flutter_local_notifications.dart';
+export 'package:firebase_messaging/firebase_messaging.dart';
+export 'package:firebase_messaging_platform_interface/firebase_messaging_platform_interface.dart';
