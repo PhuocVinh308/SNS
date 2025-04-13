@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 
-class CustomReusableDropdown extends StatelessWidget {
+class CustomDropdown extends StatelessWidget {
   final Key? dropdownFormKey;
   final AutovalidateMode? autoValidate;
   final List<dynamic>? items;
@@ -22,7 +22,7 @@ class CustomReusableDropdown extends StatelessWidget {
   final Future<bool?> Function(dynamic)? onBeforePopupOpening;
   final Color? fillColor;
 
-  const CustomReusableDropdown({
+  const CustomDropdown({
     Key? key,
     this.dropdownFormKey,
     this.autoValidate,

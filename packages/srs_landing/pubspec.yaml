@@ -16,6 +16,10 @@ dependencies:
     path: ../../packages/srs_common
   srs_forum:
     path: ../../packages/srs_forum
+  srs_authen:
+    path: ../../packages/srs_authen
+  srs_notification:
+    path: ../../packages/srs_notification
   srs_calendar:
     path: ../../packages/srs_calendar
   srs_diary:

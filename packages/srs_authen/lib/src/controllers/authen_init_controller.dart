@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common.dart';
-import 'package:srs_landing/srs_landing.dart' as srs_landing;
 import 'package:srs_common/srs_common_lib.dart';
+import 'package:srs_landing/srs_landing.dart' as srs_landing;
 
 class AuthenInitController {
   Rx<bool> language = false.obs;
@@ -73,6 +73,27 @@ class AuthenInitController {
     try {
       DialogUtil.showLoading();
       final authen = await AuthenService().loginWithEmailPassword(email: emailController.text, password: passwordController.text);
+      DialogUtil.hideLoading();
+      Get.offAndToNamed(
+        srs_landing.AllRoute.mainRoute,
+        arguments: [{}],
+      );
+    } catch (e) {
+      DialogUtil.hideLoading();
+      if (e is FirebaseAuthException) {
+        DialogUtil.catchException(msg: getErrorMessage(e.code));
+      } else {
+        DialogUtil.catchException(obj: e);
+      }
+    }
+  }
+
+  coreLoginWithUserNameEmailV2() async {
+    try {
+      DialogUtil.showLoading();
+      final response = await AuthenService().loginWithEmailPasswordV2(username: emailController.text, password: passwordController.text);
+      CustomGlobals().setUserInfo(response?.data?.user);
+      CustomGlobals().setToken(response?.data?.token);
       DialogUtil.hideLoading();
       Get.offAndToNamed(
         srs_landing.AllRoute.mainRoute,

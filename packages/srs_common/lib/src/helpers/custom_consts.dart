@@ -1,5 +1,6 @@
-import 'package:srs_common/srs_common_lib.dart';
 import 'dart:ui';
+
+import 'package:srs_common/srs_common_lib.dart';
 
 class CustomConsts {
   // font weight
@@ -12,6 +13,7 @@ class CustomConsts {
   static const FontWeight bold = FontWeight.w700;
   static const FontWeight extraBold = FontWeight.w800;
   static const FontWeight black = FontWeight.w900;
+
   // font size
   static double h1 = 32.0.sp;
   static double h2 = 24.0.sp;
@@ -29,4 +31,12 @@ class CustomConsts {
   // key storage
 
   static const String isLanguage = 'SRS_LANGUAGE';
+
+  // folder google drive id
+  static const String googleDriveFolderId = '11w74T9PCGl_yWwyVd5cb2SkJ52-C_HMM';
+
+  // api const
+  static const int apiReceiveTimeout = 30;
+  static const int apiConnectTimeout = 30;
+  static const int networkCheckTime = 3;
 }

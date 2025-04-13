@@ -1,9 +1,9 @@
 import 'dart:developer';
 
+import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_landing/srs_landing.dart';
 
 import 'landing_init_controller.dart';
-import 'package:srs_common/srs_common_lib.dart';
 
 class LandingController extends GetxController with LandingInitController {
   @override
@@ -12,4 +12,6 @@ class LandingController extends GetxController with LandingInitController {
     await init();
     super.onInit();
   }
+
+  funGetTimeCreate(String? value) => coreGetTimeCreate(value);
 }

@@ -2,16 +2,19 @@ import 'dart:developer';
 
 import 'package:agri_go/firebase_options.dart';
 import 'package:srs_common/srs_common_lib.dart';
+import 'package:srs_common/srs_common.dart';
 
 import '../config/app_config.dart';
 import '../translations/app_translations.dart';
 import 'packages_init.dart';
+import 'package:srs_notification/srs_notification.dart' as srs_notification;
 
 appInit() async {
   log('initialize Application', name: AppConfig.appName);
   await _initFirebase();
   await _initGetStorage();
   await _initHive();
+  // await _initGoogleDriveService();
   await initAppTranslations();
   await initPackages();
 }
@@ -21,6 +24,7 @@ _initFirebase() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // // await NotificationManager().initNotification();
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await srs_notification.NotificationService().initSyncFcmEnv();
 }
 
 _initGetStorage() async {
@@ -34,4 +38,12 @@ _initHive() async {
   log('initialize Hive', name: AppConfig.appName);
   var tmpDir = await getTemporaryDirectory();
   await Hive.openBox(AppConfig.storageBox, path: tmpDir.path);
+}
+
+_initGoogleDriveService() async {
+  try {
+    log('initialize Google Drive Service', name: AppConfig.appName);
+    final DriveService driveService = DriveService();
+    await driveService.initialize();
+  } catch (_) {}
 }
