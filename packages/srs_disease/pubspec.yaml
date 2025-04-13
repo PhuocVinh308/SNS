@@ -1,0 +1,23 @@
+name: srs_disease
+description: "A new Flutter package project."
+publish_to: 'none'
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=2.12.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  srs_common:
+    path: ../../packages/srs_common
+  srs_landing:
+    path: ../../packages/srs_landing
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0

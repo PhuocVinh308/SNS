@@ -6,6 +6,9 @@ import 'package:srs_forum/srs_forum.dart' as srs_forum;
 import 'package:srs_common/srs_common.dart' as srs_common;
 import 'package:srs_notification/srs_notification.dart' as srs_notification;
 import 'package:srs_setting/srs_setting.dart' as srs_setting;
+import 'package:srs_calendar/srs_calendar.dart' as srs_calendar;
+import 'package:srs_diary/srs_diary.dart' as srs_diary;
+import 'package:srs_disease/srs_disease.dart' as srs_disease;
 
 import '../config/app_config.dart';
 
@@ -16,6 +19,9 @@ final _mapModule = {
   'srs_common': srs_common.initPackage(),
   'srs_notification': srs_notification.initPackage(),
   'srs_setting': srs_setting.initPackage(),
+  'srs_calendar': srs_calendar.initPackage(),
+  'srs_diary': srs_diary.initPackage(),
+  'srs_disease': srs_disease.initPackage(),
 };
 
 //
