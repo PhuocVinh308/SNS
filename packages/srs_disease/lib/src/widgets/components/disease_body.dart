@@ -34,20 +34,21 @@ class DiseaseBody extends GetView<DiseaseController> {
         gradient: LinearGradient(
           colors: [
             CustomColors.color06b252,
-            CustomColors.color06b252.withOpacity(0.8),
+            CustomColors.color06b252.withOpacity(0.85),
+            CustomColors.color06b252.withOpacity(0.7),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30.r),
-          bottomRight: Radius.circular(30.r),
+          bottomLeft: Radius.circular(40.r),
+          bottomRight: Radius.circular(40.r),
         ),
         boxShadow: [
           BoxShadow(
-            color: CustomColors.color06b252.withOpacity(0.2),
-            blurRadius: 15,
-            offset: Offset(0, 5),
+            color: CustomColors.color06b252.withOpacity(0.3),
+            blurRadius: 20,
+            offset: Offset(0, 8),
           ),
         ],
       ),
@@ -104,15 +105,26 @@ class DiseaseBody extends GetView<DiseaseController> {
 
   Widget _buildHeaderIcon() {
     return Container(
-      padding: EdgeInsets.all(10.w),
+      padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12.r),
+        color: Colors.white.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.2),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Icon(
         Icons.agriculture_outlined,
         color: Colors.white,
-        size: 24.w,
+        size: 28.w,
       ),
     );
   }
@@ -125,7 +137,6 @@ class DiseaseBody extends GetView<DiseaseController> {
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: Colors.white.withOpacity(0.2),
-          width: 1,
         ),
       ),
       child: Row(
@@ -166,12 +177,12 @@ class DiseaseBody extends GetView<DiseaseController> {
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: Offset(0, 5),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 20,
+            offset: Offset(0, 8),
           ),
         ],
       ),
@@ -415,7 +426,6 @@ class DiseaseBody extends GetView<DiseaseController> {
     );
   }
 }
-
 class _ActionButton extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -459,15 +469,19 @@ class _ActionButton extends StatelessWidget {
 
   Widget _buildIcon() {
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
         color: CustomColors.color06b252.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: CustomColors.color06b252.withOpacity(0.15),
+          width: 1,
+        ),
       ),
       child: Icon(
         icon,
         color: CustomColors.color06b252,
-        size: 24.w,
+        size: 26.w,
       ),
     );
   }
@@ -495,15 +509,19 @@ class _ActionButton extends StatelessWidget {
 
   Widget _buildArrow() {
     return Container(
-      padding: EdgeInsets.all(8.w),
+      padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration(
         color: CustomColors.color06b252.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: CustomColors.color06b252.withOpacity(0.15),
+          width: 1,
+        ),
       ),
       child: Icon(
         Icons.arrow_forward,
         color: CustomColors.color06b252,
-        size: 16.w,
+        size: 18.w,
       ),
     );
   }

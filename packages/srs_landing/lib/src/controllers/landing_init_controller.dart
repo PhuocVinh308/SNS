@@ -6,6 +6,8 @@ import 'package:srs_forum/srs_forum.dart' as srs_forum;
 import 'package:srs_calendar/srs_calendar.dart' as srs_calendar;
 import 'package:srs_diary/srs_diary.dart' as srs_diary;
 import 'package:srs_disease/srs_disease.dart' as srs_disease;
+import 'package:srs_transaction/srs_transaction.dart' as srs_transaction;
+
 
 class LandingInitController {
   // banner
@@ -45,21 +47,15 @@ class LandingInitController {
       menus.value = [
         MenuModel(
           id: 1,
-          name: 'diễn đàn'.tr.toCapitalized(),
+          name: 'Diễn đàn'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
           route: srs_forum.AllRoute.mainRoute,
         ),
         MenuModel(
           id: 1,
-          name: 'diễn đàn'.tr.toCapitalized(),
+          name: 'Sàn nông sản'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
-          route: srs_forum.AllRoute.mainRoute,
-        ),
-        MenuModel(
-          id: 1,
-          name: 'diễn đàn'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
-          route: srs_forum.AllRoute.mainRoute,
+          route: srs_transaction.AllRouteTransaction.transactionMainRoute,
         ),
         MenuModel(
           id: 1,

@@ -532,45 +532,6 @@ class DiaryBody extends GetView<DiaryController> {
                       ),
                     ),
                     20.verticalSpace,
-
-                    // Danh mục với icon
-                    DropdownButtonFormField<String>(
-                      value: selectedCategory,
-                      decoration: InputDecoration(
-                        labelText: 'Danh mục',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: CustomColors.color06b252),
-                        ),
-                        prefixIcon: Icon(
-                          isExpense ? Icons.category : Icons.account_balance_wallet,
-                          color: isExpense ? Colors.red : CustomColors.color06b252,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-                      ),
-                      items: (isExpense ? controller.expenseCategories : controller.incomeCategories)
-                          .map((category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(category),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() => selectedCategory = value);
-                        }
-                      },
-                    ),
-                    15.verticalSpace,
-
-                    // Số tiền với định dạng tự động
                     TextField(
                       controller: amountController,
                       keyboardType: TextInputType.number,
@@ -690,31 +651,6 @@ class DiaryBody extends GetView<DiaryController> {
                       ),
                     ),
                     15.verticalSpace,
-
-                    // Ghi chú
-                    TextField(
-                      controller: noteController,
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                        labelText: 'Ghi chú (tùy chọn)',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                          borderSide: BorderSide(color: CustomColors.color06b252),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.note_outlined,
-                          color: CustomColors.color06b252,
-                        ),
-                      ),
-                    ),
-                    25.verticalSpace,
 
                     // Nút lưu với hiệu ứng
                     Row(

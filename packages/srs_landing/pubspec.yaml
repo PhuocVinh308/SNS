@@ -22,6 +22,8 @@ dependencies:
     path: ../../packages/srs_diary
   srs_disease:
     path: ../../packages/srs_disease
+  srs_transaction:
+    path: ../../packages/srs_transaction
 
 dev_dependencies:
   flutter_test:
