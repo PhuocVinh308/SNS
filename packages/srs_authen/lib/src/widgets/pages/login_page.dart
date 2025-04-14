@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:srs_authen/src/widgets/components/authen_components.dart';
 import 'package:srs_authen/srs_authen.dart';
-import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common.dart';
+import 'package:srs_common/srs_common_lib.dart';
 
 class LoginPage extends GetView<AuthenController> {
   const LoginPage({Key? key}) : super(key: key);

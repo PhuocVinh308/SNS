@@ -1,4 +1,4 @@
-class ForumUtil {
+class LandingUtil {
 //   //**STORAGE BOX KEY**//
 //   static const String _storageBoxKey = RemoveBgConfig.storageBox;
 //   static const String _storageKeyRoot = RemoveBgConfig.storageKeyRoot;

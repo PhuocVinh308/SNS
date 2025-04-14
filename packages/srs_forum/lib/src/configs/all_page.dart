@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:srs_common/srs_common_core.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_forum/srs_forum.dart';
+
 import '../bindings/all_binding.dart';
 
 allPage() async {
@@ -17,6 +18,16 @@ allPage() async {
     GetPage(
       name: AllRoute.contentRoute,
       page: () => const ForumContentPage(),
+      binding: AllBindings(),
+    ),
+    GetPage(
+      name: AllRoute.addRoute,
+      page: () => const ForumAddPage(),
+      binding: AllBindings(),
+    ),
+    GetPage(
+      name: AllRoute.searchRoute,
+      page: () => const ForumSearchPage(),
       binding: AllBindings(),
     ),
   ];

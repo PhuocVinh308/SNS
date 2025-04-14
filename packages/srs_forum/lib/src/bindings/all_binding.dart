@@ -6,5 +6,6 @@ class AllBindings extends Bindings {
   void dependencies() {
     Get.lazyPut(() => ForumController());
     Get.lazyPut(() => ForumContentController());
+    Get.lazyPut(() => ForumAddController());
   }
 }

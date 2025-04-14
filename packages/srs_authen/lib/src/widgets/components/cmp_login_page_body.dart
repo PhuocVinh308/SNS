@@ -68,38 +68,26 @@ class CmpLoginPageBody extends GetView<AuthenController> {
             ),
           ),
           .035.sh.verticalSpace,
-          CustomText(
-            'hoặc tiếp tục với'.tr.toCapitalized(),
-            fontSize: CustomConsts.h6,
-            fontWeight: CustomConsts.regular,
-            color: CustomColors.colorFF0000,
-          ),
-          .03.sh.verticalSpace,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _SocialButton(
-                icon: FontAwesomeIcons.google,
-                color: Colors.red,
-                onTap: () async {
-                  await controller.funSignInWithGoogle();
-                },
-              ),
-              // SizedBox(width: 15.sp),
-              // SocialButton(
-              //   icon: FontAwesomeIcons.apple,
-              //   color: Colors.black,
-              //   onTap: () {},
-              // ),
-              // SizedBox(width: 15.sp),
-              // SocialButton(
-              //   icon: FontAwesomeIcons.facebook,
-              //   color: Colors.blue,
-              //   onTap: () {},
-              // ),
-            ],
-          ),
-          .03.sh.verticalSpace,
+          // CustomText(
+          //   'hoặc tiếp tục với'.tr.toCapitalized(),
+          //   fontSize: CustomConsts.h6,
+          //   fontWeight: CustomConsts.regular,
+          //   color: CustomColors.colorFF0000,
+          // ),
+          // .03.sh.verticalSpace,
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     _SocialButton(
+          //       icon: FontAwesomeIcons.google,
+          //       color: Colors.red,
+          //       onTap: () async {
+          //         await controller.funSignInWithGoogle();
+          //       },
+          //     ),
+          //   ],
+          // ),
+          // .03.sh.verticalSpace,
           Padding(
             padding: const EdgeInsets.only(top: 15),
             child: Row(

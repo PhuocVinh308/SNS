@@ -12,25 +12,27 @@ class LandingAppBar extends GetView<LandingController> {
       padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
       child: Row(
         children: [
-          IconButton(
-            onPressed: () {},
-            icon: const FaIcon(
-              FontAwesomeIcons.bars,
-              color: CustomColors.color833162,
-            ),
-          ),
-          5.horizontalSpace,
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const FaIcon(
+          //     FontAwesomeIcons.bars,
+          //     color: CustomColors.color833162,
+          //   ),
+          // ),
+          // 5.horizontalSpace,
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(
-                  "${'xin chào'.tr.toCapitalized()} ${"abcxyz".toTitleCase()}" + "!",
-                  fontWeight: CustomConsts.bold,
-                  fontSize: CustomConsts.h3,
-                  textAlign: TextAlign.left,
-                  maxLines: 1,
-                ),
+                Obx(() {
+                  return CustomText(
+                    "${'xin chào'.tr.toCapitalized()} ${(controller.userModel.value.fullName ?? "").toTitleCase()}" "!",
+                    fontWeight: CustomConsts.bold,
+                    fontSize: CustomConsts.h3,
+                    textAlign: TextAlign.left,
+                    maxLines: 1,
+                  );
+                }),
                 CustomText(
                   "${'tận hưởng dịch vụ của chúng tôi'.tr.toCapitalized()}!",
                   fontWeight: CustomConsts.medium,
