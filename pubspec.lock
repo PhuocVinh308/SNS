@@ -1051,20 +1051,6 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
-  srs_notification:
-    dependency: "direct main"
-    description:
-      path: "packages/srs_notification"
-      relative: true
-    source: path
-    version: "0.0.1"
-  srs_setting:
-    dependency: "direct main"
-    description:
-      path: "packages/srs_setting"
-      relative: true
-    source: path
-    version: "0.0.1"
   stack_trace:
     dependency: transitive
     description:
