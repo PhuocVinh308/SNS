@@ -11,9 +11,9 @@ allPageTransaction() async {
 
   List<GetPage<dynamic>> listPages = [
     GetPage(
-      name: AllRouteTransaction.transactionMainRoute,
-      page: () =>  const TransactionPage(),
-      binding:  AllBindingTransaction(),
+      name: AllRoute.mainRoute,
+      page: () => const TransactionPage(),
+      binding: AllBindingTransaction(),
     ),
   ];
   GetPageCenter.addAll(listPages);

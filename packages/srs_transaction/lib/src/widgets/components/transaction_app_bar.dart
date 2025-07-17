@@ -26,14 +26,14 @@ class TransactionAppBar extends GetView<TransactionController> {
       ),
       child: Row(
         children: [
-          IconButton(
-            onPressed: () => Get.back(),
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: CustomColors.colorFFFFFF,
-              size: 20.sp,
-            ),
-          ),
+          // IconButton(
+          //   onPressed: () => Get.back(),
+          //   icon: Icon(
+          //     Icons.arrow_back_ios_new,
+          //     color: CustomColors.colorFFFFFF,
+          //     size: 20.sp,
+          //   ),
+          // ),
           Expanded(
             child: Center(
               child: CustomText(
@@ -44,7 +44,7 @@ class TransactionAppBar extends GetView<TransactionController> {
               ),
             ),
           ),
-          SizedBox(width: 40.w),
+          // SizedBox(width: 40.w),
         ],
       ),
     );
