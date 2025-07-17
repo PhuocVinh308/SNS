@@ -1,8 +1,6 @@
 import 'package_config.dart';
 
-class AllRouteTransaction {
-  static const String  transactionMainRoute =
-      "/${TransactionConfig.packageName}/main-route";
-  static const String transactionDetailRoute =
-      "$transactionMainRoute/detail-route";
+class AllRoute {
+  static const String mainRoute = "/${TransactionConfig.packageName}/main-route";
+  static const String transactionDetailRoute = "$mainRoute/detail-route";
 }

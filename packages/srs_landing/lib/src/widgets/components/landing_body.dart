@@ -11,8 +11,8 @@ class LandingBody extends GetView<LandingController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildSearch(),
-        10.verticalSpace,
+        // _buildSearch(),
+        // 10.verticalSpace,
         _buildBanner(),
         15.verticalSpace,
         _buildTitleBtn('tính năng nổi bật'.tr.toCapitalized(), () {}),
@@ -151,7 +151,7 @@ class LandingBody extends GetView<LandingController> {
               borderRadius: BorderRadius.all(
                 Radius.circular(5.0.sp),
               ),
-              child: Image.network(
+              child: Image.asset(
                 item,
                 fit: BoxFit.cover,
                 width: Get.width,
@@ -198,29 +198,46 @@ class LandingBody extends GetView<LandingController> {
             maxLines: 2,
           ),
         ),
-        TextButton(
-          onPressed: () {
-            onTap?.call();
-          },
-          child: CustomText(
-            'tất cả'.tr.toCapitalized(),
-            textAlign: TextAlign.left,
-            fontSize: CustomConsts.h5,
-            color: CustomColors.color06b252,
-          ),
-        )
+        // TextButton(
+        //   onPressed: () {
+        //     onTap?.call();
+        //   },
+        //   child: CustomText(
+        //     'tất cả'.tr.toCapitalized(),
+        //     textAlign: TextAlign.left,
+        //     fontSize: CustomConsts.h5,
+        //     color: CustomColors.color06b252,
+        //   ),
+        // )
       ],
     );
   }
 
   _buildMenus() {
     return Obx(() {
-      return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: _buildListMenu(),
+      return Container(
+        height: 250.sp,
+        child: GridView.builder(
+          scrollDirection: Axis.horizontal,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5,
+            childAspectRatio: 1,
+          ),
+          itemCount: _buildListMenu().length,
+          itemBuilder: (context, index) {
+            return _buildListMenu()[index];
+          },
         ),
       );
+
+      // return SingleChildScrollView(
+      //   scrollDirection: Axis.horizontal,
+      //   child: Row(
+      //     children: _buildListMenu(),
+      //   ),
+      // );
     });
   }
 
@@ -251,34 +268,33 @@ class LandingBody extends GetView<LandingController> {
       onTap: () {
         onTap?.call();
       },
-      borderRadius: BorderRadius.circular(16.sp),
+      borderRadius: BorderRadius.circular(20.sp),
       child: Container(
-        width: .5.sw.spMax,
-        height: .22.sh.spMax + 5.spMax,
         padding: EdgeInsets.all(5.sp),
         margin: EdgeInsets.all(5.sp),
         decoration: BoxDecoration(
           color: CustomColors.colorFFFFFF,
           border: Border.all(color: Colors.grey.shade300, width: 1.5),
-          borderRadius: BorderRadius.circular(16.sp),
+          borderRadius: BorderRadius.circular(20.sp),
         ),
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              children: [
-                Image.asset(
-                  image ?? 'assets/images/empty_data.png',
-                  height: .15.sh.spMax,
-                  width: .5.sw.spMax,
-                  fit: BoxFit.cover,
-                ),
-                CustomText(
-                  title ?? '',
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            )
+            SizedBox(
+              height: 50.sp,
+              width: 100.sp,
+              child: Image.asset(
+                image ?? 'assets/images/empty_data.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+            5.verticalSpace,
+            CustomText(
+              title ?? '',
+              maxLines: 2,
+              fontSize: CustomConsts.h6,
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

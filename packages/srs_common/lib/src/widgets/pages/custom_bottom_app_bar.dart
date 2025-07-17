@@ -4,6 +4,7 @@ import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_forum/srs_forum.dart' as srs_forum;
 import 'package:srs_landing/srs_landing.dart' as srs_landing;
 import 'package:srs_setting/srs_setting.dart' as srs_setting;
+import 'package:srs_transaction/srs_transaction.dart' as srs_transaction;
 
 class CustomBottomAppBar extends StatelessWidget {
   const CustomBottomAppBar({
@@ -34,7 +35,7 @@ class CustomBottomAppBar extends StatelessWidget {
   final Function? additionalProfileFunction;
 
   static const String _homeRoute = srs_landing.AllRoute.mainRoute;
-  static final String _serviceRoute = "/srs_landing/main-route";
+  static final String _serviceRoute = srs_transaction.AllRoute.mainRoute;
   static const String _forumRoute = srs_forum.AllRoute.mainRoute;
   static const String _profileRoute = srs_setting.AllRoute.mainRoute;
 

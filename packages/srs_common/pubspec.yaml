@@ -20,6 +20,8 @@ dependencies:
     path: ../../packages/srs_authen
   srs_setting:
     path: ../../packages/srs_setting
+  srs_transaction:
+    path: ../../packages/srs_transaction
 
 
   get: ^4.7.2

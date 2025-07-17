@@ -21,7 +21,7 @@ class TransactionPage extends GetView<TransactionController> {
                 children: [
                   // AppBar cố định
                   const TransactionAppBar(),
-                  
+
                   // Body có thể scroll
                   Expanded(
                     child: Container(
@@ -52,7 +52,7 @@ class TransactionPage extends GetView<TransactionController> {
                 ],
               ),
             ),
-            
+
             // FAB để thêm giao dịch mới
             floatingActionButton: Obx(() {
               // Chỉ hiển thị FAB nếu user là nông dân
@@ -76,7 +76,7 @@ class TransactionPage extends GetView<TransactionController> {
               }
               return const SizedBox.shrink();
             }),
-            
+
             // Bottom sheet cho bộ lọc (nếu cần)
             bottomSheet: Obx(() {
               if (controller.isFilterActive.value) {
@@ -125,6 +125,9 @@ class TransactionPage extends GetView<TransactionController> {
               }
               return const SizedBox.shrink();
             }),
+            bottomNavigationBar: const CustomBottomAppBar(
+              index: 1,
+            ),
           ),
         ),
       ),

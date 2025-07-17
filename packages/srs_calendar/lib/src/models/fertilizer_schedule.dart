@@ -1,6 +1,7 @@
-import 'fertilizer.dart';
+import 'fertillizer.dart';
 import 'rice_variety.dart';
 import 'package:srs_calendar/srs_calendar.dart' as srs_calendar;
+
 class FertilizerSchedule {
   final String stageName;
   final int daysFromSowing;

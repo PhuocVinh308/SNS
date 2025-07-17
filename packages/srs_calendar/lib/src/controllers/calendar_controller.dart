@@ -8,7 +8,7 @@ class CalendarController extends GetxController {
   final Rx<String?> selectedVariety = Rx<String?>(null);
   final RxList<Map<String, dynamic>> timelineEvents = <Map<String, dynamic>>[].obs;
   final RxBool showTimeline = false.obs;
-    final Map<String, Map<String, dynamic>> riceVarietiesInfo = {
+  final Map<String, Map<String, dynamic>> riceVarietiesInfo = {
     'OM 5451': {
       'growthDuration': 95,
       'description': 'Giống lúa ngắn ngày, năng suất cao',
@@ -61,6 +61,7 @@ class CalendarController extends GetxController {
   void onInit() {
     super.onInit();
     _generateSampleTimeline();
+    selectedVariety.value = riceVarieties.first;
   }
 
   void _generateSampleTimeline() {
@@ -114,7 +115,7 @@ class CalendarController extends GetxController {
     try {
       final eventDate = DateFormat('dd/MM/yyyy').parse(dateStr);
       final now = DateTime.now();
-            return eventDate.difference(now).inDays.abs() <= 3;
+      return eventDate.difference(now).inDays.abs() <= 3;
     } catch (e) {
       return false;
     }
@@ -139,20 +140,19 @@ class CalendarController extends GetxController {
   }
 
   void createTimeline() {
-   if (selectedVariety.value == null) {
-  Get.snackbar(
-    'Lỗi', // Title (bắt buộc)
-    'Vui lòng chọn giống lúa'.tr, // Message
-    snackPosition: SnackPosition.TOP, // Tùy chọn hiển thị
-  );
-  return;
-}
-
+    if (selectedVariety.value == null) {
+      Get.snackbar(
+        'Lỗi', // Title (bắt buộc)
+        'Vui lòng chọn giống lúa'.tr, // Message
+        snackPosition: SnackPosition.TOP, // Tùy chọn hiển thị
+      );
+      return;
+    }
 
     final variety = riceVarietiesInfo[selectedVariety.value!]!;
     final stages = variety['stages'] as Map<String, dynamic>;
     final formatter = DateFormat('dd/MM/yyyy');
-    
+
     final events = <Map<String, dynamic>>[];
 
     // Gieo sạ
@@ -169,9 +169,7 @@ class CalendarController extends GetxController {
     // Đẻ nhánh
     events.add({
       'stage': 'Đẻ nhánh',
-      'date': formatter.format(
-        sowingDate.value
-      ),
+      'date': formatter.format(sowingDate.value),
       'description': 'Thúc phân đợt 1',
       'fertilizers': [
         {'name': 'Đạm Urê', 'amount': '50', 'unit': 'kg/ha'},
@@ -182,9 +180,7 @@ class CalendarController extends GetxController {
     // Làm đòng
     events.add({
       'stage': 'Làm đòng',
-      'date': formatter.format(
-        sowingDate.value.add(Duration(days: stages['Làm đòng'] as int))
-      ),
+      'date': formatter.format(sowingDate.value.add(Duration(days: stages['Làm đòng'] as int))),
       'description': 'Đón đòng',
       'fertilizers': [
         {'name': 'NPK 18-4-22', 'amount': '150', 'unit': 'kg/ha'},
@@ -194,9 +190,7 @@ class CalendarController extends GetxController {
     // Trổ bông
     events.add({
       'stage': 'Trổ bông',
-      'date': formatter.format(
-        sowingDate.value.add(Duration(days: stages['Trổ bông'] as int))
-      ),
+      'date': formatter.format(sowingDate.value.add(Duration(days: stages['Trổ bông'] as int))),
       'description': 'Bón nuôi hạt',
       'fertilizers': [
         {'name': 'NPK 7-5-44 + TE', 'amount': '50', 'unit': 'kg/ha'},
@@ -206,9 +200,7 @@ class CalendarController extends GetxController {
     // Thu hoạch
     events.add({
       'stage': 'Thu hoạch',
-      'date': formatter.format(
-        sowingDate.value.add(Duration(days: stages['Thu hoạch'] as int))
-      ),
+      'date': formatter.format(sowingDate.value.add(Duration(days: stages['Thu hoạch'] as int))),
       'description': 'Thu hoạch lúa',
       'notes': 'Kiểm tra độ ẩm hạt trước khi thu hoạch',
     });

@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:srs_calendar/srs_calendar.dart' as srs_calendar;
 import 'package:srs_diary/srs_diary.dart' as srs_diary;
 import 'package:srs_disease/srs_disease.dart' as srs_disease;
+import 'package:srs_transaction/srs_transaction.dart' as srs_transaction;
 
 class LandingInitController {
   // banner
@@ -48,12 +49,11 @@ class LandingInitController {
     try {
       /// banner
       bannerImgList.value = [
-        'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-        'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-        'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-        'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-        'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-        'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+        'assets/images/bn1.jpg',
+        'assets/images/bn2.jpg',
+        'assets/images/bn3.jpg',
+        'assets/images/bn4.jpg',
+        'assets/images/bn5.jpg',
       ];
     } catch (e) {
       rethrow;
@@ -70,31 +70,31 @@ class LandingInitController {
           route: srs_forum.AllRoute.mainRoute,
         ),
         MenuModel(
-          id: 1,
+          id: 2,
+          name: 'dịch vụ'.tr.toCapitalized(),
+          image: 'assets/images/forum.png',
+          route: srs_transaction.AllRoute.mainRoute,
+        ),
+        MenuModel(
+          id: 3,
           name: 'diễn đàn'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
           route: srs_forum.AllRoute.mainRoute,
         ),
         MenuModel(
-          id: 1,
-          name: 'diễn đàn'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
-          route: srs_forum.AllRoute.mainRoute,
-        ),
-        MenuModel(
-          id: 1,
+          id: 4,
           name: 'Nhận biết bệnh trên lá lúa'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
           route: srs_disease.AllRouteDisease.diseaseMainRoute,
         ),
         MenuModel(
-          id: 1,
+          id: 5,
           name: 'Sổ tay nông nghiệp'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
           route: srs_diary.AllRouteDiary.diaryMainRoute,
         ),
         MenuModel(
-          id: 1,
+          id: 6,
           name: 'Lịch thời vụ'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
           route: srs_calendar.AllRoute.mainRoute,
