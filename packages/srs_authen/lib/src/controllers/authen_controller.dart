@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common_lib.dart';
 
@@ -9,7 +10,9 @@ class AuthenController extends GetxController with AuthenInitController {
   @override
   void onInit() async {
     log('initialize Controller', name: AuthenConfig.packageName);
-    await init();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      init();
+    });
     super.onInit();
   }
 
@@ -25,5 +28,5 @@ class AuthenController extends GetxController with AuthenInitController {
 
   funLoginWithUserNameEmail() => coreLoginWithUserNameEmail();
 
-  funSignInWithGoogle() => coreSignInWithGoogle();
+  funSignOut() => coreSignOut();
 }

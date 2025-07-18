@@ -39,12 +39,14 @@ class SettingBody extends GetView<SettingController> {
               ),
             ),
             15.verticalSpace,
-            CustomText(
-              (controller.userModel.value.fullName ?? "").toUpperCase(),
-              fontSize: CustomConsts.h2,
-              fontWeight: CustomConsts.bold,
-              textAlign: TextAlign.start,
-            ),
+            Obx(() {
+              return CustomText(
+                (controller.userModel.value.fullName ?? "").toUpperCase(),
+                fontSize: CustomConsts.h2,
+                fontWeight: CustomConsts.bold,
+                textAlign: TextAlign.start,
+              );
+            }),
             15.verticalSpace,
             GestureDetector(
               onTap: () async {

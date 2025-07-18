@@ -72,7 +72,7 @@ class LandingInitController {
         MenuModel(
           id: 2,
           name: 'dịch vụ'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
+          image: 'assets/images/store.jpg',
           route: srs_transaction.AllRoute.mainRoute,
         ),
         MenuModel(
@@ -129,5 +129,13 @@ class LandingInitController {
     } catch (e) {
       return 'đang cập nhật...'.tr.toCapitalized();
     }
+  }
+
+  String getTypeAccount() {
+    return (userModel.value.userRole == "THUONG_LAI"
+        ? 'thương lái'.tr.toCapitalized()
+        : userModel.value.userRole == "NONG_DAN"
+            ? 'nông dân'.tr.toCapitalized()
+            : '');
   }
 }

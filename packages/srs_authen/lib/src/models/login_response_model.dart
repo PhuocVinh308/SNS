@@ -43,8 +43,6 @@ class UserResponseModel {
 }
 
 class UserInfoModel {
-  int? id;
-  String? uuid;
   String? username;
   String? address;
   String? phone;
@@ -52,12 +50,11 @@ class UserInfoModel {
   String? fullName;
   String? userRole;
   String? status;
-  String? createdAt;
-  String? updatedAt;
+  String? token;
+  String? createdDate;
+  String? updatedDate;
 
   UserInfoModel({
-    this.id,
-    this.uuid,
     this.username,
     this.address,
     this.phone,
@@ -65,13 +62,12 @@ class UserInfoModel {
     this.fullName,
     this.userRole,
     this.status,
-    this.createdAt,
-    this.updatedAt,
+    this.token,
+    this.createdDate,
+    this.updatedDate,
   });
 
   factory UserInfoModel.fromJson(Map<String, dynamic> json) => UserInfoModel(
-        id: json["id"],
-        uuid: json["uuid"],
         username: json["username"],
         address: json["address"],
         phone: json["phone"],
@@ -79,13 +75,12 @@ class UserInfoModel {
         fullName: json["fullName"],
         userRole: json["userRole"],
         status: json["status"],
-        createdAt: json["createdAt"],
-        updatedAt: json["updatedAt"],
+        token: json["token"],
+        createdDate: json["createdDate"],
+        updatedDate: json["updatedDate"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "uuid": uuid,
         "username": username,
         "address": address,
         "phone": phone,
@@ -93,7 +88,8 @@ class UserInfoModel {
         "fullName": fullName,
         "userRole": userRole,
         "status": status,
-        "createdAt": createdAt,
-        "updatedAt": updatedAt,
+        "token": token,
+        "createdDate": createdDate,
+        "updatedDate": updatedDate,
       };
 }

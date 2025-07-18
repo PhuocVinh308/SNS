@@ -5,8 +5,10 @@ import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_landing/srs_landing.dart' as srs_landing;
 
 class AuthenInitController {
+  final service = AuthenService();
   Rx<bool> language = false.obs;
 
+  final autoValid = AutovalidateMode.onUnfocus;
   TextEditingController emailController = TextEditingController(text: "agrigo.vlg@gmail.com");
   TextEditingController passwordController = TextEditingController(text: "AgriGo#12345");
   Rx<bool> obscurePasswordLoginText = true.obs;
@@ -20,9 +22,13 @@ class AuthenInitController {
   Rx<bool> obscurePasswordRegisterText = true.obs;
   Rx<bool> obscurePasswordReRegisterText = true.obs;
 
+  RxList<AccountType> accountTypes = <AccountType>[].obs;
+  Rx<AccountType> accountType = AccountType().obs;
+
   init() async {
     try {
       await _initLanguageBtn();
+      await _initAccountType();
     } catch (e) {
       DialogUtil.catchException(obj: e);
     }
@@ -36,6 +42,20 @@ class AuthenInitController {
     } catch (e) {
       rethrow;
     }
+  }
+
+  _initAccountType() async {
+    accountTypes.value = [
+      AccountType(
+        id: "THUONG_LAI",
+        name: 'thương lái'.tr.toCapitalized(),
+      ),
+      AccountType(
+        id: "NONG_DAN",
+        name: 'nông dân'.tr.toCapitalized(),
+      ),
+    ].toList();
+    accountType.value = accountTypes.first;
   }
 
   coreChangeLanguage(bool value) async {
@@ -53,11 +73,25 @@ class AuthenInitController {
   coreRegisterWithUserNameEmail() async {
     try {
       DialogUtil.showLoading();
-      final authen = await AuthenService().registerWithEmailPassword(email: rgEmailController.text, password: rgPasswordController.text);
+      UserInfoModel postModel = UserInfoModel(
+        email: rgEmailController.text,
+        userRole: accountType.value.id,
+        fullName: rgUserNameController.text,
+      );
+      await service.registerWithEmailPassword(email: rgEmailController.text, password: rgPasswordController.text);
+      await service.postUser(postModel);
+
       DialogUtil.hideLoading();
-      Get.toNamed(
-        AllRoute.mainRoute,
-        arguments: [{}],
+      DialogUtil.catchException(
+        msg: "${"đăng ký thành công".tr.toCapitalized()}!",
+        status: CustomSnackBarStatus.success,
+        onCallback: () {
+          Get.toNamed(
+            AllRoute.mainRoute,
+            arguments: [{}],
+          );
+        },
+        snackBarShowTime: 1,
       );
     } catch (e) {
       DialogUtil.hideLoading();
@@ -72,7 +106,7 @@ class AuthenInitController {
   coreLoginWithUserNameEmail() async {
     try {
       DialogUtil.showLoading();
-      final authen = await AuthenService().loginWithEmailPassword(email: emailController.text, password: passwordController.text);
+      await service.loginWithEmailPassword(email: emailController.text, password: passwordController.text);
       DialogUtil.hideLoading();
       Get.offAndToNamed(
         srs_landing.AllRoute.mainRoute,
@@ -88,32 +122,15 @@ class AuthenInitController {
     }
   }
 
-  coreLoginWithUserNameEmailV2() async {
+  coreSignOut() async {
     try {
       DialogUtil.showLoading();
-      final response = await AuthenService().loginWithEmailPasswordV2(username: emailController.text, password: passwordController.text);
-      CustomGlobals().setUserInfo(response?.data?.user);
-      CustomGlobals().setToken(response?.data?.token);
+      await service.signOut();
       DialogUtil.hideLoading();
       Get.offAndToNamed(
-        srs_landing.AllRoute.mainRoute,
+        AllRoute.mainRoute,
         arguments: [{}],
       );
-    } catch (e) {
-      DialogUtil.hideLoading();
-      if (e is FirebaseAuthException) {
-        DialogUtil.catchException(msg: getErrorMessage(e.code));
-      } else {
-        DialogUtil.catchException(obj: e);
-      }
-    }
-  }
-
-  coreSignInWithGoogle() async {
-    try {
-      DialogUtil.showLoading();
-      final authen = await AuthenService().signInWithGoogle();
-      DialogUtil.hideLoading();
     } catch (e) {
       DialogUtil.hideLoading();
       if (e is FirebaseAuthException) {

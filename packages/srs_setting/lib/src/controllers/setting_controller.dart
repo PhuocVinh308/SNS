@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_setting/srs_setting.dart';
 
@@ -9,7 +10,9 @@ class SettingController extends GetxController with SettingInitController {
   @override
   void onInit() async {
     log('initialize Controller', name: SettingConfig.packageName);
-    await init();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      init();
+    });
     super.onInit();
   }
 

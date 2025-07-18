@@ -25,3 +25,4 @@ export 'package:path_provider/path_provider.dart';
 export 'package:flutter_local_notifications/flutter_local_notifications.dart';
 export 'package:firebase_messaging/firebase_messaging.dart';
 export 'package:firebase_messaging_platform_interface/firebase_messaging_platform_interface.dart';
+export 'package:uuid/uuid.dart';

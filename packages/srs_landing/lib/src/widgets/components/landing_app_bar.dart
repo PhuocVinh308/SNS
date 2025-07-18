@@ -33,17 +33,17 @@ class LandingAppBar extends GetView<LandingController> {
               children: [
                 Obx(() {
                   return CustomText(
-                    "${'xin chào'.tr.toCapitalized()} ${(controller.userModel.value.fullName ?? "").toTitleCase()}" "!",
+                    "${'xin chào'.tr.toCapitalized()} ${controller.getTypeAccount()} ${(controller.userModel.value.fullName ?? "").toTitleCase()}",
                     fontWeight: CustomConsts.bold,
-                    fontSize: CustomConsts.h3,
+                    fontSize: CustomConsts.h4,
                     textAlign: TextAlign.left,
-                    maxLines: 1,
+                    maxLines: 2,
                   );
                 }),
                 CustomText(
                   "${'tận hưởng dịch vụ của chúng tôi'.tr.toCapitalized()}!",
                   fontWeight: CustomConsts.medium,
-                  fontSize: CustomConsts.h4,
+                  fontSize: CustomConsts.h5,
                   textAlign: TextAlign.left,
                   color: CustomColors.color313131.withOpacity(.7),
                   maxLines: 2,
