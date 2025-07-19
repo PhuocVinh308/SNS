@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_disease/srs_disease.dart';
-import 'package:intl/intl.dart';
-import 'dart:io';
 
 class DiseaseBody extends GetView<DiseaseController> {
   const DiseaseBody({Key? key}) : super(key: key);
@@ -438,12 +437,14 @@ class _ActionButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
-          border: showBorder ? Border(
-            bottom: BorderSide(
-              color: Colors.grey.withOpacity(0.1),
-              width: 1,
-            ),
-          ) : null,
+          border: showBorder
+              ? Border(
+                  bottom: BorderSide(
+                    color: Colors.grey.withOpacity(0.1),
+                    width: 1,
+                  ),
+                )
+              : null,
         ),
         child: Row(
           children: [

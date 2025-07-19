@@ -20,24 +20,24 @@ class FarmTransaction {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'date': date.toIso8601String(),
-    'description': description,
-    'amount': amount,
-    'isExpense': isExpense,
-    'category': category,
-    'note': note,
-    'imageUrl': imageUrl,
-  };
+        'id': id,
+        'date': date.toIso8601String(),
+        'description': description,
+        'amount': amount,
+        'isExpense': isExpense,
+        'category': category,
+        'note': note,
+        'imageUrl': imageUrl,
+      };
 
   factory FarmTransaction.fromJson(Map<String, dynamic> json) => FarmTransaction(
-    id: json['id'],
-    date: DateTime.parse(json['date']),
-    description: json['description'],
-    amount: json['amount'].toDouble(),
-    isExpense: json['isExpense'],
-    category: json['category'],
-    note: json['note'],
-    imageUrl: json['imageUrl'],
-  );
-} 
+        id: json['id'],
+        date: DateTime.parse(json['date']),
+        description: json['description'],
+        amount: json['amount'].toDouble(),
+        isExpense: json['isExpense'],
+        category: json['category'],
+        note: json['note'],
+        imageUrl: json['imageUrl'],
+      );
+}

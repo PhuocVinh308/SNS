@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common.dart';
+import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_transaction/srs_transaction.dart';
 
 class TransactionPage extends GetView<TransactionController> {
@@ -19,10 +19,7 @@ class TransactionPage extends GetView<TransactionController> {
               onRefresh: () => controller.loadTransactions(),
               child: Column(
                 children: [
-                  // AppBar cố định
                   const TransactionAppBar(),
-
-                  // Body có thể scroll
                   Expanded(
                     child: Container(
                       width: 1.sw,

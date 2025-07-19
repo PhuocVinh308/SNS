@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common.dart';
+import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_disease/srs_disease.dart';
 
 class DiseasePage extends GetView<DiseaseController> {
@@ -28,7 +28,6 @@ class DiseasePage extends GetView<DiseaseController> {
                 ],
               ),
             ),
-          
           ),
         ),
       ),

@@ -1,11 +1,14 @@
-import 'dart:math';
-
 import 'package:srs_authen/srs_authen.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 
+import 'date_time_strings.dart';
+
 class AuthenService {
   final firebaseAuth = FirebaseAuth.instance;
+
+  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+  CollectionReference userCollection = FirebaseFirestore.instance.collection('tb_user');
 
   Future<UserCredential?> registerWithEmailPassword({String? email, String? password}) async {
     try {
@@ -24,68 +27,83 @@ class AuthenService {
       if ((email == null || email.isEmpty) || (password == null || password.isEmpty)) {
         throw Exception('email hoặc mật khẩu không hợp lệ'.tr.toCapitalized());
       }
-
       UserCredential? userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      // code ex remember delete
-      final random = Random();
-      int number = 100 + random.nextInt(900);
+      final user = await getUser(email);
       LoginResponseModel response = LoginResponseModel(
         data: UserResponseModel(
-          user: UserInfoModel(
-            username: 'abc$number',
-            fullName: 'nguyen van $number',
-          ),
+          user: user,
         ),
       );
       CustomGlobals().setUserInfo(response.data?.user);
       CustomGlobals().setToken(response.data?.token);
-      //
       return userCredential;
     } on FirebaseAuthException catch (e) {
       rethrow;
     }
   }
 
-  Future<LoginResponseModel?> loginWithEmailPasswordV2({String? username, String? password}) async {
+  Future<void> signOut({int retryCount = 1}) async {
+    if (retryCount >= 3) {
+      throw Exception('Không thể đăng xuất sau 3 lần thử.');
+    }
     try {
-      if ((username == null || username.isEmpty) || (password == null || password.isEmpty)) {
-        throw Exception('tài khoản hoặc mật khẩu không hợp lệ!'.tr.toCapitalized());
-      }
-
-      // call api
-      // code ex remember delete
-      final random = Random();
-      int number = 100 + random.nextInt(900);
-      LoginResponseModel response = LoginResponseModel(
-        data: UserResponseModel(
-          user: UserInfoModel(
-            username: 'abc$number',
-            fullName: 'nguyen van $number',
-          ),
-        ),
+      await firebaseAuth.signOut();
+    } catch (e) {
+      await signOut(
+        retryCount: retryCount + 1,
       );
-      //
-      return response;
-    } on FirebaseAuthException catch (e) {
+    }
+  }
+
+  Future<DateTimeStrings> postUser(UserInfoModel data, {int retryCount = 1}) async {
+    if (retryCount >= 3) {
+      throw Exception('Không thể tạo document mới sau 3 lần thử.');
+    }
+    try {
+      DateTimeStrings result = generateBothDateTimeStrings();
+
+      String createdDate = result.standardFormat;
+      DocumentReference forumRef = userCollection.doc(data.email);
+
+      final docSnapshot = await forumRef.get();
+
+      if (!docSnapshot.exists) {
+        // Sử dụng data được truyền vào hoặc empty map nếu null
+        data.username = data.email;
+        data.createdDate = createdDate;
+
+        final dataToSave = {
+          ...data.toJson(), // Spread operator với null check
+        };
+        await forumRef.set(dataToSave);
+        return result;
+      } else {
+        // Nếu document đã tồn tại, gọi lại hàm để tạo ID mới
+        return await postUser(
+          data,
+          retryCount: retryCount + 1,
+        );
+      }
+    } catch (e) {
       rethrow;
     }
   }
 
-  Future<UserCredential?> signInWithGoogle() async {
+  Future<UserInfoModel> getUser(String email, {int retryCount = 1}) async {
+    if (retryCount >= 3) {
+      throw Exception('Không thể lấy dữ liệu sau 3 lần thử.');
+    }
     try {
-      // begin interactive sign in process
-      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-      // user cancels google sign in pop up screen
-      if (gUser == null) throw Exception('${'đã xảy ra lỗi dự kiến. vui lòng thử lại sau'.tr.toCapitalized()}!');
-      // obtain auth details from request
-      final GoogleSignInAuthentication gAuth = await gUser!.authentication;
-      // create a new user credential with Google's access token' for user
-      final userCredential = GoogleAuthProvider.credential(
-        accessToken: gAuth.accessToken,
-        idToken: gAuth.idToken,
-      );
-      // sign in with the credential
-      return await firebaseAuth.signInWithCredential(userCredential);
+      final doc = await userCollection.doc(email).get();
+
+      if (doc.exists) {
+        return UserInfoModel.fromJson(doc.data() as Map<String, dynamic>);
+      } else {
+        return await getUser(
+          email,
+          retryCount: retryCount + 1,
+        );
+      }
     } catch (e) {
       rethrow;
     }

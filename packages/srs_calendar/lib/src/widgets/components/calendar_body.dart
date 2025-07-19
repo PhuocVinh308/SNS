@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
+
 import '../../controllers/calendar_controller.dart';
 
 class CalendarBody extends GetView<CalendarController> {
   const CalendarBody({Key? key}) : super(key: key);
 
-@override
-Widget build(BuildContext context) {
-  return Stack(
-    children: [
-      Obx(() => controller.timelineEvents.isEmpty
-          ? _buildEmptyState()
-          : controller.showTimeline.value
-              ? _buildTimelineView()
-              : _buildSetupView(),
-      ),
-    ],
-  );
-}
-
-
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Obx(
+          () => controller.timelineEvents.isEmpty
+              ? _buildEmptyState()
+              : controller.showTimeline.value
+                  ? _buildTimelineView()
+                  : _buildSetupView(),
+        ),
+      ],
+    );
+  }
 
   Widget _buildEmptyState() {
     return Center(
@@ -42,18 +41,17 @@ Widget build(BuildContext context) {
             color: CustomColors.color313131.withOpacity(0.7),
           ),
           30.verticalSpace,
-       ElevatedButton.icon(
-  onPressed: () => controller.showTimeline.value = false,
-  icon: Icon(Icons.add_circle_outline, color: Colors.white),
-  label: Text('Thiết lập lịch thời vụ'.tr),
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Color(0xFF06B252), // Màu xanh lá
-    foregroundColor: Colors.white, // Màu chữ
-    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-  ),
-)
-
+          ElevatedButton.icon(
+            onPressed: () => controller.showTimeline.value = false,
+            icon: Icon(Icons.add_circle_outline, color: Colors.white),
+            label: Text('Thiết lập lịch thời vụ'.tr),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF06B252), // Màu xanh lá
+              foregroundColor: Colors.white, // Màu chữ
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+          )
         ],
       ),
     );
@@ -65,7 +63,7 @@ Widget build(BuildContext context) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          20.verticalSpace,      
+          20.verticalSpace,
           Container(
             padding: EdgeInsets.all(20.w),
             decoration: BoxDecoration(
@@ -333,20 +331,20 @@ Widget build(BuildContext context) {
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Obx(() => DropdownButton<String>(
-        value: controller.selectedVariety.value,
-        isExpanded: true,
-        underline: const SizedBox(),
-        hint: Text('Chọn giống lúa'.tr),
-        items: controller.riceVarieties.map((String variety) {
-          return DropdownMenuItem<String>(
-            value: variety,
-            child: Text(variety),
-          );
-        }).toList(),
-        onChanged: (value) {
-          controller.onVarietySelected(value);
-        },
-      )),
+            value: controller.selectedVariety.value,
+            isExpanded: true,
+            underline: const SizedBox(),
+            hint: Text('Chọn giống lúa'.tr),
+            items: controller.riceVarieties.map((String variety) {
+              return DropdownMenuItem<String>(
+                value: variety,
+                child: Text(variety),
+              );
+            }).toList(),
+            onChanged: (value) {
+              controller.onVarietySelected(value);
+            },
+          )),
     );
   }
 
@@ -372,9 +370,9 @@ Widget build(BuildContext context) {
         child: Row(
           children: [
             Obx(() => Text(
-              DateFormat('dd/MM/yyyy').format(controller.sowingDate.value),
-              style: TextStyle(fontSize: CustomConsts.h5),
-            )),
+                  DateFormat('dd/MM/yyyy').format(controller.sowingDate.value),
+                  style: TextStyle(fontSize: CustomConsts.h5),
+                )),
             const Spacer(),
             Icon(
               Icons.calendar_today,
@@ -390,7 +388,7 @@ Widget build(BuildContext context) {
   Widget _buildTimelineItem(Map<String, dynamic> event, bool isCurrentEvent) {
     final isPastEvent = controller.isPastEvent(event['date']);
     final isFutureEvent = controller.isFutureEvent(event['date']);
-    
+
     return InkWell(
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.w),
@@ -404,15 +402,13 @@ Widget build(BuildContext context) {
                 width: 20.w,
                 height: 20.w,
                 decoration: BoxDecoration(
-                  color: isCurrentEvent 
-                    ? CustomColors.color06b252
-                    : isPastEvent
-                      ? CustomColors.color313131.withOpacity(0.5)
-                      : CustomColors.colorFFFFFF,
-                  border: Border.all(
-                    color: isCurrentEvent 
+                  color: isCurrentEvent
                       ? CustomColors.color06b252
-                      : CustomColors.color06b252.withOpacity(0.5),
+                      : isPastEvent
+                          ? CustomColors.color313131.withOpacity(0.5)
+                          : CustomColors.colorFFFFFF,
+                  border: Border.all(
+                    color: isCurrentEvent ? CustomColors.color06b252 : CustomColors.color06b252.withOpacity(0.5),
                     width: 2,
                   ),
                   shape: BoxShape.circle,
@@ -425,9 +421,7 @@ Widget build(BuildContext context) {
                       ),
                   ],
                 ),
-                child: isPastEvent
-                  ? Icon(Icons.check, color: CustomColors.colorFFFFFF, size: 14.w)
-                  : null,
+                child: isPastEvent ? Icon(Icons.check, color: CustomColors.colorFFFFFF, size: 14.w) : null,
               ),
             ),
             // Content card
@@ -441,13 +435,9 @@ Widget build(BuildContext context) {
                     duration: const Duration(milliseconds: 300),
                     padding: EdgeInsets.all(15.w),
                     decoration: BoxDecoration(
-                      color: isCurrentEvent
-                        ? CustomColors.color06b252.withOpacity(0.15)
-                        : CustomColors.colorFFFFFF,
+                      color: isCurrentEvent ? CustomColors.color06b252.withOpacity(0.15) : CustomColors.colorFFFFFF,
                       border: Border.all(
-                        color: isCurrentEvent
-                          ? CustomColors.color06b252
-                          : CustomColors.color06b252.withOpacity(0.3),
+                        color: isCurrentEvent ? CustomColors.color06b252 : CustomColors.color06b252.withOpacity(0.3),
                         width: isCurrentEvent ? 2 : 1,
                       ),
                       borderRadius: BorderRadius.circular(12.r),
@@ -467,24 +457,24 @@ Widget build(BuildContext context) {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                               decoration: BoxDecoration(
-                                color: isCurrentEvent
-                                  ? CustomColors.color06b252
-                                  : CustomColors.color06b252.withOpacity(0.1),
+                                color: isCurrentEvent ? CustomColors.color06b252 : CustomColors.color06b252.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(20.r),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  if (isPastEvent) Icon(
-                                    Icons.check_circle,
-                                    color: isCurrentEvent ? CustomColors.colorFFFFFF : CustomColors.color06b252,
-                                    size: 16.w,
-                                  ),
-                                  if (isFutureEvent) Icon(
-                                    Icons.schedule,
-                                    color: isCurrentEvent ? CustomColors.colorFFFFFF : CustomColors.color06b252,
-                                    size: 16.w,
-                                  ),
+                                  if (isPastEvent)
+                                    Icon(
+                                      Icons.check_circle,
+                                      color: isCurrentEvent ? CustomColors.colorFFFFFF : CustomColors.color06b252,
+                                      size: 16.w,
+                                    ),
+                                  if (isFutureEvent)
+                                    Icon(
+                                      Icons.schedule,
+                                      color: isCurrentEvent ? CustomColors.colorFFFFFF : CustomColors.color06b252,
+                                      size: 16.w,
+                                    ),
                                   5.horizontalSpace,
                                   CustomText(
                                     event['stage'],
@@ -539,23 +529,23 @@ Widget build(BuildContext context) {
                                 ),
                                 8.verticalSpace,
                                 ...event['fertilizers'].map((fert) => Padding(
-                                  padding: EdgeInsets.only(left: 5.w, bottom: 5.h),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.circle,
-                                        size: 6.w,
-                                        color: CustomColors.color313131.withOpacity(0.6),
+                                      padding: EdgeInsets.only(left: 5.w, bottom: 5.h),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.circle,
+                                            size: 6.w,
+                                            color: CustomColors.color313131.withOpacity(0.6),
+                                          ),
+                                          8.horizontalSpace,
+                                          CustomText(
+                                            '${fert['name']}: ${fert['amount']} ${fert['unit']}',
+                                            color: CustomColors.color313131.withOpacity(0.8),
+                                            fontSize: CustomConsts.h6,
+                                          ),
+                                        ],
                                       ),
-                                      8.horizontalSpace,
-                                      CustomText(
-                                        '${fert['name']}: ${fert['amount']} ${fert['unit']}',
-                                        color: CustomColors.color313131.withOpacity(0.8),
-                                        fontSize: CustomConsts.h6,
-                                      ),
-                                    ],
-                                  ),
-                                )),
+                                    )),
                               ],
                             ),
                           ),
@@ -703,43 +693,43 @@ Widget build(BuildContext context) {
                   child: Column(
                     children: [
                       ...event['fertilizers'].map((fert) => Padding(
-                        padding: EdgeInsets.only(bottom: 8.h),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(8.w),
-                              decoration: BoxDecoration(
-                                color: CustomColors.color06b252.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                              child: Icon(
-                                Icons.science_outlined,
-                                size: 16.w,
-                                color: CustomColors.color06b252,
-                              ),
-                            ),
-                            15.horizontalSpace,
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                    fert['name'],
-                                    fontSize: CustomConsts.h6,
-                                    fontWeight: CustomConsts.bold,
+                            padding: EdgeInsets.only(bottom: 8.h),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(8.w),
+                                  decoration: BoxDecoration(
+                                    color: CustomColors.color06b252.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(8.r),
                                   ),
-                                  5.verticalSpace,
-                                  CustomText(
-                                    '${fert['amount']} ${fert['unit']}',
-                                    fontSize: CustomConsts.h6,
-                                    color: CustomColors.color313131.withOpacity(0.7),
+                                  child: Icon(
+                                    Icons.science_outlined,
+                                    size: 16.w,
+                                    color: CustomColors.color06b252,
                                   ),
-                                ],
-                              ),
+                                ),
+                                15.horizontalSpace,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomText(
+                                        fert['name'],
+                                        fontSize: CustomConsts.h6,
+                                        fontWeight: CustomConsts.bold,
+                                      ),
+                                      5.verticalSpace,
+                                      CustomText(
+                                        '${fert['amount']} ${fert['unit']}',
+                                        fontSize: CustomConsts.h6,
+                                        color: CustomColors.color313131.withOpacity(0.7),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )),
+                          )),
                     ],
                   ),
                 ),
@@ -770,5 +760,4 @@ Widget build(BuildContext context) {
       barrierDismissible: true,
     );
   }
-
 }

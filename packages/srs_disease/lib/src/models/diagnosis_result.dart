@@ -20,4 +20,4 @@ class DiagnosisResult {
     required this.timestamp,
     required this.confidence,
   });
-} 
+}

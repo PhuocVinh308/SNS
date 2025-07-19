@@ -8,8 +8,8 @@ import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_common/srs_common_lib_2.dart' as auth;
 import 'package:srs_common/srs_common_lib_3.dart' as http;
-import 'package:srs_notification/srs_notification.dart';
 import 'package:srs_landing/srs_landing.dart' as srs_landing;
+import 'package:srs_notification/srs_notification.dart';
 
 /// Streams are created so that app can respond to notification-related events
 /// since the plugin is initialised in the `main` function

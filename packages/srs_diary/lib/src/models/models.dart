@@ -1,5 +1,5 @@
-export 'transaction_model.dart';
 export 'category_model.dart';
+export 'transaction_model.dart';
 
 class DiaryTransaction {
   final String id;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:srs_common/srs_common_lib.dart';
-import 'package:srs_common/srs_common.dart';
 import 'package:srs_calendar/srs_calendar.dart';
+import 'package:srs_common/srs_common.dart';
+import 'package:srs_common/srs_common_lib.dart';
 
 class CalendarPage extends GetView<CalendarController> {
   const CalendarPage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class CalendarPage extends GetView<CalendarController> {
               width: 1.sw,
               child: const Column(
                 children: [
-                CalendarAppBar(),
+                  CalendarAppBar(),
                   Expanded(
                     child: CalendarBody(),
                   ),

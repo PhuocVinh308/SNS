@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:srs_calendar/srs_calendar.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
-import 'package:srs_calendar/srs_calendar.dart';
 
 class CalendarAppBar extends GetView<CalendarController> {
   const CalendarAppBar({Key? key}) : super(key: key);

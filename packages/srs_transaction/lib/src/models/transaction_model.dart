@@ -2,24 +2,24 @@ import 'package:intl/intl.dart';
 
 class Transaction {
   final String id;
-  final String title;           // Tiêu đề tin đăng
-  final String description;     // Mô tả chi tiết
-  final String category;        // Danh mục (vd: Lúa gạo, Rau củ)
-  final String location;        // Địa điểm
-  final double price;          // Giá mong muốn
-  final String status;         // Trạng thái (đang bán, đã thương lượng, đã hoàn thành)
-  final List<String> images;   // Danh sách hình ảnh
-  final double area;           // Diện tích (hecta)
-  final String riceType;       // Giống lúa
-  final DateTime sowingDate;   // Ngày gieo sạ
-  final DateTime harvestDate;  // Ngày dự kiến thu hoạch
-  final String farmerId;       // ID người nông dân
-  final String farmerName;     // Tên người nông dân
-  final String farmerPhone;    // Số điện thoại nông dân
-  final bool isVerified;       // Đã xác thực
-  final DateTime createdAt;    // Ngày đăng tin
+  final String title; // Tiêu đề tin đăng
+  final String description; // Mô tả chi tiết
+  final String category; // Danh mục (vd: Lúa gạo, Rau củ)
+  final String location; // Địa điểm
+  final double price; // Giá mong muốn
+  final String status; // Trạng thái (đang bán, đã thương lượng, đã hoàn thành)
+  final List<String> images; // Danh sách hình ảnh
+  final double area; // Diện tích (hecta)
+  final String riceType; // Giống lúa
+  final DateTime sowingDate; // Ngày gieo sạ
+  final DateTime harvestDate; // Ngày dự kiến thu hoạch
+  final String farmerId; // ID người nông dân
+  final String farmerName; // Tên người nông dân
+  final String farmerPhone; // Số điện thoại nông dân
+  final bool isVerified; // Đã xác thực
+  final DateTime createdAt; // Ngày đăng tin
   final List<Negotiation>? negotiations; // Danh sách thương lượng
-  final Contract? contract;    // Hợp đồng (nếu có)
+  final Contract? contract; // Hợp đồng (nếu có)
 
   Transaction({
     required this.id,
@@ -108,12 +108,8 @@ class Transaction {
       farmerPhone: json['farmerPhone'],
       isVerified: json['isVerified'],
       createdAt: DateTime.parse(json['createdAt']),
-      negotiations: json['negotiations'] != null
-          ? List<Negotiation>.from(
-              json['negotiations'].map((x) => Negotiation.fromJson(x)))
-          : null,
-      contract:
-          json['contract'] != null ? Contract.fromJson(json['contract']) : null,
+      negotiations: json['negotiations'] != null ? List<Negotiation>.from(json['negotiations'].map((x) => Negotiation.fromJson(x))) : null,
+      contract: json['contract'] != null ? Contract.fromJson(json['contract']) : null,
     );
   }
 
@@ -143,16 +139,13 @@ class Transaction {
   }
 
   // Helper methods
-  String get formattedPrice =>
-      NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(price);
+  String get formattedPrice => NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(price);
 
   String get formattedArea => '$area ha';
 
-  String get formattedSowingDate =>
-      DateFormat('dd/MM/yyyy').format(sowingDate);
+  String get formattedSowingDate => DateFormat('dd/MM/yyyy').format(sowingDate);
 
-  String get formattedHarvestDate =>
-      DateFormat('dd/MM/yyyy').format(harvestDate);
+  String get formattedHarvestDate => DateFormat('dd/MM/yyyy').format(harvestDate);
 
   String get timeAgo {
     final difference = DateTime.now().difference(createdAt);
@@ -171,12 +164,12 @@ class Transaction {
 // Model cho thương lượng
 class Negotiation {
   final String id;
-  final String traderId;      // ID thương lái
-  final String traderName;    // Tên thương lái
-  final double price;         // Giá đề xuất
-  final String? note;         // Ghi chú
-  final String status;        // Trạng thái (đang chờ, đã chấp nhận, từ chối)
-  final DateTime createdAt;   // Thời gian tạo
+  final String traderId; // ID thương lái
+  final String traderName; // Tên thương lái
+  final double price; // Giá đề xuất
+  final String? note; // Ghi chú
+  final String status; // Trạng thái (đang chờ, đã chấp nhận, từ chối)
+  final DateTime createdAt; // Thời gian tạo
 
   Negotiation({
     required this.id,
@@ -212,21 +205,20 @@ class Negotiation {
     };
   }
 
-  String get formattedPrice =>
-      NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(price);
+  String get formattedPrice => NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(price);
 }
 
 // Model cho hợp đồng
 class Contract {
   final String id;
-  final String transactionId;  // ID giao dịch
-  final double agreedPrice;    // Giá đã thỏa thuận
-  final DateTime signDate;     // Ngày ký
+  final String transactionId; // ID giao dịch
+  final double agreedPrice; // Giá đã thỏa thuận
+  final DateTime signDate; // Ngày ký
   final DateTime deliveryDate; // Ngày giao hàng
-  final String status;         // Trạng thái hợp đồng
+  final String status; // Trạng thái hợp đồng
   final String? farmerSignature; // Chữ ký nông dân
   final String? traderSignature; // Chữ ký thương lái
-  final List<String> terms;    // Các điều khoản
+  final List<String> terms; // Các điều khoản
 
   Contract({
     required this.id,
@@ -268,12 +260,9 @@ class Contract {
     };
   }
 
-  String get formattedAgreedPrice =>
-      NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(agreedPrice);
+  String get formattedAgreedPrice => NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(agreedPrice);
 
-  String get formattedSignDate =>
-      DateFormat('dd/MM/yyyy').format(signDate);
+  String get formattedSignDate => DateFormat('dd/MM/yyyy').format(signDate);
 
-  String get formattedDeliveryDate =>
-      DateFormat('dd/MM/yyyy').format(deliveryDate);
-} 
+  String get formattedDeliveryDate => DateFormat('dd/MM/yyyy').format(deliveryDate);
+}

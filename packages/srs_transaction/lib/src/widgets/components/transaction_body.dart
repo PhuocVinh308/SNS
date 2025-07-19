@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_transaction/srs_transaction.dart';
-import 'package:intl/intl.dart';
-import 'dart:io';
-import 'package:get/get.dart';
 
 class TransactionBody extends GetView<TransactionController> {
   const TransactionBody({Key? key}) : super(key: key);
@@ -12,112 +10,83 @@ class TransactionBody extends GetView<TransactionController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
+      body: Column(
+        children: [
           _buildHeader(),
           _buildSearchBar(),
-          _buildTransactionList(),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                _buildTransactionList(),
+              ],
+            ),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showCreatePostDialog(),
         backgroundColor: CustomColors.color06b252,
-        child: Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 
   Widget _buildHeader() {
-    return SliverToBoxAdapter(
-      child: Container(
-        padding: EdgeInsets.all(20.w),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      'Sàn giao dịch nông sản',
-                      fontSize: CustomConsts.h3,
-                      fontWeight: CustomConsts.bold,
-                    ),
-                    5.verticalSpace,
-                    CustomText(
-                      'Kết nối nông dân và thương lái',
-                      fontSize: CustomConsts.h6,
-                      color: CustomColors.color313131.withOpacity(0.7),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: EdgeInsets.all(8.w),
-                  decoration: BoxDecoration(
-                    color: CustomColors.color06b252.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12.r),
+    return Container(
+      padding: EdgeInsets.all(20.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    'sàn giao dịch nông sản'.tr.toCapitalized(),
+                    fontSize: CustomConsts.h3,
+                    fontWeight: CustomConsts.bold,
                   ),
-                  child: Stack(
-                    children: [
-                      Icon(
-                        Icons.notifications_outlined,
-                        color: CustomColors.color06b252,
-                        size: 24.w,
-                      ),
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(4.w),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: CustomText(
-                            '2',
-                            color: Colors.white,
-                            fontSize: 10.sp,
-                            fontWeight: CustomConsts.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                  5.verticalSpace,
+                  CustomText(
+                    'kết nối nông dân và thương lái'.tr.toCapitalized(),
+                    fontSize: CustomConsts.h6,
+                    color: CustomColors.color313131.withOpacity(0.7),
                   ),
-                ),
-              ],
-            ),
-            15.verticalSpace,
-            Row(
-              children: [
-                _buildStatCard(
-                  'Đang chờ xử lý',
-                  '05',
-                  Icons.pending_outlined,
-                  Colors.orange,
-                ),
-                10.horizontalSpace,
-                _buildStatCard(
-                  'Đã hoàn thành',
-                  '12',
-                  Icons.check_circle_outline,
-                  CustomColors.color06b252,
-                ),
-              ],
-            ),
-          ],
-        ),
+                ],
+              ),
+            ],
+          ),
+          15.verticalSpace,
+          Row(
+            children: [
+              _buildStatCard(
+                'đang chờ xử lý'.tr.toCapitalized(),
+                '05',
+                Icons.pending_outlined,
+                Colors.orange,
+              ),
+              10.horizontalSpace,
+              _buildStatCard(
+                'đã hoàn thành'.tr.toCapitalized(),
+                '12',
+                Icons.check_circle_outline,
+                CustomColors.color06b252,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -169,49 +138,33 @@ class TransactionBody extends GetView<TransactionController> {
   }
 
   Widget _buildSearchBar() {
-    return SliverToBoxAdapter(
-      child: Container(
-        margin: EdgeInsets.all(16.w),
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(
-            color: Colors.grey.shade200,
-            width: 1,
-          ),
+    return Container(
+      margin: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: Colors.grey.shade200,
+          width: 1,
         ),
-        child: Row(
-          children: [
-            Icon(
-              Icons.search,
-              color: CustomColors.color313131.withOpacity(0.5),
-            ),
-            10.horizontalSpace,
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Tìm kiếm nông sản...',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(
-                    color: CustomColors.color313131.withOpacity(0.5),
-                  ),
-                ),
-              ),
-            ),
-            IconButton(
-              onPressed: () => _showFilterDialog(),
-              icon: Icon(
-                Icons.filter_list,
-                color: CustomColors.color06b252,
-              ),
-            ),
-          ],
+      ),
+      child: CustomTextField(
+        titleEnabled: false,
+        hint: '${'tìm kiếm nông sản'.tr.toCapitalized()}...',
+        prefixIcon: Icon(
+          Icons.search,
+          color: CustomColors.color313131.withOpacity(0.5),
+        ),
+        suffixIcon: IconButton(
+          onPressed: () => _showFilterDialog(),
+          icon: const Icon(
+            Icons.filter_list,
+            color: CustomColors.color06b252,
+          ),
         ),
       ),
     );
   }
-
 
   Widget _buildTransactionList() {
     return SliverList(
@@ -236,7 +189,7 @@ class TransactionBody extends GetView<TransactionController> {
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -269,7 +222,7 @@ class TransactionBody extends GetView<TransactionController> {
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: CustomText(
-                        'Đang bán',
+                        'đang bán'.tr.toCapitalized(),
                         fontSize: CustomConsts.h7,
                         color: CustomColors.color06b252,
                         fontWeight: CustomConsts.bold,
@@ -283,21 +236,20 @@ class TransactionBody extends GetView<TransactionController> {
                     ),
                     4.horizontalSpace,
                     CustomText(
-                      'Đã xác thực',
+                      'đã xác thực'.tr.toCapitalized(),
                       fontSize: CustomConsts.h7,
                       color: CustomColors.color06b252,
                     ),
                   ],
                 ),
                 CustomText(
-                  '2 giờ trước',
+                  StringHelper.changeToTimeAgo("2025-07-18 23:16:42:953"),
                   fontSize: CustomConsts.h7,
                   color: CustomColors.color313131.withOpacity(0.5),
                 ),
               ],
             ),
           ),
-          
           // Content
           Padding(
             padding: EdgeInsets.all(16.w),
@@ -440,13 +392,13 @@ class TransactionBody extends GetView<TransactionController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        'Đăng tin bán nông sản',
+                        'đăng tin bán nông sản'.tr.toCapitalized(),
                         fontSize: CustomConsts.h4,
                         fontWeight: CustomConsts.bold,
                       ),
                       IconButton(
                         onPressed: () => Get.back(),
-                        icon: Icon(Icons.close),
+                        icon: const Icon(Icons.close),
                       ),
                     ],
                   ),
@@ -454,14 +406,14 @@ class TransactionBody extends GetView<TransactionController> {
                   TextFormField(
                     controller: titleController,
                     decoration: InputDecoration(
-                      labelText: 'Tiêu đề',
+                      labelText: 'tiêu đề'.tr.toCapitalized(),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Vui lòng nhập tiêu đề';
+                        return 'vui lòng nhập tiêu đề'.tr.toCapitalized();
                       }
                       return null;
                     },
@@ -471,14 +423,14 @@ class TransactionBody extends GetView<TransactionController> {
                     controller: descriptionController,
                     maxLines: 3,
                     decoration: InputDecoration(
-                      labelText: 'Mô tả chi tiết',
+                      labelText: 'mô tả chi tiết'.tr.toCapitalized(),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Vui lòng nhập mô tả';
+                        return 'vui lòng nhập mô tả'.tr.toCapitalized();
                       }
                       return null;
                     },
@@ -491,14 +443,14 @@ class TransactionBody extends GetView<TransactionController> {
                           controller: areaController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            labelText: 'Diện tích (ha)',
+                            labelText: 'diện tích (ha)'.tr.toCapitalized(),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                           ),
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
-                              return 'Nhập diện tích';
+                              return 'nhập diện tích'.tr.toCapitalized();
                             }
                             return null;
                           },
@@ -510,14 +462,14 @@ class TransactionBody extends GetView<TransactionController> {
                           controller: priceController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            labelText: 'Giá (đ/kg)',
+                            labelText: 'giá (đ/kg)'.tr.toCapitalized(),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                           ),
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
-                              return 'Nhập giá';
+                              return 'nhập giá'.tr.toCapitalized();
                             }
                             return null;
                           },
@@ -529,14 +481,14 @@ class TransactionBody extends GetView<TransactionController> {
                   TextFormField(
                     controller: riceTypeController,
                     decoration: InputDecoration(
-                      labelText: 'Giống lúa',
+                      labelText: 'giống lúa'.tr.toCapitalized(),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Nhập giống lúa';
+                        return 'nhập giống lúa'.tr.toCapitalized();
                       }
                       return null;
                     },
@@ -563,7 +515,7 @@ class TransactionBody extends GetView<TransactionController> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText('Ngày gieo sạ'),
+                          CustomText('ngày gieo sạ'.tr.toCapitalized()),
                           CustomText(
                             DateFormat('dd/MM/yyyy').format(sowingDate),
                           ),
@@ -589,7 +541,7 @@ class TransactionBody extends GetView<TransactionController> {
                         ),
                       ),
                       child: CustomText(
-                        'Đăng tin',
+                        'đăng tin'.tr.toCapitalized(),
                         color: Colors.white,
                         fontWeight: CustomConsts.bold,
                       ),
@@ -624,13 +576,13 @@ class TransactionBody extends GetView<TransactionController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    'Lọc kết quả',
+                    'lọc kết quả'.tr.toCapitalized(),
                     fontSize: CustomConsts.h4,
                     fontWeight: CustomConsts.bold,
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                   ),
                 ],
               ),
@@ -642,7 +594,7 @@ class TransactionBody extends GetView<TransactionController> {
                       controller: minPriceController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Giá từ',
+                        labelText: 'giá từ'.tr.toCapitalized(),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.r),
                         ),
@@ -655,7 +607,7 @@ class TransactionBody extends GetView<TransactionController> {
                       controller: maxPriceController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Đến',
+                        labelText: 'đến'.tr.toCapitalized(),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.r),
                         ),
@@ -668,7 +620,7 @@ class TransactionBody extends GetView<TransactionController> {
               DropdownButtonFormField<String>(
                 value: selectedLocation,
                 decoration: InputDecoration(
-                  labelText: 'Khu vực',
+                  labelText: 'khu vực'.tr.toCapitalized(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
@@ -676,7 +628,7 @@ class TransactionBody extends GetView<TransactionController> {
                 items: [
                   DropdownMenuItem(
                     value: null,
-                    child: Text('Tất cả'),
+                    child: Text('tất cả'.tr.toCapitalized()),
                   ),
                   // Add more locations
                 ],
@@ -699,7 +651,7 @@ class TransactionBody extends GetView<TransactionController> {
                           borderRadius: BorderRadius.circular(12.r),
                         ),
                       ),
-                      child: CustomText('Đặt lại'),
+                      child: CustomText('đặt lại'.tr.toCapitalized()),
                     ),
                   ),
                   10.horizontalSpace,
@@ -721,7 +673,7 @@ class TransactionBody extends GetView<TransactionController> {
                         ),
                       ),
                       child: CustomText(
-                        'Áp dụng',
+                        'áp dụng'.tr.toCapitalized(),
                         color: Colors.white,
                         fontWeight: CustomConsts.bold,
                       ),
@@ -755,13 +707,13 @@ class TransactionBody extends GetView<TransactionController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    'Thương lượng giá',
+                    'thương lượng giá'.tr.toCapitalized(),
                     fontSize: CustomConsts.h4,
                     fontWeight: CustomConsts.bold,
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                   ),
                 ],
               ),
@@ -770,7 +722,7 @@ class TransactionBody extends GetView<TransactionController> {
                 controller: priceController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: 'Giá đề xuất (đ/kg)',
+                  labelText: 'giá đề xuất (đ/kg)'.tr.toCapitalized(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
@@ -781,7 +733,7 @@ class TransactionBody extends GetView<TransactionController> {
                 controller: noteController,
                 maxLines: 3,
                 decoration: InputDecoration(
-                  labelText: 'Ghi chú',
+                  labelText: 'ghi chú'.tr.toCapitalized(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
@@ -808,7 +760,7 @@ class TransactionBody extends GetView<TransactionController> {
                     ),
                   ),
                   child: CustomText(
-                    'Gửi đề xuất',
+                    'gửi đề xuất',
                     color: Colors.white,
                     fontWeight: CustomConsts.bold,
                   ),

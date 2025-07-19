@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:srs_common/srs_common_core.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_disease/srs_disease.dart';
+
 import '../bindings/all_binding.dart';
 
 allPage() async {
@@ -11,7 +12,7 @@ allPage() async {
   List<GetPage<dynamic>> listPages = [
     GetPage(
       name: AllRouteDisease.diseaseMainRoute,
-      page: () =>  DiseasePage(),
+      page: () => DiseasePage(),
       binding: AllBindingDisease(),
     ),
   ];

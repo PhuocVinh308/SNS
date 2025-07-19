@@ -1,8 +1,8 @@
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import '../models/models.dart';
-import '../configs/all_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../configs/all_route.dart';
+import '../models/models.dart';
 
 class DiseaseController extends GetxController {
   final diagnosisHistory = <DiagnosisResult>[].obs;
@@ -19,7 +19,7 @@ class DiseaseController extends GetxController {
       isLoading.value = true;
       // Giả lập delay load dữ liệu
       await Future.delayed(Duration(seconds: 1));
-      
+
       diagnosisHistory.value = [
         DiagnosisResult(
           id: '1',
@@ -33,16 +33,8 @@ class DiseaseController extends GetxController {
             'Cân đối phân bón, tránh bón thừa đạm',
             'Vệ sinh đồng ruộng, tiêu hủy tàn dư cây bệnh'
           ],
-          chemicalMeasures: [
-            'Phun thuốc Beam 75WP',
-            'Sử dụng Filia 525SE',
-            'Phun Validacin 5L'
-          ],
-          culturalMeasures: [
-            'Điều chỉnh thời vụ hợp lý',
-            'Quản lý nước tốt',
-            'Bón phân cân đối'
-          ],
+          chemicalMeasures: ['Phun thuốc Beam 75WP', 'Sử dụng Filia 525SE', 'Phun Validacin 5L'],
+          culturalMeasures: ['Điều chỉnh thời vụ hợp lý', 'Quản lý nước tốt', 'Bón phân cân đối'],
         ),
         DiagnosisResult(
           id: '2',

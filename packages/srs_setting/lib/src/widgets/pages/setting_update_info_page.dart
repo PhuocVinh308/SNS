@@ -94,6 +94,17 @@ class SettingUpdateInfoPage extends GetView<SettingUpdateInfoController> {
                             ),
                             15.verticalSpace,
                             CustomTextField(
+                              hint: 'loại tài khoản'.tr.toCapitalized(),
+                              controller: controller.accountTypeController.value,
+                              required: true,
+                              autoValidate: controller.validate.value,
+                              prefixIcon: const Icon(
+                                Icons.person_pin_circle_rounded,
+                              ),
+                              enabled: false,
+                            ),
+                            15.verticalSpace,
+                            CustomTextField(
                               hint: 'email'.tr.toCapitalized(),
                               controller: controller.emailController.value,
                               required: true,
@@ -102,6 +113,7 @@ class SettingUpdateInfoPage extends GetView<SettingUpdateInfoController> {
                               prefixIcon: const Icon(
                                 Icons.email,
                               ),
+                              enabled: false,
                             ),
                             15.verticalSpace,
                             CustomTextField(

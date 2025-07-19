@@ -29,7 +29,7 @@ class RegisterPage extends GetView<AuthenController> {
                       children: [
                         const CmpRegisterPageTitle(),
                         .08.sh.verticalSpace,
-                        const CmpRegisterPageBody(),
+                        CmpRegisterPageBody(),
                       ],
                     ),
                     // Container ở góc trên phải

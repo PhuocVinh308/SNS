@@ -27,4 +27,10 @@ final Map<String, String> enUS = {
   'có quá nhiều yêu cầu đăng nhập vào tài khoản này': "too many requests to log into this account",
   'lỗi máy chủ, vui lòng thử lại sau': "server error, please try again later",
   'tài khoản hoặc mật khẩu không hợp lệ!': "invalid username or password!",
+  'đăng ký thành công': "register success",
+  'loại tài khoản': "account type",
+  'chọn loại tài khoản': "choose account type",
+  'thương lái': "trader",
+  'nông dân': "farmer",
+  'chưa nhập đầy đủ thông tin': "not filled in all the information",
 };
