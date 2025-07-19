@@ -16,7 +16,7 @@ class TransactionPage extends GetView<TransactionController> {
           child: Scaffold(
             backgroundColor: Colors.grey.shade50,
             body: RefreshIndicator(
-              onRefresh: () => controller.loadTransactions(),
+              onRefresh: () => controller.initSyncTransactionsPost(),
               child: Column(
                 children: [
                   const TransactionAppBar(),
@@ -49,31 +49,6 @@ class TransactionPage extends GetView<TransactionController> {
                 ],
               ),
             ),
-
-            // FAB để thêm giao dịch mới
-            floatingActionButton: Obx(() {
-              // Chỉ hiển thị FAB nếu user là nông dân
-              if (controller.userRole.value == 'farmer') {
-                return FloatingActionButton.extended(
-                  onPressed: () => controller.showCreateTransactionDialog(),
-                  backgroundColor: CustomColors.color06b252,
-                  elevation: 2,
-                  icon: Icon(
-                    Icons.add_circle_outline,
-                    color: Colors.white,
-                    size: 20.w,
-                  ),
-                  label: CustomText(
-                    'Đăng tin',
-                    color: Colors.white,
-                    fontSize: CustomConsts.h6,
-                    fontWeight: CustomConsts.bold,
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            }),
-
             // Bottom sheet cho bộ lọc (nếu cần)
             bottomSheet: Obx(() {
               if (controller.isFilterActive.value) {

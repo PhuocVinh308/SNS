@@ -21,7 +21,7 @@ class TransactionController extends GetxController with TransactionInitControlle
 
   @override
   void onClose() {
-    searchController.dispose();
+    close();
     super.onClose();
   }
 }

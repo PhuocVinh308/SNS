@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -8,18 +9,19 @@ import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_transaction/srs_transaction.dart';
 
 class TransactionInitController {
-  final autoValid = AutovalidateMode.onUnfocus;
-  Rx<bool> options = false.obs;
   final service = TransactionService();
+  final autoValid = AutovalidateMode.onUnfocus;
+  // scroll
+  final ScrollController scrollController = ScrollController();
+  bool isLoading = false;
+  bool get hasMore => service.hasMore;
+  //drive
   final DriveService _driveService = DriveService();
   bool googleDriveInitialized = false;
-
+  // global
   Rx<srs_authen.UserInfoModel> userModel = srs_authen.UserInfoModel().obs;
-  List<String> trangThaiPosts = ["DANG_BAN", "DA_THUONG_LUONG", "DA_HOAN_THANH"];
-
   // search
   TextEditingController searchController = TextEditingController();
-
   // add
   TextEditingController addTitleController = TextEditingController();
   TextEditingController addDescriptionController = TextEditingController();
@@ -31,26 +33,23 @@ class TransactionInitController {
   Rx<String> addSowingDateString = ''.obs;
   TextEditingController addHarvestDateController = TextEditingController();
   Rx<String> addHarvestDateString = ''.obs;
-
   // image
   final ImagePicker picker = ImagePicker();
   var progress = 0.0.obs;
   Rxn<String> imageOriginalPath = Rxn<String>();
   Rxn<String> imageOriginalName = Rxn<String>();
   Rxn<Uint8List> imageOriginalBytes = Rxn<Uint8List>();
+  // list
+  RxList<TransactionModel> transactions = <TransactionModel>[].obs;
+  List<String> trangThaiPosts = TransactionService().trangThaiPosts;
+  RxMap<String, int> counts = <String, int>{}.obs;
+  late Stream<Map<String, int>> _countStream;
+  late StreamSubscription<Map<String, int>> _subscription;
 
-  //============
-
-  final RxList<TransactionModel> transactions = <TransactionModel>[].obs;
-  final RxList<TransactionModel> filteredTransactions = <TransactionModel>[].obs;
-  final RxInt pendingCount = 0.obs;
-  final RxInt completedCount = 0.obs;
+  //======
   final RxString selectedCategory = ''.obs;
-  final RxBool isLoading = false.obs;
 
   // Thêm các biến mới
-  // final Rx<String> userRole = 'farmer'.obs; // hoặc 'trader'
-  final Rx<String> userRole = 'trader'.obs; // hoặc 'farmer'
 
   final RxBool isFilterActive = false.obs;
   final RxString activeFilters = ''.obs;
@@ -63,11 +62,32 @@ class TransactionInitController {
       await _initAddSowingDate();
       await _initUserModel();
       await _initGoogleDriveService();
+      await initSyncTransactionsPost();
+      await initScrollController();
+      await initCountPost();
+
       // await loadTransactions();
       // await _initUserRole();
       // ever(filters, (_) => _updateActiveFilters());
     } catch (e) {
       DialogUtil.catchException(obj: e);
+    }
+  }
+
+  close() async {
+    _subscription.cancel();
+    searchController.dispose();
+  }
+
+  initScrollController() async {
+    try {
+      scrollController.addListener(() {
+        if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 200) {
+          fetchMorePosts();
+        }
+      });
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -115,7 +135,10 @@ class TransactionInitController {
     }
   }
 
-  coreRefreshSelect() => _refreshSelect();
+  coreRefreshSelect() async {
+    await _refreshSelect();
+    await _initAddSowingDate();
+  }
 
   _refreshSelect() async {
     //image
@@ -150,6 +173,7 @@ class TransactionInitController {
         ngayThuHoach: addHarvestDateString.value,
         email: userModel.value.email,
         trangThai: trangThaiPosts.first,
+        isVerified: true,
       );
 
       String? fileId = await _uploadImage();
@@ -169,7 +193,8 @@ class TransactionInitController {
         status: CustomSnackBarStatus.success,
         onCallback: () {
           Get.back(closeOverlays: true);
-          _refreshSelect();
+          coreRefreshSelect();
+          initSyncTransactionsPost();
         },
         snackBarShowTime: 1,
       );
@@ -203,6 +228,38 @@ class TransactionInitController {
     }
   }
 
+  Future<void> initSyncTransactionsPost() async {
+    transactions.clear();
+    service.resetPagination();
+    await fetchMorePosts();
+  }
+
+  Future<void> fetchMorePosts() async {
+    if (isLoading || !service.hasMore) return;
+    isLoading = true;
+    DialogUtil.showLoading();
+    try {
+      final newTransactions = await service.fetchItemPosts();
+      transactions.addAll(newTransactions);
+    } finally {
+      isLoading = false;
+      DialogUtil.hideLoading();
+    }
+  }
+
+  initCountPost() async {
+    try {
+      _countStream = service.countItems(trangThaiPosts);
+      _subscription = _countStream.listen((data) {
+        counts.value = data;
+      });
+    } catch (e) {
+      DialogUtil.catchException(obj: e);
+    }
+  }
+
+  //
+
   // Khởi tạo role người dùng
   Future<void> _initUserRole() async {
     // try {
@@ -211,30 +268,6 @@ class TransactionInitController {
     // } catch (e) {
     //   print('Error getting user role: $e');
     // }
-  }
-
-  // Hiển thị dialog tạo giao dịch mới
-  void showCreateTransactionDialog() {
-    // if (userRole.value != 'farmer') {
-    //   showErrorSnackbar('Chỉ nông dân mới có thể đăng tin');
-    //   return;
-    // }
-    //
-    // Get.dialog(
-    //   Dialog(
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(20),
-    //     ),
-    //     child: Container(
-    //       width: Get.width * 0.9,
-    //       padding: EdgeInsets.all(20),
-    //       child: Column(
-    //         mainAxisSize: MainAxisSize.min,
-    //         children: [],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   // Cập nhật trạng thái bộ lọc
@@ -354,22 +387,6 @@ class TransactionInitController {
     //   borderRadius: 10,
     //   icon: Icon(Icons.error_outline, color: Colors.white),
     // );
-  }
-
-  // Load transactions from API/Database
-  Future<void> loadTransactions() async {
-    // try {
-    //   isLoading.value = true;
-    //   // TODO: Implement API call
-    //   // final response = await apiService.getTransactions();
-    //   // transactions.value = response;
-    //   updateCounts();
-    //   applyFilters();
-    // } catch (e) {
-    //   print('Error loading transactions: $e');
-    // } finally {
-    //   isLoading.value = false;
-    // }
   }
 
   // Update transaction counts

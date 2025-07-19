@@ -17,19 +17,34 @@ class TransactionBody extends GetView<TransactionController> {
           _buildHeader(),
           _buildSearchBar(),
           Expanded(
-            child: CustomScrollView(
-              slivers: [
-                _buildTransactionList(),
-              ],
-            ),
+            child: Obx(() {
+              return _buildTransaction();
+            }),
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAdd(context),
-        backgroundColor: CustomColors.color06b252,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+      floatingActionButton: Obx(() {
+        //Chỉ hiển thị FAB nếu user là nông dân
+        if (controller.userModel.value.userRole == "NONG_DAN") {
+          return FloatingActionButton.extended(
+            onPressed: () => _showAdd(context),
+            backgroundColor: CustomColors.color06b252,
+            elevation: 2,
+            icon: Icon(
+              Icons.add_circle_outline,
+              color: Colors.white,
+              size: 20.w,
+            ),
+            label: CustomText(
+              'đăng tin'.tr.toCapitalized(),
+              color: Colors.white,
+              fontSize: CustomConsts.h6,
+              fontWeight: CustomConsts.bold,
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      }),
     );
   }
 
@@ -71,23 +86,25 @@ class TransactionBody extends GetView<TransactionController> {
             ],
           ),
           15.verticalSpace,
-          Row(
-            children: [
-              _buildStatCard(
-                'đang chờ xử lý'.tr.toCapitalized(),
-                '05',
-                Icons.pending_outlined,
-                Colors.orange,
-              ),
-              10.horizontalSpace,
-              _buildStatCard(
-                'đã hoàn thành'.tr.toCapitalized(),
-                '12',
-                Icons.check_circle_outline,
-                CustomColors.color06b252,
-              ),
-            ],
-          ),
+          Obx(() {
+            return Row(
+              children: [
+                _buildStatCard(
+                  'đang chờ xử lý'.tr.toCapitalized(),
+                  (controller.counts[controller.trangThaiPosts.first] ?? 0).toString(),
+                  Icons.pending_outlined,
+                  Colors.orange,
+                ),
+                10.horizontalSpace,
+                _buildStatCard(
+                  'đã hoàn thành'.tr.toCapitalized(),
+                  (controller.counts[controller.trangThaiPosts.last] ?? 0).toString(),
+                  Icons.check_circle_outline,
+                  CustomColors.color06b252,
+                ),
+              ],
+            );
+          }),
         ],
       ),
     );
@@ -367,16 +384,35 @@ class TransactionBody extends GetView<TransactionController> {
     ).showMbs();
   }
 
-  Widget _buildTransactionList() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) => _buildTransactionItem(),
-        childCount: 10,
-      ),
+  Widget _buildTransaction() {
+    return ListView.separated(
+      padding: EdgeInsets.symmetric(horizontal: 5.sp, vertical: 5.sp),
+      controller: controller.scrollController,
+      itemBuilder: (context, index) {
+        if (index < controller.transactions.length) {
+          final post = controller.transactions[index];
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(milliseconds: 375),
+            child: SlideAnimation(
+              verticalOffset: 50.0,
+              child: FadeInAnimation(
+                child: _buildTransactionItem(post),
+              ),
+            ),
+          );
+        } else {
+          return const Center(
+            child: SizedBox(),
+          );
+        }
+      },
+      separatorBuilder: (context, value) => SizedBox(height: 15.sp),
+      itemCount: controller.transactions.length + (controller.hasMore ? 1 : 0),
     );
   }
 
-  Widget _buildTransactionItem() {
+  Widget _buildTransactionItem(TransactionModel data) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
@@ -423,7 +459,7 @@ class TransactionBody extends GetView<TransactionController> {
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: CustomText(
-                        'đang bán'.tr.toCapitalized(),
+                        controller.getTrangThaiPostToName(data.trangThai ?? ""),
                         fontSize: CustomConsts.h7,
                         color: CustomColors.color06b252,
                         fontWeight: CustomConsts.bold,
@@ -431,20 +467,20 @@ class TransactionBody extends GetView<TransactionController> {
                     ),
                     8.horizontalSpace,
                     Icon(
-                      Icons.verified,
-                      color: CustomColors.color06b252,
+                      (data.isVerified == null || data.isVerified == false) ? Icons.cancel_rounded : Icons.verified_rounded,
+                      color: (data.isVerified == null || data.isVerified == false) ? CustomColors.colorFF0000 : CustomColors.color06b252,
                       size: 16.w,
                     ),
                     4.horizontalSpace,
                     CustomText(
-                      'đã xác thực'.tr.toCapitalized(),
+                      (data.isVerified == null || data.isVerified == false) ? 'chưa xác thực'.tr.toCapitalized() : 'đã xác thực'.tr.toCapitalized(),
                       fontSize: CustomConsts.h7,
-                      color: CustomColors.color06b252,
+                      color: (data.isVerified == null || data.isVerified == false) ? CustomColors.colorFF0000 : CustomColors.color06b252,
                     ),
                   ],
                 ),
                 CustomText(
-                  StringHelper.changeToTimeAgo("2025-07-18 23:16:42:953"),
+                  StringHelper.changeToTimeAgo(data.createdDate),
                   fontSize: CustomConsts.h7,
                   color: CustomColors.color313131.withOpacity(0.5),
                 ),
@@ -458,25 +494,45 @@ class TransactionBody extends GetView<TransactionController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child: Image.network(
-                    'https://example.com/rice.jpg',
-                    width: 100.w,
-                    height: 100.w,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 100.w,
-                        height: 100.w,
-                        color: Colors.grey.shade200,
-                        child: Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Colors.grey,
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: data.fileUrl != null
+                        ? CachedNetworkImage(
+                            imageUrl: data.fileUrl!,
+                            width: 100.w,
+                            height: 100.w,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, error, stackTrace) {
+                              return Container(
+                                width: 100.w,
+                                height: 100.w,
+                                color: Colors.grey.shade200,
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  color: Colors.grey,
+                                ),
+                              );
+                            },
+                          )
+                        : Image.asset(
+                            'assets/images/empty_data.png',
+                            width: 100.w,
+                            height: 100.w,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: 100.w,
+                                height: 100.w,
+                                color: Colors.grey.shade200,
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  color: Colors.grey,
+                                ),
+                              );
+                            },
+                          )),
                 12.horizontalSpace,
                 Expanded(
                   child: Column(
@@ -769,7 +825,7 @@ class TransactionBody extends GetView<TransactionController> {
                     ),
                   ),
                   child: CustomText(
-                    'gửi đề xuất',
+                    'gửi đề xuất'.tr.toCapitalized(),
                     color: Colors.white,
                     fontWeight: CustomConsts.bold,
                   ),

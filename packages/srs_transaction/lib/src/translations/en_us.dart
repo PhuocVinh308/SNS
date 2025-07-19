@@ -13,6 +13,7 @@ final Map<String, String> enUS = {
   'đang bán': 'for sale',
   'đã thương lượng': 'negotiated',
   'đã xác thực': 'verified',
+  'chưa xác thực': 'unverified',
   'đang cập nhật': 'updating',
   'đăng tin bán nông sản': 'post agricultural products for sale',
   'tiêu đề': 'title',
@@ -53,4 +54,6 @@ final Map<String, String> enUS = {
   'nhập địa điểm': 'enter address',
   'ngày thu hoạch': 'harvest day',
   'nhập ngày thu hoạch': 'enter harvest day',
+  'tìm kiếm nông sản': 'search for agricultural products',
+  'gửi đề xuất': 'submit a proposal',
 };

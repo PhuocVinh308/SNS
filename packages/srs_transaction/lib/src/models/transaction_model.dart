@@ -52,6 +52,7 @@ class TransactionModel {
     ngayGieoSa = json['ngayGieoSa'];
     ngayThuHoach = json['ngayThuHoach'];
     email = json['email'];
+    isVerified = json['isVerified'];
     createdDate = json['createdDate'];
   }
 
@@ -71,6 +72,7 @@ class TransactionModel {
     map['ngayGieoSa'] = ngayGieoSa;
     map['ngayThuHoach'] = ngayThuHoach;
     map['email'] = email;
+    map['isVerified'] = isVerified;
     map['createdDate'] = createdDate;
     return map;
   }
