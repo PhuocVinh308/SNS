@@ -5,7 +5,9 @@ import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_transaction/srs_transaction.dart';
 
 class TransactionBody extends GetView<TransactionController> {
-  const TransactionBody({Key? key}) : super(key: key);
+  TransactionBody({Key? key}) : super(key: key);
+
+  final addFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class TransactionBody extends GetView<TransactionController> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showCreatePostDialog(),
+        onPressed: () => _showAdd(context),
         backgroundColor: CustomColors.color06b252,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -162,8 +164,120 @@ class TransactionBody extends GetView<TransactionController> {
             color: CustomColors.color06b252,
           ),
         ),
+        controller: controller.searchController,
       ),
     );
+  }
+
+  void _showAdd(BuildContext context) {
+    CustomReusableMbs(
+      context: context,
+      title: 'đăng tin bán nông sản'.tr.toCapitalized(),
+      height: .8.sh,
+      child: Form(
+        key: addFormKey,
+        autovalidateMode: controller.autoValid,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 15.sp),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                CustomTextField(
+                  title: 'tiêu đề'.tr.toCapitalized(),
+                  hint: 'nhập tiêu đề'.tr.toCapitalized(),
+                  controller: controller.addTitleController,
+                  customInputType: CustomInputType.text,
+                  required: true,
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                CustomTextField(
+                  title: 'mô tả chi tiết'.tr.toCapitalized(),
+                  hint: 'nhập mô tả chi tiết'.tr.toCapitalized(),
+                  controller: controller.addDescriptionController,
+                  customInputType: CustomInputType.text,
+                  required: true,
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                CustomTextField(
+                  title: 'diện tích (ha)'.tr.toCapitalized(),
+                  hint: 'nhập diện tích (ha)'.tr.toCapitalized(),
+                  controller: controller.addAreaController,
+                  customInputType: CustomInputType.double,
+                  required: true,
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                CustomTextField(
+                  title: 'diện tích (ha)'.tr.toCapitalized(),
+                  hint: 'nhập diện tích (ha)'.tr.toCapitalized(),
+                  controller: controller.addAreaController,
+                  customInputType: CustomInputType.double,
+                  required: true,
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                CustomTextField(
+                  title: 'giá (đ/kg)'.tr.toCapitalized(),
+                  hint: 'nhập giá'.tr.toCapitalized(),
+                  controller: controller.addAreaController,
+                  customInputType: CustomInputType.money,
+                  required: true,
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                CustomTextField(
+                  title: 'giống lúa'.tr.toCapitalized(),
+                  hint: 'nhập giống lúa'.tr.toCapitalized(),
+                  controller: controller.addRiceTypeController,
+                  customInputType: CustomInputType.money,
+                  required: true,
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                CustomTextField(
+                  title: 'ngày gieo sạ'.tr.toCapitalized(),
+                  hint: 'chọn ngày gieo sạ'.tr.toCapitalized(),
+                  readOnly: true,
+                  required: true,
+                  controller: controller.addSowingDateController,
+                  customInputType: CustomInputType.text,
+                  prefixIcon: const Icon(Icons.calendar_month_rounded),
+                  suffixIcon: IconButton(
+                    onPressed: () => _selectDate(),
+                    icon: const Icon(
+                      Icons.expand_more_rounded,
+                      color: CustomColors.color06b252,
+                    ),
+                  ),
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                MaterialButton(
+                  onPressed: () async {
+                    if (addFormKey.currentState?.validate() == true) {
+                    } else {
+                      DialogUtil.catchException(msg: "chưa nhập đầy đủ thông tin".tr.toCapitalized());
+                    }
+                  },
+                  color: CustomColors.colorFC6B68,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.sp),
+                  ),
+                  child: CustomText(
+                    'đăng tin'.tr.toCapitalized(),
+                    color: CustomColors.colorFFFFFF,
+                    fontSize: CustomConsts.h4,
+                    fontWeight: CustomConsts.medium,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ).showMbs();
   }
 
   Widget _buildTransactionList() {
@@ -360,198 +474,6 @@ class TransactionBody extends GetView<TransactionController> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void _showCreatePostDialog() {
-    final formKey = GlobalKey<FormState>();
-    final titleController = TextEditingController();
-    final descriptionController = TextEditingController();
-    final priceController = TextEditingController();
-    final areaController = TextEditingController();
-    final riceTypeController = TextEditingController();
-    DateTime sowingDate = DateTime.now();
-
-    Get.dialog(
-      Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: Container(
-          width: Get.width * 0.9,
-          padding: EdgeInsets.all(20.w),
-          child: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        'đăng tin bán nông sản'.tr.toCapitalized(),
-                        fontSize: CustomConsts.h4,
-                        fontWeight: CustomConsts.bold,
-                      ),
-                      IconButton(
-                        onPressed: () => Get.back(),
-                        icon: const Icon(Icons.close),
-                      ),
-                    ],
-                  ),
-                  20.verticalSpace,
-                  TextFormField(
-                    controller: titleController,
-                    decoration: InputDecoration(
-                      labelText: 'tiêu đề'.tr.toCapitalized(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'vui lòng nhập tiêu đề'.tr.toCapitalized();
-                      }
-                      return null;
-                    },
-                  ),
-                  15.verticalSpace,
-                  TextFormField(
-                    controller: descriptionController,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      labelText: 'mô tả chi tiết'.tr.toCapitalized(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'vui lòng nhập mô tả'.tr.toCapitalized();
-                      }
-                      return null;
-                    },
-                  ),
-                  15.verticalSpace,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: areaController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'diện tích (ha)'.tr.toCapitalized(),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return 'nhập diện tích'.tr.toCapitalized();
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      10.horizontalSpace,
-                      Expanded(
-                        child: TextFormField(
-                          controller: priceController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'giá (đ/kg)'.tr.toCapitalized(),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return 'nhập giá'.tr.toCapitalized();
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  15.verticalSpace,
-                  TextFormField(
-                    controller: riceTypeController,
-                    decoration: InputDecoration(
-                      labelText: 'giống lúa'.tr.toCapitalized(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'nhập giống lúa'.tr.toCapitalized();
-                      }
-                      return null;
-                    },
-                  ),
-                  15.verticalSpace,
-                  InkWell(
-                    onTap: () async {
-                      final DateTime? picked = await showDatePicker(
-                        context: Get.context!,
-                        initialDate: sowingDate,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now(),
-                      );
-                      if (picked != null) {
-                        sowingDate = picked;
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(12.w),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText('ngày gieo sạ'.tr.toCapitalized()),
-                          CustomText(
-                            DateFormat('dd/MM/yyyy').format(sowingDate),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  20.verticalSpace,
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState?.validate() ?? false) {
-                          // TODO: Implement create post
-                          Get.back();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: CustomColors.color06b252,
-                        padding: EdgeInsets.symmetric(vertical: 15.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                      child: CustomText(
-                        'đăng tin'.tr.toCapitalized(),
-                        color: Colors.white,
-                        fontWeight: CustomConsts.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -771,5 +693,34 @@ class TransactionBody extends GetView<TransactionController> {
         ),
       ),
     );
+  }
+
+  _selectDate() async {
+    RxString initDate = DateFormat('dd-MM-yyyy').format(DateTime.now()).obs;
+    if (controller.addSowingDateController.text.isNotEmpty) {
+      initDate.value = controller.addSowingDateController.text;
+    }
+
+    DateTime? pickedDate = await showDatePicker(
+        initialEntryMode: DatePickerEntryMode.calendar,
+        errorFormatText: 'định dạng ngày dd/MM/yyyy'.tr.toCapitalized(),
+        errorInvalidText: "ngày phải là số".tr.toCapitalized(),
+        fieldLabelText: "nhập ngày".tr.toCapitalized(),
+        confirmText: "đồng ý".tr.toCapitalized(),
+        cancelText: "huỷ".tr.toCapitalized(),
+        helpText: "chọn ngày".tr.toCapitalized(),
+        context: Get.context!,
+        initialDate: DateFormat('dd-MM-yyyy').parse(initDate.value),
+        firstDate: DateTime(1900),
+        locale: const Locale('vi', 'VN'),
+        fieldHintText: 'dd/mm/yyyy',
+        lastDate: DateTime.now());
+
+    if (pickedDate != null) {
+      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+
+      controller.addSowingDateController.text = formattedDate;
+      controller.addSowingDateString.value = DateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(pickedDate);
+    }
   }
 }

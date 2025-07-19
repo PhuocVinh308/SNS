@@ -46,8 +46,13 @@ class CustomReusableMbs {
             ),
             child: Column(
               children: [
+                // _titleMbs(title: title ?? ''),
+                // SizedBox(child: child),
+                // contentWidget ?? const SizedBox(),
                 _titleMbs(title: title ?? ''),
-                SizedBox(child: child),
+                Expanded(
+                  child: child ?? const SizedBox(),
+                ),
                 contentWidget ?? const SizedBox(),
               ],
             ),
@@ -57,34 +62,68 @@ class CustomReusableMbs {
 
   Widget _titleMbs({String? title}) {
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(10.sp),
+      height: 60.sp,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.sp),
+          topRight: Radius.circular(10.sp),
+        ),
+      ),
       child: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: CustomText(
-                  title ?? '',
-                  fontWeight: CustomConsts.semiBold,
-                  color: CustomColors.color833162,
-                  textAlign: TextAlign.center,
+          Container(
+            alignment: FractionalOffset.topCenter,
+            padding: EdgeInsets.only(top: 5.sp),
+            child: Container(
+              height: 3.sp,
+              width: 50.sp,
+              decoration: BoxDecoration(
+                color: CustomColors.color00499B,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(3.sp),
                 ),
               ),
-            ],
+            ),
           ),
-          Positioned(
-            top: -5,
-            right: 0,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: const Icon(
-                Icons.close_rounded,
-                color: CustomColors.color833162,
+          Container(
+            alignment: FractionalOffset.center,
+            padding: const EdgeInsets.only(top: 20),
+            child: Text(
+              title ?? '',
+              style: GoogleFonts.roboto(
+                color: CustomColors.color7047EB,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Container(
+            alignment: FractionalOffset.topRight,
+            padding: EdgeInsets.only(top: 5.sp, right: 5.sp),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5.sp),
+              ),
+              child: Material(
+                color: CustomColors.color00499B,
+                child: SizedBox(
+                  height: 25.sp,
+                  width: 25.sp,
+                  child: IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    style: IconButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    iconSize: 20.sp,
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      color: CustomColors.colorFFFFFF,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

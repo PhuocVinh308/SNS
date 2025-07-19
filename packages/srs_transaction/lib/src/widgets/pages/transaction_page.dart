@@ -42,7 +42,7 @@ class TransactionPage extends GetView<TransactionController> {
                           topLeft: Radius.circular(20.r),
                           topRight: Radius.circular(20.r),
                         ),
-                        child: const TransactionBody(),
+                        child: TransactionBody(),
                       ),
                     ),
                   ),
