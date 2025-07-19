@@ -11,17 +11,23 @@ import 'package:srs_transaction/srs_transaction.dart';
 class TransactionInitController {
   final service = TransactionService();
   final autoValid = AutovalidateMode.onUnfocus;
+
   // scroll
   final ScrollController scrollController = ScrollController();
   bool isLoading = false;
+
   bool get hasMore => service.hasMore;
+
   //drive
   final DriveService _driveService = DriveService();
   bool googleDriveInitialized = false;
+
   // global
   Rx<srs_authen.UserInfoModel> userModel = srs_authen.UserInfoModel().obs;
+
   // search
   TextEditingController searchController = TextEditingController();
+
   // add
   TextEditingController addTitleController = TextEditingController();
   TextEditingController addDescriptionController = TextEditingController();
@@ -33,12 +39,14 @@ class TransactionInitController {
   Rx<String> addSowingDateString = ''.obs;
   TextEditingController addHarvestDateController = TextEditingController();
   Rx<String> addHarvestDateString = ''.obs;
+
   // image
   final ImagePicker picker = ImagePicker();
   var progress = 0.0.obs;
   Rxn<String> imageOriginalPath = Rxn<String>();
   Rxn<String> imageOriginalName = Rxn<String>();
   Rxn<Uint8List> imageOriginalBytes = Rxn<Uint8List>();
+
   // list
   RxList<TransactionModel> transactions = <TransactionModel>[].obs;
   List<String> trangThaiPosts = TransactionService().trangThaiPosts;
