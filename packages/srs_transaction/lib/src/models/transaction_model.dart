@@ -2,19 +2,21 @@ import 'package:intl/intl.dart';
 
 class TransactionModel {
   String? documentId;
-  String? title; // Tiêu đề tin đăng
-  String? description; // Mô tả chi tiết
+  String? title;
+  String? description;
   String? danhMuc; // Danh mục (vd: Lúa gạo, Rau củ)
-  String? diaDiem; // Địa điểm
-  double? gia; // Giá mong muốn
+  String? diaDiem;
+  double? gia;
   String? trangThai; // Trạng thái (đang bán, đã thương lượng, đã hoàn thành)
-  double? dienTich; // Diện tích (hecta)
-  String? giongLua; // Giống lúa
-  String? ngayGieoSa; // Ngày gieo sạ
-  String? ngayThuHoach; // Ngày dự kiến thu hoạch
-  String? email; // ID người nông dân
-  bool? isVerified; // Đã xác thực
-  String? createdDate; // Ngày đăng tin
+  String? fileId;
+  String? fileUrl;
+  double? dienTich;
+  String? giongLua;
+  String? ngayGieoSa;
+  String? ngayThuHoach;
+  String? email;
+  bool? isVerified;
+  String? createdDate;
 
   TransactionModel({
     this.documentId,
@@ -24,6 +26,8 @@ class TransactionModel {
     this.diaDiem,
     this.gia,
     this.trangThai,
+    this.fileId,
+    this.fileUrl,
     this.dienTich,
     this.giongLua,
     this.ngayGieoSa,
@@ -41,6 +45,8 @@ class TransactionModel {
     diaDiem = json['diaDiem'];
     gia = json['gia'];
     trangThai = json['trangThai'];
+    fileId = json['fileId'];
+    fileUrl = json['fileUrl'];
     dienTich = json['dienTich'];
     giongLua = json['giongLua'];
     ngayGieoSa = json['ngayGieoSa'];
@@ -58,6 +64,8 @@ class TransactionModel {
     map['diaDiem'] = diaDiem;
     map['gia'] = gia;
     map['trangThai'] = trangThai;
+    map['fileId'] = fileId;
+    map['fileUrl'] = fileUrl;
     map['dienTich'] = dienTich;
     map['giongLua'] = giongLua;
     map['ngayGieoSa'] = ngayGieoSa;

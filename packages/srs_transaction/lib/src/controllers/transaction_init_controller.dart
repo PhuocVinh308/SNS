@@ -1,20 +1,26 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:srs_authen/srs_authen.dart' as srs_authen;
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_transaction/srs_transaction.dart';
-import 'package:srs_authen/srs_authen.dart' as srs_authen;
-import 'package:intl/intl.dart';
 
 class TransactionInitController {
   final autoValid = AutovalidateMode.onUnfocus;
   Rx<bool> options = false.obs;
   final service = TransactionService();
+  final DriveService _driveService = DriveService();
+  bool googleDriveInitialized = false;
+
   Rx<srs_authen.UserInfoModel> userModel = srs_authen.UserInfoModel().obs;
   List<String> trangThaiPosts = ["DANG_BAN", "DA_THUONG_LUONG", "DA_HOAN_THANH"];
 
-  // Observable variables
+  // search
   TextEditingController searchController = TextEditingController();
 
+  // add
   TextEditingController addTitleController = TextEditingController();
   TextEditingController addDescriptionController = TextEditingController();
   TextEditingController addAreaController = TextEditingController();
@@ -23,9 +29,15 @@ class TransactionInitController {
   TextEditingController addLocationController = TextEditingController();
   TextEditingController addSowingDateController = TextEditingController();
   Rx<String> addSowingDateString = ''.obs;
-
   TextEditingController addHarvestDateController = TextEditingController();
   Rx<String> addHarvestDateString = ''.obs;
+
+  // image
+  final ImagePicker picker = ImagePicker();
+  var progress = 0.0.obs;
+  Rxn<String> imageOriginalPath = Rxn<String>();
+  Rxn<String> imageOriginalName = Rxn<String>();
+  Rxn<Uint8List> imageOriginalBytes = Rxn<Uint8List>();
 
   //============
 
@@ -50,6 +62,7 @@ class TransactionInitController {
     try {
       await _initAddSowingDate();
       await _initUserModel();
+      await _initGoogleDriveService();
       // await loadTransactions();
       // await _initUserRole();
       // ever(filters, (_) => _updateActiveFilters());
@@ -88,6 +101,41 @@ class TransactionInitController {
             : "đã hoàn thành".tr.toCapitalized();
   }
 
+  corePickImage(ImageSource src) async {
+    try {
+      final image = await picker.pickImage(source: src);
+      if (image != null) {
+        imageOriginalPath.value = image.path;
+        imageOriginalName.value = image.name;
+        imageOriginalBytes.value = await image.readAsBytes();
+      }
+    } catch (e) {
+      _refreshSelect();
+      DialogUtil.catchException(obj: e);
+    }
+  }
+
+  coreRefreshSelect() => _refreshSelect();
+
+  _refreshSelect() async {
+    //image
+    imageOriginalPath.value = null;
+    imageOriginalName.value = null;
+    imageOriginalBytes.value = null;
+    progress.value = 0.0;
+    //add
+    addTitleController.clear();
+    addDescriptionController.clear();
+    addAreaController.clear();
+    addPriceController.clear();
+    addRiceTypeController.clear();
+    addLocationController.clear();
+    addSowingDateController.clear();
+    addSowingDateString.value = '';
+    addHarvestDateController.clear();
+    addHarvestDateString.value = '';
+  }
+
   corePostItem() async {
     try {
       DialogUtil.showLoading();
@@ -104,16 +152,16 @@ class TransactionInitController {
         trangThai: trangThaiPosts.first,
       );
 
-      // String? fileId = await _uploadImage();
-      // if (fileId != null && fileId.isNotEmpty) {
-      //   final fileUrl = await _driveService.getFileUrl(fileId);
-      //   postModel.fileId = fileId;
-      //   postModel.fileUrl = fileUrl;
-      // } else {
-      //   postModel.fileId = "";
-      //   postModel.fileUrl = "";
-      // }
-      final postForumRes = await service.postItem(postModel);
+      String? fileId = await _uploadImage();
+      if (fileId != null && fileId.isNotEmpty) {
+        final fileUrl = await _driveService.getFileUrl(fileId);
+        postModel.fileId = fileId;
+        postModel.fileUrl = fileUrl;
+      } else {
+        postModel.fileId = "";
+        postModel.fileUrl = "";
+      }
+      await service.postItem(postModel);
       DialogUtil.hideLoading();
 
       DialogUtil.catchException(
@@ -121,12 +169,37 @@ class TransactionInitController {
         status: CustomSnackBarStatus.success,
         onCallback: () {
           Get.back(closeOverlays: true);
+          _refreshSelect();
         },
         snackBarShowTime: 1,
       );
     } catch (e) {
       DialogUtil.hideLoading();
       DialogUtil.catchException(obj: e);
+    }
+  }
+
+  _uploadImage() async {
+    try {
+      if (imageOriginalBytes.value != null) {
+        final fileId = await _driveService.uploadFileUint8List(
+          imageOriginalBytes.value!,
+          imageOriginalName.value!,
+          folderId: CustomConsts.googleDriveFolderId,
+        );
+        return fileId;
+      }
+    } catch (e) {
+      DialogUtil.catchException(obj: e);
+    }
+  }
+
+  _initGoogleDriveService() async {
+    try {
+      await _driveService.initialize();
+      googleDriveInitialized = true;
+    } catch (e) {
+      rethrow;
     }
   }
 

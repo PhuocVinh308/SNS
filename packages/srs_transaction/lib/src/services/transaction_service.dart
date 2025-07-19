@@ -1,4 +1,3 @@
-import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_transaction/srs_transaction.dart';
 
@@ -10,6 +9,7 @@ class TransactionService {
   final int _limit = 10;
   DocumentSnapshot? _lastDoc;
   bool _hasMore = true;
+
   bool get hasMore => _hasMore;
 
   Future<DateTimeStrings> postItem(TransactionModel data, {int retryCount = 1}) async {

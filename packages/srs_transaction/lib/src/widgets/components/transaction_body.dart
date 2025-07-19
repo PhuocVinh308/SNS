@@ -273,6 +273,74 @@ class TransactionBody extends GetView<TransactionController> {
                 ),
                 15.verticalSpace,
                 MaterialButton(
+                  onPressed: () {
+                    _bottomSheetShowCameraOrGallery(context, onTapCamera: () async {
+                      await controller.funPickImage(ImageSource.camera).then((value) {
+                        Get.back();
+                      });
+                    }, onTapGallery: () async {
+                      await controller.funPickImage(ImageSource.gallery).then((value) {
+                        Get.back();
+                      });
+                    });
+                  },
+                  color: CustomColors.color06b252,
+                  disabledColor: CustomColors.color8B8B8B,
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.sp),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 5.sp),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.add,
+                        color: CustomColors.colorFFFFFF,
+                      ),
+                      5.horizontalSpace,
+                      CustomText(
+                        'thêm hình ảnh'.tr.toCapitalized(),
+                        color: CustomColors.colorFFFFFF,
+                        fontWeight: CustomConsts.bold,
+                      ),
+                    ],
+                  ),
+                ),
+                15.verticalSpace,
+                Obx(() {
+                  if (controller.imageOriginalBytes.value != null) {
+                    return Container(
+                      padding: EdgeInsets.only(top: 5.sp),
+                      child: Stack(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5.sp),
+                            child: Image.memory(
+                              controller.imageOriginalBytes.value!,
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: IconButton(
+                              onPressed: () {
+                                controller.funRefreshSelect();
+                              },
+                              icon: const FaIcon(
+                                FontAwesomeIcons.circleXmark,
+                                color: CustomColors.colorFFFFFF,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                }),
+                MaterialButton(
                   onPressed: () async {
                     if (addFormKey.currentState?.validate() == true) {
                       await controller.funPostItem();
@@ -771,5 +839,94 @@ class TransactionBody extends GetView<TransactionController> {
         }
         break;
     }
+  }
+
+  _bottomSheetShowCameraOrGallery(
+    BuildContext context, {
+    Function? onTapCamera,
+    Function? onTapGallery,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(10),
+          topLeft: Radius.circular(10),
+        ),
+      ),
+      isScrollControlled: true,
+      enableDrag: true,
+      useSafeArea: true,
+      builder: (c) {
+        return Container(
+          height: 100.sp,
+          width: 1.sw,
+          margin: EdgeInsets.all(20.sp),
+          child: Column(
+            children: [
+              Text(
+                'chọn hình ảnh'.tr.toCapitalized(),
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: CustomColors.color005AAB,
+                ),
+              ),
+              SizedBox(height: 5.sp),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        await onTapCamera?.call();
+                      },
+                      icon: Row(
+                        children: [
+                          Icon(
+                            Icons.camera_alt_rounded,
+                            size: 25.sp,
+                          ),
+                          5.horizontalSpace,
+                          Text(
+                            'máy ảnh'.tr.toCapitalized(),
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        await onTapGallery?.call();
+                      },
+                      icon: Row(
+                        children: [
+                          Icon(
+                            Icons.image,
+                            size: 25.sp,
+                          ),
+                          5.horizontalSpace,
+                          Text(
+                            'thư viện'.tr.toCapitalized(),
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 }
