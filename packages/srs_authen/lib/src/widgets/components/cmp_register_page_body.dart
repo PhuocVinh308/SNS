@@ -7,6 +7,7 @@ class CmpRegisterPageBody extends GetView<AuthenController> {
   CmpRegisterPageBody({Key? key}) : super(key: key);
 
   final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {

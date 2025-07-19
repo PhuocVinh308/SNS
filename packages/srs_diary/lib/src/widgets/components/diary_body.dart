@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_diary/srs_diary.dart';
-import 'package:intl/intl.dart';
 
 class DiaryBody extends GetView<DiaryController> {
   const DiaryBody({Key? key}) : super(key: key);
@@ -38,29 +38,28 @@ class DiaryBody extends GetView<DiaryController> {
     return Obx(() {
       final profit = controller.totalIncome.value - controller.totalExpense.value;
       final isProfit = profit >= 0;
-      
+
       return Container(
         margin: EdgeInsets.symmetric(horizontal: 20.w),
         padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: isProfit ? [
-              CustomColors.color06b252,
-              CustomColors.color06b252.withOpacity(0.8),
-            ] : [
-                            Colors.red.withOpacity(0.8),
-                            Colors.red.withOpacity(0.6),
-
-            ],
+            colors: isProfit
+                ? [
+                    CustomColors.color06b252,
+                    CustomColors.color06b252.withOpacity(0.8),
+                  ]
+                : [
+                    Colors.red.withOpacity(0.8),
+                    Colors.red.withOpacity(0.6),
+                  ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(15.r),
           boxShadow: [
             BoxShadow(
-              color: isProfit 
-                ? CustomColors.color06b252.withOpacity(0.2)
-                : Colors.red.withOpacity(0.2),
+              color: isProfit ? CustomColors.color06b252.withOpacity(0.2) : Colors.red.withOpacity(0.2),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
@@ -135,11 +134,11 @@ class DiaryBody extends GetView<DiaryController> {
         ),
         10.verticalSpace,
         Obx(() => CustomText(
-          '${NumberFormat.currency(locale: 'vi_VN', symbol: 'đ', decimalDigits: 0).format(value.value)}',
-          color: color,
-          fontSize: CustomConsts.h5,
-          fontWeight: CustomConsts.bold,
-        )),
+              '${NumberFormat.currency(locale: 'vi_VN', symbol: 'đ', decimalDigits: 0).format(value.value)}',
+              color: color,
+              fontSize: CustomConsts.h5,
+              fontWeight: CustomConsts.bold,
+            )),
       ],
     );
   }
@@ -156,12 +155,12 @@ class DiaryBody extends GetView<DiaryController> {
           ),
           Expanded(
             child: Obx(() => Center(
-              child: CustomText(
-                DateFormat('MMMM yyyy', 'vi_VN').format(controller.selectedMonth.value),
-                fontSize: CustomConsts.h5,
-                fontWeight: CustomConsts.bold,
-              ),
-            )),
+                  child: CustomText(
+                    DateFormat('MMMM yyyy', 'vi_VN').format(controller.selectedMonth.value),
+                    fontSize: CustomConsts.h5,
+                    fontWeight: CustomConsts.bold,
+                  ),
+                )),
           ),
           IconButton(
             onPressed: () => controller.nextMonth(),
@@ -176,7 +175,7 @@ class DiaryBody extends GetView<DiaryController> {
     return Obx(() {
       // Lấy danh sách giao dịch của tháng được chọn
       final monthlyTransactions = controller.getTransactionsByMonth(controller.selectedMonth.value);
-      
+
       if (monthlyTransactions.isEmpty) {
         return SliverFillRemaining(
           child: Center(
@@ -240,16 +239,12 @@ class DiaryBody extends GetView<DiaryController> {
                   Container(
                     padding: EdgeInsets.all(10.w),
                     decoration: BoxDecoration(
-                      color: transaction.isExpense
-                          ? Colors.red.withOpacity(0.1)
-                          : CustomColors.color06b252.withOpacity(0.1),
+                      color: transaction.isExpense ? Colors.red.withOpacity(0.1) : CustomColors.color06b252.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Icon(
                       transaction.isExpense ? Icons.remove : Icons.add,
-                      color: transaction.isExpense
-                          ? Colors.red
-                          : CustomColors.color06b252,
+                      color: transaction.isExpense ? Colors.red : CustomColors.color06b252,
                       size: 20.w,
                     ),
                   ),
@@ -288,9 +283,7 @@ class DiaryBody extends GetView<DiaryController> {
                     '${NumberFormat.currency(locale: 'vi_VN', symbol: 'đ', decimalDigits: 0).format(transaction.amount)}',
                     fontSize: CustomConsts.h5,
                     fontWeight: CustomConsts.bold,
-                    color: transaction.isExpense
-                        ? Colors.red
-                        : CustomColors.color06b252,
+                    color: transaction.isExpense ? Colors.red : CustomColors.color06b252,
                   ),
                 ],
               ),
@@ -333,13 +326,14 @@ class DiaryBody extends GetView<DiaryController> {
               _buildDetailRow('Mô tả', transaction.description),
               _buildDetailRow('Danh mục', transaction.category),
               _buildDetailRow('Ngày', DateFormat('dd/MM/yyyy').format(transaction.date)),
-              _buildDetailRow('Số tiền', NumberFormat.currency(
-                locale: 'vi_VN',
-                symbol: 'đ',
-                decimalDigits: 0,
-              ).format(transaction.amount)),
-              if (transaction.note != null && transaction.note!.isNotEmpty)
-                _buildDetailRow('Ghi chú', transaction.note!),
+              _buildDetailRow(
+                  'Số tiền',
+                  NumberFormat.currency(
+                    locale: 'vi_VN',
+                    symbol: 'đ',
+                    decimalDigits: 0,
+                  ).format(transaction.amount)),
+              if (transaction.note != null && transaction.note!.isNotEmpty) _buildDetailRow('Ghi chú', transaction.note!),
               20.verticalSpace,
               SizedBox(
                 width: double.infinity,
@@ -397,7 +391,7 @@ class DiaryBody extends GetView<DiaryController> {
     final TextEditingController descriptionController = TextEditingController();
     final TextEditingController amountController = TextEditingController();
     final TextEditingController noteController = TextEditingController();
-    
+
     bool isExpense = true;
     String selectedCategory = controller.expenseCategories[0];
     DateTime selectedDate = DateTime.now();
@@ -461,9 +455,7 @@ class DiaryBody extends GetView<DiaryController> {
                                   selectedCategory = controller.expenseCategories[0];
                                 }),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: isExpense 
-                                      ? Colors.red 
-                                      : Colors.transparent,
+                                  backgroundColor: isExpense ? Colors.red : Colors.transparent,
                                   elevation: 0,
                                   padding: EdgeInsets.symmetric(vertical: 12.h),
                                   shape: RoundedRectangleBorder(
@@ -499,9 +491,7 @@ class DiaryBody extends GetView<DiaryController> {
                                   selectedCategory = controller.incomeCategories[0];
                                 }),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: !isExpense 
-                                      ? CustomColors.color06b252 
-                                      : Colors.transparent,
+                                  backgroundColor: !isExpense ? CustomColors.color06b252 : Colors.transparent,
                                   elevation: 0,
                                   padding: EdgeInsets.symmetric(vertical: 12.h),
                                   shape: RoundedRectangleBorder(
@@ -742,8 +732,7 @@ class DiaryBody extends GetView<DiaryController> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              if (descriptionController.text.isEmpty || 
-                                  amountController.text.isEmpty) {
+                              if (descriptionController.text.isEmpty || amountController.text.isEmpty) {
                                 Get.snackbar(
                                   'Thông báo',
                                   'Vui lòng điền đầy đủ thông tin',
@@ -757,9 +746,7 @@ class DiaryBody extends GetView<DiaryController> {
                                 return;
                               }
 
-                              final amount = double.tryParse(
-                                amountController.text.replaceAll(RegExp(r'[^0-9]'), '')
-                              );
+                              final amount = double.tryParse(amountController.text.replaceAll(RegExp(r'[^0-9]'), ''));
                               if (amount == null) {
                                 Get.snackbar(
                                   'Thông báo',

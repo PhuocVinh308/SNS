@@ -21,6 +21,7 @@ class ForumInitController {
   RxList<ForumPostModel> forumSearchPosts = <ForumPostModel>[].obs;
   final ScrollController scrollSearchController = ScrollController();
   bool isSearchLoading = false;
+
   bool get hasMoreSearch => service.hasMoreSearch;
 
   init() async {

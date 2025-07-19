@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 import '../models/models.dart';
 
 class DiaryController extends GetxController {
@@ -85,10 +86,10 @@ class DiaryController extends GetxController {
 
   void _updateMonthlyTransactions() {
     final monthlyTransactions = getTransactionsByMonth(selectedMonth.value);
-    
+
     double income = 0;
     double expense = 0;
-    
+
     for (var transaction in monthlyTransactions) {
       if (transaction.isExpense) {
         expense += transaction.amount;
@@ -96,18 +97,13 @@ class DiaryController extends GetxController {
         income += transaction.amount;
       }
     }
-    
+
     totalIncome.value = income;
     totalExpense.value = expense;
   }
 
   List<DiaryTransaction> getTransactionsByMonth(DateTime date) {
-    return transactions
-        .where((t) => 
-            t.date.year == date.year && 
-            t.date.month == date.month)
-        .toList()
-      ..sort((a, b) => b.date.compareTo(a.date));
+    return transactions.where((t) => t.date.year == date.year && t.date.month == date.month).toList()..sort((a, b) => b.date.compareTo(a.date));
   }
 
   void previousMonth() {

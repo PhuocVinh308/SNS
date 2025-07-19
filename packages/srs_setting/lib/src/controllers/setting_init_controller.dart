@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:srs_common/srs_common.dart';
 import 'package:srs_authen/srs_authen.dart' as srs_authen;
+import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_setting/srs_setting.dart';
 
@@ -8,6 +8,7 @@ class SettingInitController {
   final service = SettingService();
   Rx<srs_authen.UserInfoModel> userModel = srs_authen.UserInfoModel().obs;
   Rx<bool> language = false.obs;
+
   init() async {
     try {
       await _initLanguageBtn();

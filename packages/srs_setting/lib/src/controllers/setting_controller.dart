@@ -17,5 +17,6 @@ class SettingController extends GetxController with SettingInitController {
   }
 
   funSignOut() async => coreSignOut();
+
   funChangeLanguage(bool value) => coreChangeLanguage(value);
 }

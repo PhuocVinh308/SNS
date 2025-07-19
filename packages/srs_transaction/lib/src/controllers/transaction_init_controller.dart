@@ -3,10 +3,7 @@ import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart' hide Transaction;
 
 import '../models/models.dart';
-import '../configs/all_route.dart';
-import 'package:flutter/material.dart';
 import '../models/transaction_model.dart';
-import 'transaction_init_controller.dart';
 
 class TransactionInitController {
   Rx<bool> options = false.obs;

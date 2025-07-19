@@ -10,4 +10,4 @@ class TransactionCategory {
     required this.icon,
     required this.isExpense,
   });
-} 
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:srs_common/srs_common.dart';
 import 'package:srs_authen/srs_authen.dart' as srs_authen;
+import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_setting/srs_setting.dart';
 

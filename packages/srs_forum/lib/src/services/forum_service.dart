@@ -14,6 +14,7 @@ class ForumService {
   //search
   DocumentSnapshot? _lastDocSearch;
   bool _hasMoreSearch = true;
+
   bool get hasMoreSearch => _hasMoreSearch;
 
   Future<DateTimeStrings> postForum(ForumPostModel data, {int retryCount = 1}) async {

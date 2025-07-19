@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
-import 'package:srs_notification/srs_notification.dart';
 import 'package:srs_landing/srs_landing.dart' as srs_landing;
+import 'package:srs_notification/srs_notification.dart';
 
 class NotificationInitController {
   NotificationService service = NotificationService();

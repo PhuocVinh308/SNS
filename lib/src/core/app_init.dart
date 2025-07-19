@@ -2,12 +2,11 @@ import 'dart:developer';
 
 import 'package:agri_go/firebase_options.dart';
 import 'package:srs_common/srs_common_lib.dart';
-import 'package:srs_common/srs_common.dart';
+import 'package:srs_notification/srs_notification.dart' as srs_notification;
 
 import '../config/app_config.dart';
 import '../translations/app_translations.dart';
 import 'packages_init.dart';
-import 'package:srs_notification/srs_notification.dart' as srs_notification;
 
 appInit() async {
   log('initialize Application', name: AppConfig.appName);

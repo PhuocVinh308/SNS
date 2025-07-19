@@ -36,4 +36,5 @@ final Map<String, String> enUS = {
   'giá đề xuất (đ/kg)': 'suggested price (VND/kg)',
   'ghi chú': 'note',
   'gửi đề xuất': 'submit a proposal',
+  'sàn nông sản': 'agricultural floor',
 };

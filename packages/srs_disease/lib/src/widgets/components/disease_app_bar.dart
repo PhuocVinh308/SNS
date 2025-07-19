@@ -26,7 +26,6 @@ class DiseaseAppBar extends GetView<DiseaseController> {
       ),
       child: Row(
         children: [
-      
           Expanded(
             child: Center(
               child: CustomText(

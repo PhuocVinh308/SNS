@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:agri_go/src/core/app_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'src/widgets/app_widgets.dart';
 
 void main() {
