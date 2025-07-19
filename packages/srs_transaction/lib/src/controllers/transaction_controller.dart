@@ -12,6 +12,8 @@ class TransactionController extends GetxController with TransactionInitControlle
     super.onInit();
   }
 
+  funPostItem() async => await corePostItem();
+
   @override
   void onClose() {
     searchController.dispose();

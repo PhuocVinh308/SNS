@@ -11,6 +11,7 @@ final Map<String, String> enUS = {
   'đang chờ xử lý': 'pending',
   'đã hoàn thành': 'completed',
   'đang bán': 'for sale',
+  'đã thương lượng': 'negotiated',
   'đã xác thực': 'verified',
   'đang cập nhật': 'updating',
   'đăng tin bán nông sản': 'post agricultural products for sale',
@@ -48,4 +49,8 @@ final Map<String, String> enUS = {
   'huỷ': 'cancel',
   'chọn ngày': 'select date',
   'đăng tin': 'post',
+  'địa điểm': 'address',
+  'nhập địa điểm': 'enter address',
+  'ngày thu hoạch': 'harvest day',
+  'nhập ngày thu hoạch': 'enter harvest day',
 };

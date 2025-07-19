@@ -1,163 +1,70 @@
 import 'package:intl/intl.dart';
 
-class Transaction {
-  final String id;
-  final String title; // Tiêu đề tin đăng
-  final String description; // Mô tả chi tiết
-  final String category; // Danh mục (vd: Lúa gạo, Rau củ)
-  final String location; // Địa điểm
-  final double price; // Giá mong muốn
-  final String status; // Trạng thái (đang bán, đã thương lượng, đã hoàn thành)
-  final List<String> images; // Danh sách hình ảnh
-  final double area; // Diện tích (hecta)
-  final String riceType; // Giống lúa
-  final DateTime sowingDate; // Ngày gieo sạ
-  final DateTime harvestDate; // Ngày dự kiến thu hoạch
-  final String farmerId; // ID người nông dân
-  final String farmerName; // Tên người nông dân
-  final String farmerPhone; // Số điện thoại nông dân
-  final bool isVerified; // Đã xác thực
-  final DateTime createdAt; // Ngày đăng tin
-  final List<Negotiation>? negotiations; // Danh sách thương lượng
-  final Contract? contract; // Hợp đồng (nếu có)
+class TransactionModel {
+  String? documentId;
+  String? title; // Tiêu đề tin đăng
+  String? description; // Mô tả chi tiết
+  String? danhMuc; // Danh mục (vd: Lúa gạo, Rau củ)
+  String? diaDiem; // Địa điểm
+  double? gia; // Giá mong muốn
+  String? trangThai; // Trạng thái (đang bán, đã thương lượng, đã hoàn thành)
+  double? dienTich; // Diện tích (hecta)
+  String? giongLua; // Giống lúa
+  String? ngayGieoSa; // Ngày gieo sạ
+  String? ngayThuHoach; // Ngày dự kiến thu hoạch
+  String? email; // ID người nông dân
+  bool? isVerified; // Đã xác thực
+  String? createdDate; // Ngày đăng tin
 
-  Transaction({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.category,
-    required this.location,
-    required this.price,
-    required this.status,
-    required this.images,
-    required this.area,
-    required this.riceType,
-    required this.sowingDate,
-    required this.harvestDate,
-    required this.farmerId,
-    required this.farmerName,
-    required this.farmerPhone,
-    required this.isVerified,
-    required this.createdAt,
-    this.negotiations,
-    this.contract,
+  TransactionModel({
+    this.documentId,
+    this.title,
+    this.description,
+    this.danhMuc,
+    this.diaDiem,
+    this.gia,
+    this.trangThai,
+    this.dienTich,
+    this.giongLua,
+    this.ngayGieoSa,
+    this.ngayThuHoach,
+    this.email,
+    this.isVerified,
+    this.createdDate,
   });
 
-  // Tạo bản sao với các thuộc tính có thể thay đổi
-  Transaction copyWith({
-    String? id,
-    String? title,
-    String? description,
-    String? category,
-    String? location,
-    double? price,
-    String? status,
-    List<String>? images,
-    double? area,
-    String? riceType,
-    DateTime? sowingDate,
-    DateTime? harvestDate,
-    String? farmerId,
-    String? farmerName,
-    String? farmerPhone,
-    bool? isVerified,
-    DateTime? createdAt,
-    List<Negotiation>? negotiations,
-    Contract? contract,
-  }) {
-    return Transaction(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      category: category ?? this.category,
-      location: location ?? this.location,
-      price: price ?? this.price,
-      status: status ?? this.status,
-      images: images ?? this.images,
-      area: area ?? this.area,
-      riceType: riceType ?? this.riceType,
-      sowingDate: sowingDate ?? this.sowingDate,
-      harvestDate: harvestDate ?? this.harvestDate,
-      farmerId: farmerId ?? this.farmerId,
-      farmerName: farmerName ?? this.farmerName,
-      farmerPhone: farmerPhone ?? this.farmerPhone,
-      isVerified: isVerified ?? this.isVerified,
-      createdAt: createdAt ?? this.createdAt,
-      negotiations: negotiations ?? this.negotiations,
-      contract: contract ?? this.contract,
-    );
+  TransactionModel.fromJson(dynamic json) {
+    documentId = json['documentId'];
+    title = json['title'];
+    description = json['description'];
+    danhMuc = json['danhMuc'];
+    diaDiem = json['diaDiem'];
+    gia = json['gia'];
+    trangThai = json['trangThai'];
+    dienTich = json['dienTich'];
+    giongLua = json['giongLua'];
+    ngayGieoSa = json['ngayGieoSa'];
+    ngayThuHoach = json['ngayThuHoach'];
+    email = json['email'];
+    createdDate = json['createdDate'];
   }
 
-  // Chuyển đổi từ JSON
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      category: json['category'],
-      location: json['location'],
-      price: json['price'].toDouble(),
-      status: json['status'],
-      images: List<String>.from(json['images']),
-      area: json['area'].toDouble(),
-      riceType: json['riceType'],
-      sowingDate: DateTime.parse(json['sowingDate']),
-      harvestDate: DateTime.parse(json['harvestDate']),
-      farmerId: json['farmerId'],
-      farmerName: json['farmerName'],
-      farmerPhone: json['farmerPhone'],
-      isVerified: json['isVerified'],
-      createdAt: DateTime.parse(json['createdAt']),
-      negotiations: json['negotiations'] != null ? List<Negotiation>.from(json['negotiations'].map((x) => Negotiation.fromJson(x))) : null,
-      contract: json['contract'] != null ? Contract.fromJson(json['contract']) : null,
-    );
-  }
-
-  // Chuyển đổi thành JSON
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'description': description,
-      'category': category,
-      'location': location,
-      'price': price,
-      'status': status,
-      'images': images,
-      'area': area,
-      'riceType': riceType,
-      'sowingDate': sowingDate.toIso8601String(),
-      'harvestDate': harvestDate.toIso8601String(),
-      'farmerId': farmerId,
-      'farmerName': farmerName,
-      'farmerPhone': farmerPhone,
-      'isVerified': isVerified,
-      'createdAt': createdAt.toIso8601String(),
-      'negotiations': negotiations?.map((x) => x.toJson()).toList(),
-      'contract': contract?.toJson(),
-    };
-  }
-
-  // Helper methods
-  String get formattedPrice => NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(price);
-
-  String get formattedArea => '$area ha';
-
-  String get formattedSowingDate => DateFormat('dd/MM/yyyy').format(sowingDate);
-
-  String get formattedHarvestDate => DateFormat('dd/MM/yyyy').format(harvestDate);
-
-  String get timeAgo {
-    final difference = DateTime.now().difference(createdAt);
-    if (difference.inDays > 0) {
-      return '${difference.inDays} ngày trước';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours} giờ trước';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} phút trước';
-    } else {
-      return 'Vừa xong';
-    }
+    final map = <String, dynamic>{};
+    map['documentId'] = documentId;
+    map['title'] = title;
+    map['description'] = description;
+    map['danhMuc'] = danhMuc;
+    map['diaDiem'] = diaDiem;
+    map['gia'] = gia;
+    map['trangThai'] = trangThai;
+    map['dienTich'] = dienTich;
+    map['giongLua'] = giongLua;
+    map['ngayGieoSa'] = ngayGieoSa;
+    map['ngayThuHoach'] = ngayThuHoach;
+    map['email'] = email;
+    map['createdDate'] = createdDate;
+    return map;
   }
 }
 

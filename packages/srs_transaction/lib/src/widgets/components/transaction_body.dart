@@ -210,18 +210,9 @@ class TransactionBody extends GetView<TransactionController> {
                 ),
                 15.verticalSpace,
                 CustomTextField(
-                  title: 'diện tích (ha)'.tr.toCapitalized(),
-                  hint: 'nhập diện tích (ha)'.tr.toCapitalized(),
-                  controller: controller.addAreaController,
-                  customInputType: CustomInputType.double,
-                  required: true,
-                  textInputAction: TextInputAction.done,
-                ),
-                15.verticalSpace,
-                CustomTextField(
                   title: 'giá (đ/kg)'.tr.toCapitalized(),
                   hint: 'nhập giá'.tr.toCapitalized(),
-                  controller: controller.addAreaController,
+                  controller: controller.addPriceController,
                   customInputType: CustomInputType.money,
                   required: true,
                   textInputAction: TextInputAction.done,
@@ -231,7 +222,16 @@ class TransactionBody extends GetView<TransactionController> {
                   title: 'giống lúa'.tr.toCapitalized(),
                   hint: 'nhập giống lúa'.tr.toCapitalized(),
                   controller: controller.addRiceTypeController,
-                  customInputType: CustomInputType.money,
+                  customInputType: CustomInputType.text,
+                  required: true,
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                CustomTextField(
+                  title: 'địa điểm'.tr.toCapitalized(),
+                  hint: 'nhập địa điểm'.tr.toCapitalized(),
+                  controller: controller.addLocationController,
+                  customInputType: CustomInputType.text,
                   required: true,
                   textInputAction: TextInputAction.done,
                 ),
@@ -245,7 +245,25 @@ class TransactionBody extends GetView<TransactionController> {
                   customInputType: CustomInputType.text,
                   prefixIcon: const Icon(Icons.calendar_month_rounded),
                   suffixIcon: IconButton(
-                    onPressed: () => _selectDate(),
+                    onPressed: () => _selectDate(typeDate: "GIEO_SA"),
+                    icon: const Icon(
+                      Icons.expand_more_rounded,
+                      color: CustomColors.color06b252,
+                    ),
+                  ),
+                  textInputAction: TextInputAction.done,
+                ),
+                15.verticalSpace,
+                CustomTextField(
+                  title: 'ngày thu hoạch'.tr.toCapitalized(),
+                  hint: 'chọn ngày thu hoạch'.tr.toCapitalized(),
+                  readOnly: true,
+                  required: true,
+                  controller: controller.addHarvestDateController,
+                  customInputType: CustomInputType.text,
+                  prefixIcon: const Icon(Icons.calendar_month_rounded),
+                  suffixIcon: IconButton(
+                    onPressed: () => _selectDate(typeDate: "THU_HOACH"),
                     icon: const Icon(
                       Icons.expand_more_rounded,
                       color: CustomColors.color06b252,
@@ -257,6 +275,7 @@ class TransactionBody extends GetView<TransactionController> {
                 MaterialButton(
                   onPressed: () async {
                     if (addFormKey.currentState?.validate() == true) {
+                      await controller.funPostItem();
                     } else {
                       DialogUtil.catchException(msg: "chưa nhập đầy đủ thông tin".tr.toCapitalized());
                     }
@@ -695,32 +714,62 @@ class TransactionBody extends GetView<TransactionController> {
     );
   }
 
-  _selectDate() async {
+  _selectDate({required String typeDate}) async {
     RxString initDate = DateFormat('dd-MM-yyyy').format(DateTime.now()).obs;
-    if (controller.addSowingDateController.text.isNotEmpty) {
-      initDate.value = controller.addSowingDateController.text;
-    }
 
-    DateTime? pickedDate = await showDatePicker(
-        initialEntryMode: DatePickerEntryMode.calendar,
-        errorFormatText: 'định dạng ngày dd/MM/yyyy'.tr.toCapitalized(),
-        errorInvalidText: "ngày phải là số".tr.toCapitalized(),
-        fieldLabelText: "nhập ngày".tr.toCapitalized(),
-        confirmText: "đồng ý".tr.toCapitalized(),
-        cancelText: "huỷ".tr.toCapitalized(),
-        helpText: "chọn ngày".tr.toCapitalized(),
-        context: Get.context!,
-        initialDate: DateFormat('dd-MM-yyyy').parse(initDate.value),
-        firstDate: DateTime(1900),
-        locale: const Locale('vi', 'VN'),
-        fieldHintText: 'dd/mm/yyyy',
-        lastDate: DateTime.now());
+    switch (typeDate) {
+      case "GIEO_SA":
+        if (controller.addSowingDateController.text.isNotEmpty) {
+          initDate.value = controller.addSowingDateController.text;
+        }
 
-    if (pickedDate != null) {
-      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+        DateTime? pickedDate = await showDatePicker(
+            initialEntryMode: DatePickerEntryMode.calendar,
+            errorFormatText: 'định dạng ngày dd/MM/yyyy'.tr.toCapitalized(),
+            errorInvalidText: "ngày phải là số".tr.toCapitalized(),
+            fieldLabelText: "nhập ngày".tr.toCapitalized(),
+            confirmText: "đồng ý".tr.toCapitalized(),
+            cancelText: "huỷ".tr.toCapitalized(),
+            helpText: "chọn ngày".tr.toCapitalized(),
+            context: Get.context!,
+            initialDate: DateFormat('dd-MM-yyyy').parse(initDate.value),
+            firstDate: DateTime(1900),
+            locale: const Locale('vi', 'VN'),
+            fieldHintText: 'dd/mm/yyyy',
+            lastDate: DateTime.now());
 
-      controller.addSowingDateController.text = formattedDate;
-      controller.addSowingDateString.value = DateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(pickedDate);
+        if (pickedDate != null) {
+          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+          controller.addSowingDateController.text = formattedDate;
+          controller.addSowingDateString.value = DateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(pickedDate);
+        }
+        break;
+      case "THU_HOACH":
+        if (controller.addHarvestDateController.text.isNotEmpty) {
+          initDate.value = controller.addHarvestDateController.text;
+        }
+
+        DateTime? pickedDate = await showDatePicker(
+            initialEntryMode: DatePickerEntryMode.calendar,
+            errorFormatText: 'định dạng ngày dd/MM/yyyy'.tr.toCapitalized(),
+            errorInvalidText: "ngày phải là số".tr.toCapitalized(),
+            fieldLabelText: "nhập ngày".tr.toCapitalized(),
+            confirmText: "đồng ý".tr.toCapitalized(),
+            cancelText: "huỷ".tr.toCapitalized(),
+            helpText: "chọn ngày".tr.toCapitalized(),
+            context: Get.context!,
+            initialDate: DateFormat('dd-MM-yyyy').parse(initDate.value),
+            firstDate: DateTime(1900),
+            locale: const Locale('vi', 'VN'),
+            fieldHintText: 'dd/mm/yyyy',
+            lastDate: DateTime(DateTime.now().year + 100));
+
+        if (pickedDate != null) {
+          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+          controller.addHarvestDateController.text = formattedDate;
+          controller.addHarvestDateString.value = DateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(pickedDate);
+        }
+        break;
     }
   }
 }

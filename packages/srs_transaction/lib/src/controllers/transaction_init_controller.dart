@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:srs_common/srs_common.dart';
-import 'package:srs_common/srs_common_lib.dart' hide Transaction;
-
-import '../models/models.dart';
-import '../models/transaction_model.dart';
+import 'package:srs_common/srs_common_lib.dart';
+import 'package:srs_transaction/srs_transaction.dart';
+import 'package:srs_authen/srs_authen.dart' as srs_authen;
 import 'package:intl/intl.dart';
 
 class TransactionInitController {
   final autoValid = AutovalidateMode.onUnfocus;
   Rx<bool> options = false.obs;
+  final service = TransactionService();
+  Rx<srs_authen.UserInfoModel> userModel = srs_authen.UserInfoModel().obs;
+  List<String> trangThaiPosts = ["DANG_BAN", "DA_THUONG_LUONG", "DA_HOAN_THANH"];
+
   // Observable variables
   TextEditingController searchController = TextEditingController();
 
@@ -17,11 +20,17 @@ class TransactionInitController {
   TextEditingController addAreaController = TextEditingController();
   TextEditingController addPriceController = TextEditingController();
   TextEditingController addRiceTypeController = TextEditingController();
+  TextEditingController addLocationController = TextEditingController();
   TextEditingController addSowingDateController = TextEditingController();
   Rx<String> addSowingDateString = ''.obs;
 
-  final RxList<Transaction> transactions = <Transaction>[].obs;
-  final RxList<Transaction> filteredTransactions = <Transaction>[].obs;
+  TextEditingController addHarvestDateController = TextEditingController();
+  Rx<String> addHarvestDateString = ''.obs;
+
+  //============
+
+  final RxList<TransactionModel> transactions = <TransactionModel>[].obs;
+  final RxList<TransactionModel> filteredTransactions = <TransactionModel>[].obs;
   final RxInt pendingCount = 0.obs;
   final RxInt completedCount = 0.obs;
   final RxString selectedCategory = ''.obs;
@@ -40,6 +49,7 @@ class TransactionInitController {
   init() async {
     try {
       await _initAddSowingDate();
+      await _initUserModel();
       // await loadTransactions();
       // await _initUserRole();
       // ever(filters, (_) => _updateActiveFilters());
@@ -54,8 +64,69 @@ class TransactionInitController {
       String formatDateYMD = DateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(DateTime.now());
       addSowingDateController.text = formattedDate;
       addSowingDateString.value = formatDateYMD;
+
+      addHarvestDateController.text = formattedDate;
+      addHarvestDateString.value = formatDateYMD;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  _initUserModel() async {
+    try {
+      userModel.value = CustomGlobals().userInfo;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  String getTrangThaiPostToName(String code) {
+    return code == trangThaiPosts.first
+        ? "đang bán".tr.toCapitalized()
+        : code == trangThaiPosts[1]
+            ? "đã thương lượng".tr.toCapitalized()
+            : "đã hoàn thành".tr.toCapitalized();
+  }
+
+  corePostItem() async {
+    try {
+      DialogUtil.showLoading();
+      TransactionModel postModel = TransactionModel(
+        title: addTitleController.text,
+        description: addDescriptionController.text,
+        dienTich: double.tryParse(addAreaController.text),
+        gia: double.tryParse(addPriceController.text),
+        diaDiem: addLocationController.text,
+        giongLua: addRiceTypeController.text,
+        ngayGieoSa: addSowingDateString.value,
+        ngayThuHoach: addHarvestDateString.value,
+        email: userModel.value.email,
+        trangThai: trangThaiPosts.first,
+      );
+
+      // String? fileId = await _uploadImage();
+      // if (fileId != null && fileId.isNotEmpty) {
+      //   final fileUrl = await _driveService.getFileUrl(fileId);
+      //   postModel.fileId = fileId;
+      //   postModel.fileUrl = fileUrl;
+      // } else {
+      //   postModel.fileId = "";
+      //   postModel.fileUrl = "";
+      // }
+      final postForumRes = await service.postItem(postModel);
+      DialogUtil.hideLoading();
+
+      DialogUtil.catchException(
+        msg: "${"đăng tin thành công".tr.toCapitalized()}!",
+        status: CustomSnackBarStatus.success,
+        onCallback: () {
+          Get.back(closeOverlays: true);
+        },
+        snackBarShowTime: 1,
+      );
+    } catch (e) {
+      DialogUtil.hideLoading();
+      DialogUtil.catchException(obj: e);
     }
   }
 
@@ -235,7 +306,7 @@ class TransactionInitController {
   }
 
   // Create new transaction post
-  Future<void> createTransaction(Transaction transaction) async {
+  Future<void> createTransaction(TransactionModel transaction) async {
     // try {
     //   isLoading.value = true;
     //   // TODO: Implement API call
