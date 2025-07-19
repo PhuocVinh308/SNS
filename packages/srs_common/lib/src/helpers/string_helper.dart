@@ -1,4 +1,5 @@
 import 'package:srs_common/srs_common_lib.dart';
+import 'package:srs_common/srs_common_lib_4.dart' as time_ago;
 
 class StringHelper {
   static DateTime? parseDateString(dynamic dateTime) {
@@ -40,6 +41,37 @@ class StringHelper {
   static final specialTextAndNumber = RegExp(r'[!@#\$%^&*()?":{}|<>|\-\[\]\\0-9]');
   static final specialTextAndVietnamese = RegExp(
       r'[!@#\$%^&*()?":{}|<>|\-\[\]\\ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵýỷỹ]');
+
+  static String changeToTimeAgo(dynamic dateTime) {
+    if (dateTime == null) return "${'đang cập nhật'.tr.toCapitalized()}...";
+    var dateParse = parseDateStringTimeAgo(dateTime);
+    if (dateParse == null) return "${'đang cập nhật'.tr.toCapitalized()}...";
+    return time_ago.format(dateParse, locale: Get.locale?.languageCode);
+  }
+
+  static DateTime? parseDateStringTimeAgo(dynamic dateTime) {
+    if (dateTime == null) return null;
+
+    if (GetUtils.isNumericOnly(dateTime)) {
+      return DateTime(int.parse(dateTime), 1, 1);
+    } else if (RegExp(r'^\d{4}$').hasMatch(dateTime)) {
+      return DateTime(int.parse(dateTime), 1, 1);
+    } else if (RegExp(r'^\d{1,2}-\d{4}$').hasMatch(dateTime)) {
+      List<String> parts = dateTime.split('-');
+      int month = int.parse(parts[0]);
+      int year = int.parse(parts[1]);
+      return DateTime(year, month, 1);
+    } else if (RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(dateTime)) {
+      return DateTime.parse(dateTime);
+    } else if (RegExp(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6}$').hasMatch(dateTime)) {
+      return DateTime.parse(dateTime);
+    } else if (RegExp(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}:\d{3}$').hasMatch(dateTime)) {
+      dateTime = dateTime.replaceFirstMapped(RegExp(r':(\d{3})$'), (match) => '.${match.group(1)}');
+      return DateTime.parse(dateTime);
+    }
+
+    return null;
+  }
 }
 
 extension StringCasingExtension on String {
