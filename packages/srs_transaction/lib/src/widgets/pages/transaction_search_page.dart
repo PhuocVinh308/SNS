@@ -6,6 +6,7 @@ import 'package:srs_transaction/srs_transaction.dart';
 class TransactionSearchPage extends GetView<TransactionController> {
   TransactionSearchPage({Key? key}) : super(key: key);
   final negotiateFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return PopScope(

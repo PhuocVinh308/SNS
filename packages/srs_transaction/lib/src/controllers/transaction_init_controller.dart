@@ -15,6 +15,7 @@ class TransactionInitController {
   // scroll
   final ScrollController scrollController = ScrollController();
   bool isLoading = false;
+
   bool get hasMore => service.hasMore;
 
   //drive
@@ -29,6 +30,7 @@ class TransactionInitController {
   RxList<TransactionModel> itemSearchPosts = <TransactionModel>[].obs;
   final ScrollController scrollSearchController = ScrollController();
   bool isSearchLoading = false;
+
   bool get hasMoreSearch => service.hasMoreSearch;
 
   // add

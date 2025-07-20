@@ -14,12 +14,15 @@ class TransactionService {
   final int _limit = 10;
   DocumentSnapshot? _lastDoc;
   bool _hasMore = true;
+
   bool get hasMore => _hasMore;
 
   //search
   DocumentSnapshot? _lastDocSearch;
   bool _hasMoreSearch = true;
+
   bool get hasMoreSearch => _hasMoreSearch;
+
   //
 
   StreamSubscription? _negotiateListener;
