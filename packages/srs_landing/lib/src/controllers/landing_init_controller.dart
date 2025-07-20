@@ -15,6 +15,7 @@ class LandingInitController {
   final CarouselSliderController bannerController = CarouselSliderController();
   Rx<int> bannerCurrentIndex = 0.obs;
   RxList<String> bannerImgList = RxList<String>();
+  final service = LandingService();
 
   // menu
   RxList<MenuModel> menus = RxList<MenuModel>();
@@ -138,5 +139,22 @@ class LandingInitController {
         : userModel.value.userRole == "NONG_DAN"
             ? 'nông dân'.tr.toCapitalized()
             : '');
+  }
+
+  initSyncEnv() async {
+    try {
+      service.fetchFireStoreDataByCollectionSync(
+        collectionPath: "tb_env",
+        onListen: (snapshot) {
+          var map = {
+            for (var doc in snapshot.docs) doc.id: doc.data() as Map<String, dynamic>, // Gán doc.id làm key và dữ liệu làm value
+          };
+          var modelValue = DriveServiceModel.fromJson(map['google_drive'] ?? DriveServiceModel().toJson());
+          CustomGlobals().setDriveServiceModel(modelValue);
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 }
