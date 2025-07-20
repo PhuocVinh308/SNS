@@ -15,3 +15,4 @@ export 'src/services/transaction_service.dart';
 export 'src/widgets/components/transaction_components.dart';
 // widgets
 export 'src/widgets/pages/transaction_page.dart';
+export 'src/widgets/pages/transaction_search_page.dart';

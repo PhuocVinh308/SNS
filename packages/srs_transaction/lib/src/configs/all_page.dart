@@ -15,6 +15,11 @@ allPageTransaction() async {
       page: () => const TransactionPage(),
       binding: AllBindingTransaction(),
     ),
+    GetPage(
+      name: AllRoute.searchRoute,
+      page: () => TransactionSearchPage(),
+      binding: AllBindingTransaction(),
+    ),
   ];
   GetPageCenter.addAll(listPages);
 }

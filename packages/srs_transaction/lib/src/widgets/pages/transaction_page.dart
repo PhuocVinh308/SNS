@@ -49,54 +49,6 @@ class TransactionPage extends GetView<TransactionController> {
                 ],
               ),
             ),
-            // Bottom sheet cho bộ lọc (nếu cần)
-            bottomSheet: Obx(() {
-              if (controller.isFilterActive.value) {
-                return Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.r),
-                      topRight: Radius.circular(20.r),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, -5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomText(
-                              'Đang lọc: ${controller.activeFilters.value}',
-                              fontSize: CustomConsts.h6,
-                              color: CustomColors.color313131,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () => controller.clearFilters(),
-                            child: CustomText(
-                              'Xóa bộ lọc',
-                              fontSize: CustomConsts.h6,
-                              color: CustomColors.color06b252,
-                              fontWeight: CustomConsts.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            }),
             bottomNavigationBar: const CustomBottomAppBar(
               index: 1,
             ),

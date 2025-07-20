@@ -15,7 +15,6 @@ class TransactionInitController {
   // scroll
   final ScrollController scrollController = ScrollController();
   bool isLoading = false;
-
   bool get hasMore => service.hasMore;
 
   //drive
@@ -27,6 +26,10 @@ class TransactionInitController {
 
   // search
   TextEditingController searchController = TextEditingController();
+  RxList<TransactionModel> itemSearchPosts = <TransactionModel>[].obs;
+  final ScrollController scrollSearchController = ScrollController();
+  bool isSearchLoading = false;
+  bool get hasMoreSearch => service.hasMoreSearch;
 
   // add
   TextEditingController addTitleController = TextEditingController();
@@ -54,7 +57,11 @@ class TransactionInitController {
   late Stream<Map<String, int>> _countStream;
   late StreamSubscription<Map<String, int>> _subscription;
 
-  //======
+  // negotiate
+  TextEditingController negotiatePriceController = TextEditingController();
+  TextEditingController negotiateNoteController = TextEditingController();
+
+//===
   final RxString selectedCategory = ''.obs;
 
   // Thêm các biến mới
@@ -74,6 +81,9 @@ class TransactionInitController {
       await initScrollController();
       await initCountPost();
 
+      await initScrollSearchController();
+      await initSyncItemSearchPost();
+
       // await loadTransactions();
       // await _initUserRole();
       // ever(filters, (_) => _updateActiveFilters());
@@ -85,6 +95,7 @@ class TransactionInitController {
   close() async {
     _subscription.cancel();
     searchController.dispose();
+    service.cancelNegotiateListener();
   }
 
   initScrollController() async {
@@ -165,6 +176,9 @@ class TransactionInitController {
     addSowingDateString.value = '';
     addHarvestDateController.clear();
     addHarvestDateString.value = '';
+    //negotiate
+    negotiatePriceController.clear();
+    negotiateNoteController.clear();
   }
 
   corePostItem() async {
@@ -212,6 +226,65 @@ class TransactionInitController {
     }
   }
 
+  corePostNegotiate(String? documentIdParent) async {
+    try {
+      DialogUtil.showLoading();
+      NegotiateModel postModel = NegotiateModel(
+        documentIdParent: documentIdParent,
+        email: userModel.value.email,
+        gia: double.tryParse(negotiatePriceController.text),
+        note: negotiateNoteController.text,
+        isChot: false,
+      );
+
+      await service.postItemNegotiate(dataChild: postModel);
+      service.listenToNegotiatesAndUpdate(documentIdParent);
+      DialogUtil.hideLoading();
+
+      DialogUtil.catchException(
+        msg: "${"thương lượng thành công".tr.toCapitalized()}!",
+        status: CustomSnackBarStatus.success,
+        onCallback: () {
+          Get.back(closeOverlays: true);
+          coreRefreshSelect();
+          service.cancelNegotiateListener();
+          initSyncTransactionsPost();
+        },
+        snackBarShowTime: 1,
+      );
+    } catch (e) {
+      DialogUtil.hideLoading();
+      DialogUtil.catchException(obj: e);
+      rethrow;
+    }
+  }
+
+  coreNegotiateDone(String? documentIdParent, String? documentId) async {
+    try {
+      DialogUtil.showLoading();
+
+      await service.postNegotiateDone(documentIdParent, documentId);
+      service.listenToNegotiatesAndUpdate(documentIdParent, done: trangThaiPosts.last);
+      DialogUtil.hideLoading();
+
+      DialogUtil.catchException(
+        msg: "${"thương lượng thành công".tr.toCapitalized()}!",
+        status: CustomSnackBarStatus.success,
+        onCallback: () {
+          Get.back(closeOverlays: true);
+          coreRefreshSelect();
+          service.cancelNegotiateListener();
+          initSyncTransactionsPost();
+        },
+        snackBarShowTime: 1,
+      );
+    } catch (e) {
+      DialogUtil.hideLoading();
+      DialogUtil.catchException(obj: e);
+      rethrow;
+    }
+  }
+
   _uploadImage() async {
     try {
       if (imageOriginalBytes.value != null) {
@@ -255,6 +328,16 @@ class TransactionInitController {
     }
   }
 
+  Future<List<NegotiateModel>> fetchNegotiateList(String? documentIdParent) async {
+    DialogUtil.showLoading();
+    try {
+      final list = await service.fetchItemNegotiate(documentIdParent);
+      return list;
+    } finally {
+      DialogUtil.hideLoading();
+    }
+  }
+
   initCountPost() async {
     try {
       _countStream = service.countItems(trangThaiPosts);
@@ -266,222 +349,41 @@ class TransactionInitController {
     }
   }
 
-  //
-
-  // Khởi tạo role người dùng
-  Future<void> _initUserRole() async {
-    // try {
-    //   // TODO: Implement get user role from API/local storage
-    //   // userRole.value = await getUserRole();
-    // } catch (e) {
-    //   print('Error getting user role: $e');
-    // }
-  }
-
-  // Cập nhật trạng thái bộ lọc
-  void _updateActiveFilters() {
-    // List<String> activeFiltersList = [];
-    //
-    // if (selectedCategory.isNotEmpty) {
-    //   activeFiltersList.add('Danh mục: ${selectedCategory.value}');
-    // }
-    //
-    // if (filters['minPrice'] != null || filters['maxPrice'] != null) {
-    //   String priceFilter = 'Giá: ';
-    //   // if (filters['minPrice'] != null) {
-    //   //   priceFilter += '${NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(filters['minPrice'])} - ';
-    //   // }
-    //   // if (filters['maxPrice'] != null) {
-    //   //   priceFilter += NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(filters['maxPrice']);
-    //   // }
-    //   activeFiltersList.add(priceFilter);
-    // }
-    //
-    // if (filters['location'] != null) {
-    //   activeFiltersList.add('Khu vực: ${filters['location']}');
-    // }
-    //
-    // if (activeFiltersList.isEmpty) {
-    //   isFilterActive.value = false;
-    //   activeFilters.value = '';
-    // } else {
-    //   isFilterActive.value = true;
-    //   activeFilters.value = activeFiltersList.join(' | ');
-    // }
-  }
-
-  // Clear all filters
-  void clearFilters() {
-    filters.clear();
-    selectedCategory.value = '';
+  coreClearSearch() async {
     searchController.clear();
-    isFilterActive.value = false;
-    activeFilters.value = '';
-    applyFilters();
+    itemSearchPosts.clear();
   }
 
-  // Apply filters
-  void applyFilters() {
-    // var filtered = transactions.toList();
-    //
-    // // Apply category filter
-    // if (selectedCategory.isNotEmpty) {
-    //   filtered = filtered.where((t) => t.category == selectedCategory.value).toList();
-    // }
-    //
-    // // Apply search
-    // if (searchController.text.isNotEmpty) {
-    //   final query = searchController.text.toLowerCase();
-    //   filtered = filtered.where((t) => t.title.toLowerCase().contains(query) || t.location.toLowerCase().contains(query)).toList();
-    // }
-    //
-    // // Apply price range
-    // if (filters['minPrice'] != null) {
-    //   filtered = filtered.where((t) => t.price >= filters['minPrice']).toList();
-    // }
-    // if (filters['maxPrice'] != null) {
-    //   filtered = filtered.where((t) => t.price <= filters['maxPrice']).toList();
-    // }
-    //
-    // // Apply location filter
-    // if (filters['location'] != null) {
-    //   filtered = filtered.where((t) => t.location.toLowerCase().contains(filters['location'].toLowerCase())).toList();
-    // }
-    //
-    // filteredTransactions.value = filtered;
+  initScrollSearchController() async {
+    try {
+      scrollSearchController.addListener(() {
+        if (scrollSearchController.position.pixels >= scrollSearchController.position.maxScrollExtent - 200) {
+          fetchMoreSearchPosts();
+        }
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  // Set category
-  void setCategory(String category) {
-    // selectedCategory.value = category;
-    // applyFilters();
+  Future<void> initSyncItemSearchPost() async {
+    itemSearchPosts.clear();
+    service.resetSearchPagination();
+    await fetchMoreSearchPosts();
   }
 
-  // Set price range
-  void setPriceRange(double? min, double? max) {
-    // filters['minPrice'] = min;
-    // filters['maxPrice'] = max;
-    // applyFilters();
+  Future<void> fetchMoreSearchPosts() async {
+    if (isSearchLoading || !service.hasMoreSearch) return;
+    isSearchLoading = true;
+    DialogUtil.showLoading();
+    try {
+      final newPosts = await service.fetchItemSearchPosts(keyword: searchController.value.text.trim());
+      itemSearchPosts.addAll(newPosts);
+    } finally {
+      isSearchLoading = false;
+      DialogUtil.hideLoading();
+    }
   }
 
-  // Set location
-  void setLocation(String? location) {
-    // filters['location'] = location;
-    // applyFilters();
-  }
-
-  // Helper methods for showing notifications
-  void showSuccessSnackbar(String message) {
-    // Get.snackbar(
-    //   'Thành công',
-    //   message,
-    //   backgroundColor: Colors.green,
-    //   colorText: Colors.white,
-    //   snackPosition: SnackPosition.TOP,
-    //   margin: EdgeInsets.all(10),
-    //   borderRadius: 10,
-    //   icon: Icon(Icons.check_circle, color: Colors.white),
-    // );
-  }
-
-  void showErrorSnackbar(String message) {
-    // Get.snackbar(
-    //   'Lỗi',
-    //   message,
-    //   backgroundColor: Colors.red,
-    //   colorText: Colors.white,
-    //   snackPosition: SnackPosition.TOP,
-    //   margin: EdgeInsets.all(10),
-    //   borderRadius: 10,
-    //   icon: Icon(Icons.error_outline, color: Colors.white),
-    // );
-  }
-
-  // Update transaction counts
-  void updateCounts() {
-    // pendingCount.value = transactions.where((t) => t.status == 'pending').length;
-    // completedCount.value = transactions.where((t) => t.status == 'completed').length;
-  }
-
-  // Create new transaction post
-  Future<void> createTransaction(TransactionModel transaction) async {
-    // try {
-    //   isLoading.value = true;
-    //   // TODO: Implement API call
-    //   // await apiService.createTransaction(transaction);
-    //   transactions.add(transaction);
-    //   updateCounts();
-    //   applyFilters();
-    //   Get.back();
-    //   showSuccessSnackbar('Đăng tin thành công');
-    // } catch (e) {
-    //   showErrorSnackbar('Đăng tin thất bại');
-    // } finally {
-    //   isLoading.value = false;
-    // }
-  }
-
-  // Send negotiation request
-  Future<void> sendNegotiation(String transactionId, double price, String note) async {
-    // try {
-    //   isLoading.value = true;
-    //   // TODO: Implement API call
-    //   // await apiService.sendNegotiation(transactionId, price, note);
-    //   showSuccessSnackbar('Đã gửi yêu cầu thương lượng');
-    //   Get.back();
-    // } catch (e) {
-    //   showErrorSnackbar('Gửi yêu cầu thất bại');
-    // } finally {
-    //   isLoading.value = false;
-    // }
-  }
-
-  // Accept negotiation and create contract
-  Future<void> acceptNegotiation(String negotiationId) async {
-    // try {
-    //   isLoading.value = true;
-    //   // TODO: Implement API call
-    //   // await apiService.acceptNegotiation(negotiationId);
-    //   showSuccessSnackbar('Đã chấp nhận thương lượng');
-    //   Get.back();
-    // } catch (e) {
-    //   showErrorSnackbar('Thao tác thất bại');
-    // } finally {
-    //   isLoading.value = false;
-    // }
-  }
-
-  // Sign contract
-  Future<void> signContract(String contractId) async {
-    // try {
-    //   isLoading.value = true;
-    //   // TODO: Implement API call
-    //   // await apiService.signContract(contractId);
-    //   showSuccessSnackbar('Đã ký hợp đồng thành công');
-    //   Get.back();
-    // } catch (e) {
-    //   showErrorSnackbar('Ký hợp đồng thất bại');
-    // } finally {
-    //   isLoading.value = false;
-    // }
-  }
-
-  // Update transaction status
-  Future<void> updateTransactionStatus(String transactionId, String status) async {
-    // try {
-    //   isLoading.value = true;
-    //   // TODO: Implement API call
-    //   // await apiService.updateTransactionStatus(transactionId, status);
-    //   final index = transactions.indexWhere((t) => t.id == transactionId);
-    //   if (index != -1) {
-    //     transactions[index] = transactions[index].copyWith(status: status);
-    //     updateCounts();
-    //     applyFilters();
-    //   }
-    // } catch (e) {
-    //   showErrorSnackbar('Cập nhật trạng thái thất bại');
-    // } finally {
-    //   isLoading.value = false;
-    // }
-  }
+  coreSearchPost() async => initSyncItemSearchPost();
 }

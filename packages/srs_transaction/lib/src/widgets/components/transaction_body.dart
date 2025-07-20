@@ -8,6 +8,7 @@ class TransactionBody extends GetView<TransactionController> {
   TransactionBody({Key? key}) : super(key: key);
 
   final addFormKey = GlobalKey<FormState>();
+  final negotiateFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,36 +16,14 @@ class TransactionBody extends GetView<TransactionController> {
       body: Column(
         children: [
           _buildHeader(),
-          _buildSearchBar(),
+          _buildSearchBar(context),
           Expanded(
             child: Obx(() {
-              return _buildTransaction();
+              return _buildTransactions(context);
             }),
           )
         ],
       ),
-      floatingActionButton: Obx(() {
-        //Chỉ hiển thị FAB nếu user là nông dân
-        if (controller.userModel.value.userRole == "NONG_DAN") {
-          return FloatingActionButton.extended(
-            onPressed: () => _showAdd(context),
-            backgroundColor: CustomColors.color06b252,
-            elevation: 2,
-            icon: Icon(
-              Icons.add_circle_outline,
-              color: Colors.white,
-              size: 20.w,
-            ),
-            label: CustomText(
-              'đăng tin'.tr.toCapitalized(),
-              color: Colors.white,
-              fontSize: CustomConsts.h6,
-              fontWeight: CustomConsts.bold,
-            ),
-          );
-        }
-        return const SizedBox.shrink();
-      }),
     );
   }
 
@@ -156,7 +135,7 @@ class TransactionBody extends GetView<TransactionController> {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -167,21 +146,60 @@ class TransactionBody extends GetView<TransactionController> {
           width: 1,
         ),
       ),
-      child: CustomTextField(
-        titleEnabled: false,
-        hint: '${'tìm kiếm nông sản'.tr.toCapitalized()}...',
-        prefixIcon: Icon(
-          Icons.search,
-          color: CustomColors.color313131.withOpacity(0.5),
-        ),
-        suffixIcon: IconButton(
-          onPressed: () => _showFilterDialog(),
-          icon: const Icon(
-            Icons.filter_list,
-            color: CustomColors.color06b252,
+      child: Row(
+        children: [
+          Expanded(
+            child: CustomTextField(
+              titleEnabled: false,
+              hint: '${'tìm kiếm nông sản'.tr.toCapitalized()}...',
+              prefixIcon: Icon(
+                Icons.search,
+                color: CustomColors.color313131.withOpacity(0.5),
+              ),
+              suffixIcon: IconButton(
+                onPressed: () async {
+                  Get.toNamed(AllRoute.searchRoute)?.then((value) async {});
+                },
+                icon: const Icon(
+                  Icons.content_paste_search_rounded,
+                  color: CustomColors.color06b252,
+                ),
+              ),
+              controller: controller.searchController,
+            ),
           ),
-        ),
-        controller: controller.searchController,
+          Obx(() {
+            //Chỉ hiển thị FAB nếu user là nông dân
+            if (controller.userModel.value.userRole == "NONG_DAN") {
+              return Row(
+                children: [
+                  5.horizontalSpace,
+                  ElevatedButton(
+                    onPressed: () => _showAdd(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CustomColors.color06b252,
+                      elevation: 0,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: CustomText(
+                      'đăng tin'.tr.toCapitalized(),
+                      color: Colors.white,
+                      fontSize: CustomConsts.h6,
+                      fontWeight: CustomConsts.bold,
+                    ),
+                  ),
+                ],
+              );
+            }
+            return const SizedBox.shrink();
+          })
+        ],
       ),
     );
   }
@@ -384,7 +402,7 @@ class TransactionBody extends GetView<TransactionController> {
     ).showMbs();
   }
 
-  Widget _buildTransaction() {
+  Widget _buildTransactions(BuildContext context) {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 5.sp, vertical: 5.sp),
       controller: controller.scrollController,
@@ -397,7 +415,7 @@ class TransactionBody extends GetView<TransactionController> {
             child: SlideAnimation(
               verticalOffset: 50.0,
               child: FadeInAnimation(
-                child: _buildTransactionItem(post),
+                child: _buildTransactionItem(post, context),
               ),
             ),
           );
@@ -412,7 +430,7 @@ class TransactionBody extends GetView<TransactionController> {
     );
   }
 
-  Widget _buildTransactionItem(TransactionModel data) {
+  Widget _buildTransactionItem(TransactionModel data, BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
@@ -495,7 +513,7 @@ class TransactionBody extends GetView<TransactionController> {
               children: [
                 ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
-                    child: data.fileUrl != null
+                    child: data.fileUrl?.isNotEmpty == true
                         ? CachedNetworkImage(
                             imageUrl: data.fileUrl!,
                             width: 100.w,
@@ -504,34 +522,16 @@ class TransactionBody extends GetView<TransactionController> {
                             placeholder: (context, url) => const Center(
                               child: CircularProgressIndicator(),
                             ),
-                            errorWidget: (context, error, stackTrace) {
-                              return Container(
-                                width: 100.w,
-                                height: 100.w,
-                                color: Colors.grey.shade200,
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  color: Colors.grey,
-                                ),
-                              );
-                            },
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.cloud_off,
+                              size: 50.sp,
+                              color: CustomColors.colorD9D9D9,
+                            ),
                           )
-                        : Image.asset(
-                            'assets/images/empty_data.png',
-                            width: 100.w,
-                            height: 100.w,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                width: 100.w,
-                                height: 100.w,
-                                color: Colors.grey.shade200,
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  color: Colors.grey,
-                                ),
-                              );
-                            },
+                        : Icon(
+                            Icons.cloud_off,
+                            size: 100.w,
+                            color: CustomColors.colorD9D9D9,
                           )),
                 12.horizontalSpace,
                 Expanded(
@@ -539,7 +539,7 @@ class TransactionBody extends GetView<TransactionController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        'Lúa ST25 - Đặc sản Sóc Trăng',
+                        data.title ?? '${'đang cập nhật'.tr.toCapitalized()}...',
                         fontSize: CustomConsts.h5,
                         fontWeight: CustomConsts.bold,
                         maxLines: 2,
@@ -555,7 +555,7 @@ class TransactionBody extends GetView<TransactionController> {
                           4.horizontalSpace,
                           Expanded(
                             child: CustomText(
-                              'Huyện Mỹ Xuyên, Sóc Trăng',
+                              data.diaDiem ?? '${'đang cập nhật'.tr.toCapitalized()}...',
                               fontSize: CustomConsts.h7,
                               color: Colors.grey,
                             ),
@@ -572,7 +572,7 @@ class TransactionBody extends GetView<TransactionController> {
                           ),
                           4.horizontalSpace,
                           CustomText(
-                            'Diện tích: 2 hecta',
+                            '${'diện tích'.tr.toCapitalized()}: ${data.dienTich ?? 0} hecta',
                             fontSize: CustomConsts.h7,
                             color: Colors.grey,
                           ),
@@ -580,34 +580,38 @@ class TransactionBody extends GetView<TransactionController> {
                       ),
                       8.verticalSpace,
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment:
+                            (controller.trangThaiPosts.last == data.trangThai) ? MainAxisAlignment.start : MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                            '6.500đ/kg',
+                            '${data.gia ?? 0} đ/kg',
                             fontSize: CustomConsts.h5,
                             fontWeight: CustomConsts.bold,
                             color: CustomColors.color06b252,
                           ),
-                          ElevatedButton(
-                            onPressed: () => _showNegotiateDialog(),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: CustomColors.color06b252,
-                              elevation: 0,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 8.h,
+                          if (controller.trangThaiPosts.last != data.trangThai)
+                            ElevatedButton(
+                              onPressed: () {
+                                _showNegotiateDialog(data);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: CustomColors.color06b252,
+                                elevation: 0,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 8.h,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r),
+                              child: CustomText(
+                                'thương lượng'.tr.toCapitalized(),
+                                fontSize: CustomConsts.h7,
+                                color: Colors.white,
+                                fontWeight: CustomConsts.bold,
                               ),
                             ),
-                            child: CustomText(
-                              'Thương lượng',
-                              fontSize: CustomConsts.h7,
-                              color: Colors.white,
-                              fontWeight: CustomConsts.bold,
-                            ),
-                          ),
                         ],
                       ),
                     ],
@@ -621,219 +625,201 @@ class TransactionBody extends GetView<TransactionController> {
     );
   }
 
-  void _showFilterDialog() {
-    final minPriceController = TextEditingController();
-    final maxPriceController = TextEditingController();
-    String? selectedLocation;
-
-    Get.dialog(
-      Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: Container(
-          width: Get.width * 0.9,
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    'lọc kết quả'.tr.toCapitalized(),
-                    fontSize: CustomConsts.h4,
-                    fontWeight: CustomConsts.bold,
-                  ),
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
+  void _showNegotiateDialog(TransactionModel data) async {
+    List<NegotiateModel> list = [];
+    list = await controller.fetchNegotiateList(data.documentId);
+    controller.userModel.value.userRole == "NONG_DAN"
+        ? CustomReusableMbs(
+            context: Get.context!,
+            title: 'thương lượng giá'.tr.toCapitalized(),
+            height: list.isEmpty ? (.3.sh) : (.5.sh),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 15.sp),
+              child: SingleChildScrollView(
+                child: list.isEmpty
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/empty_data.png',
+                            height: 110.sp,
+                            width: 110.sp,
+                            fit: BoxFit.cover,
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: list.map((item) => _itemNegotiate(data.documentId, item)).toList(),
+                      ),
               ),
-              20.verticalSpace,
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: minPriceController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'giá từ'.tr.toCapitalized(),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
+            ),
+          ).showMbs()
+        : CustomReusableMbs(
+            context: Get.context!,
+            title: 'thương lượng giá'.tr.toCapitalized(),
+            height: .5.sh,
+            child: Form(
+              key: negotiateFormKey,
+              autovalidateMode: controller.autoValid,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 15.sp),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        title: 'giá đề xuất (đ/kg)'.tr.toCapitalized(),
+                        hint: 'nhập giá đề xuất (đ/kg)'.tr.toCapitalized(),
+                        controller: controller.negotiatePriceController,
+                        customInputType: CustomInputType.money,
+                        required: true,
+                        textInputAction: TextInputAction.done,
+                      ),
+                      15.verticalSpace,
+                      CustomTextField(
+                        title: 'ghi chú'.tr.toCapitalized(),
+                        hint: 'nhập ghi chú'.tr.toCapitalized(),
+                        controller: controller.negotiateNoteController,
+                        customInputType: CustomInputType.text,
+                        minLines: 5,
+                        textInputAction: TextInputAction.done,
+                      ),
+                      15.verticalSpace,
+                      MaterialButton(
+                        onPressed: () async {
+                          if (negotiateFormKey.currentState?.validate() == true) {
+                            await controller.funPostNegotiate(data.documentId);
+                          } else {
+                            DialogUtil.catchException(msg: "chưa nhập đầy đủ thông tin".tr.toCapitalized());
+                          }
+                        },
+                        color: CustomColors.colorFC6B68,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.sp),
+                        ),
+                        child: CustomText(
+                          'thương lượng'.tr.toCapitalized(),
+                          color: CustomColors.colorFFFFFF,
+                          fontSize: CustomConsts.h4,
+                          fontWeight: CustomConsts.medium,
                         ),
                       ),
-                    ),
-                  ),
-                  10.horizontalSpace,
-                  Expanded(
-                    child: TextField(
-                      controller: maxPriceController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'đến'.tr.toCapitalized(),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              15.verticalSpace,
-              DropdownButtonFormField<String>(
-                value: selectedLocation,
-                decoration: InputDecoration(
-                  labelText: 'khu vực'.tr.toCapitalized(),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
+                    ],
                   ),
                 ),
-                items: [
-                  DropdownMenuItem(
-                    value: null,
-                    child: Text('tất cả'.tr.toCapitalized()),
-                  ),
-                  // Add more locations
-                ],
-                onChanged: (value) {
-                  selectedLocation = value;
-                },
               ),
-              20.verticalSpace,
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        controller.clearFilters();
-                        Get.back();
-                      },
-                      style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 15.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                      child: CustomText('đặt lại'.tr.toCapitalized()),
-                    ),
+            ),
+          ).showMbs();
+  }
+
+  Widget _itemNegotiate(String? parent, NegotiateModel data) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: Colors.grey.shade200,
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with status
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey.shade100,
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.w,
+                    vertical: 4.h,
                   ),
-                  10.horizontalSpace,
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        controller.setPriceRange(
-                          double.tryParse(minPriceController.text),
-                          double.tryParse(maxPriceController.text),
-                        );
-                        controller.setLocation(selectedLocation);
-                        Get.back();
+                  decoration: BoxDecoration(
+                    color: CustomColors.color06b252.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: CustomText(
+                    "Email: ${data.email ?? ""}",
+                    fontSize: CustomConsts.h7,
+                    color: CustomColors.color06b252,
+                    fontWeight: CustomConsts.bold,
+                  ),
+                ),
+                CustomText(
+                  StringHelper.changeToTimeAgo(data.createdDate),
+                  fontSize: CustomConsts.h7,
+                  color: CustomColors.color313131.withOpacity(0.5),
+                ),
+              ],
+            ),
+          ),
+          // Content
+          Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  '${'giá'.tr.toCapitalized()}: ${data.gia ?? 0} đ/kg',
+                  fontSize: CustomConsts.h5,
+                  fontWeight: CustomConsts.bold,
+                  color: CustomColors.color06b252,
+                ),
+                8.verticalSpace,
+                CustomText(
+                  "${'ghi chú'.tr.toCapitalized()}: ${data.note ?? ""}",
+                  fontSize: CustomConsts.h7,
+                  color: Colors.grey,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        await controller.funCoreNegotiateDone(parent, data.documentId);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: CustomColors.color06b252,
-                        padding: EdgeInsets.symmetric(vertical: 15.h),
+                        elevation: 0,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 8.h,
+                        ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.r),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
                       ),
                       child: CustomText(
-                        'áp dụng'.tr.toCapitalized(),
+                        'chốt giá'.tr.toCapitalized(),
+                        fontSize: CustomConsts.h7,
                         color: Colors.white,
                         fontWeight: CustomConsts.bold,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  void _showNegotiateDialog() {
-    final priceController = TextEditingController();
-    final noteController = TextEditingController();
-
-    Get.dialog(
-      Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: Container(
-          width: Get.width * 0.9,
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    'thương lượng giá'.tr.toCapitalized(),
-                    fontSize: CustomConsts.h4,
-                    fontWeight: CustomConsts.bold,
-                  ),
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-              20.verticalSpace,
-              TextField(
-                controller: priceController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'giá đề xuất (đ/kg)'.tr.toCapitalized(),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                ),
-              ),
-              15.verticalSpace,
-              TextField(
-                controller: noteController,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  labelText: 'ghi chú'.tr.toCapitalized(),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                ),
-              ),
-              20.verticalSpace,
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (priceController.text.isNotEmpty) {
-                      controller.sendNegotiation(
-                        'transactionId', // Replace with actual ID
-                        double.parse(priceController.text),
-                        noteController.text,
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomColors.color06b252,
-                    padding: EdgeInsets.symmetric(vertical: 15.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                  ),
-                  child: CustomText(
-                    'gửi đề xuất'.tr.toCapitalized(),
-                    color: Colors.white,
-                    fontWeight: CustomConsts.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }

@@ -5,9 +5,10 @@ import 'package:srs_common/srs_common_lib.dart';
 
 class DateTimeStrings {
   final String postItemFormat; // POST_FORUM_yyyymmdd_hhmmss_sss_xxx
+  final String postItemNegotiateFormat; // POST_NEGOTIATE_yyyymmdd_hhmmss_sss_xxx
   final String standardFormat; // yyyy-mm-dd hh:mm:ss
 
-  DateTimeStrings(this.postItemFormat, this.standardFormat);
+  DateTimeStrings(this.postItemFormat, this.postItemNegotiateFormat, this.standardFormat);
 }
 
 DateTimeStrings generateBothDateTimeStrings() {
@@ -26,9 +27,10 @@ DateTimeStrings generateBothDateTimeStrings() {
 
   // Tạo 2 chuỗi theo 2 định dạng
   final postItem = 'POST_ITEM_$yyyy$mm${dd}_$hh$mi${ss}_${sss}_$randomSuffix';
+  final postItemNegotiate = 'POST_NEGOTIATE_$yyyy$mm${dd}_$hh$mi${ss}_${sss}_$randomSuffix';
   final standard = '$yyyy-$mm-$dd $hh:$mi:$ss:$sss';
 
-  return DateTimeStrings(postItem, standard);
+  return DateTimeStrings(postItem, postItemNegotiate, standard);
 }
 
 // Hàm helper thêm số 0 nếu cần

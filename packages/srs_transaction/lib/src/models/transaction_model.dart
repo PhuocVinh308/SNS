@@ -78,53 +78,6 @@ class TransactionModel {
   }
 }
 
-// Model cho thương lượng
-class Negotiation {
-  final String id;
-  final String traderId; // ID thương lái
-  final String traderName; // Tên thương lái
-  final double price; // Giá đề xuất
-  final String? note; // Ghi chú
-  final String status; // Trạng thái (đang chờ, đã chấp nhận, từ chối)
-  final DateTime createdAt; // Thời gian tạo
-
-  Negotiation({
-    required this.id,
-    required this.traderId,
-    required this.traderName,
-    required this.price,
-    this.note,
-    required this.status,
-    required this.createdAt,
-  });
-
-  factory Negotiation.fromJson(Map<String, dynamic> json) {
-    return Negotiation(
-      id: json['id'],
-      traderId: json['traderId'],
-      traderName: json['traderName'],
-      price: json['price'].toDouble(),
-      note: json['note'],
-      status: json['status'],
-      createdAt: DateTime.parse(json['createdAt']),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'traderId': traderId,
-      'traderName': traderName,
-      'price': price,
-      'note': note,
-      'status': status,
-      'createdAt': createdAt.toIso8601String(),
-    };
-  }
-
-  String get formattedPrice => NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(price);
-}
-
 // Model cho hợp đồng
 class Contract {
   final String id;

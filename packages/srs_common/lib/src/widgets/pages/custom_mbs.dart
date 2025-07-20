@@ -8,6 +8,7 @@ class CustomReusableMbs {
   final Widget? contentWidget;
   final String? title;
   final double? height;
+  final VoidCallback? callback;
 
   const CustomReusableMbs({
     Key? key,
@@ -16,6 +17,7 @@ class CustomReusableMbs {
     this.contentWidget,
     this.title,
     this.height,
+    this.callback,
   });
 
   void showMbs() => _customMbs(context);
@@ -113,6 +115,7 @@ class CustomReusableMbs {
                   child: IconButton(
                     onPressed: () {
                       Get.back();
+                      callback?.call();
                     },
                     style: IconButton.styleFrom(
                       padding: EdgeInsets.zero,

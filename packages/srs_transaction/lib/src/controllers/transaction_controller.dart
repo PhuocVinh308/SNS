@@ -15,9 +15,17 @@ class TransactionController extends GetxController with TransactionInitControlle
 
   funPostItem() async => await corePostItem();
 
+  funPostNegotiate(String? documentIdParent) async => await corePostNegotiate(documentIdParent);
+
+  funCoreNegotiateDone(String? documentIdParent, String? documentId) async => await coreNegotiateDone(documentIdParent, documentId);
+
   funPickImage(ImageSource src) async => await corePickImage(src);
 
   funRefreshSelect() => coreRefreshSelect();
+
+  funClearSearch() async => await coreClearSearch();
+
+  funSearchPost() async => await coreSearchPost();
 
   @override
   void onClose() {
