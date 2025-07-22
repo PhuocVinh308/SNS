@@ -6,4 +6,8 @@ final Map<String, String> enUS = {
   'chi tiết bài đăng': 'post details',
   'chi tiết': 'details',
   'trả lời': 'replies',
+  'thành công': 'success',
+  'thu nhập': 'income',
+  'chi phí': 'expense',
+  'lợi nhuận': 'profit',
 };

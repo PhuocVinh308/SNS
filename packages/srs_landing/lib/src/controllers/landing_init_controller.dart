@@ -74,29 +74,23 @@ class LandingInitController {
         MenuModel(
           id: 2,
           name: 'dịch vụ'.tr.toCapitalized(),
-          image: 'assets/images/store.jpg',
+          image: 'assets/images/forum.png',
           route: srs_transaction.AllRoute.mainRoute,
         ),
         MenuModel(
           id: 3,
-          name: 'diễn đàn'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
-          route: srs_forum.AllRoute.mainRoute,
-        ),
-        MenuModel(
-          id: 4,
           name: 'Nhận biết bệnh trên lá lúa'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
           route: srs_disease.AllRouteDisease.diseaseMainRoute,
         ),
         MenuModel(
-          id: 5,
+          id: 4,
           name: 'Sổ tay nông nghiệp'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
           route: srs_diary.AllRouteDiary.diaryMainRoute,
         ),
         MenuModel(
-          id: 6,
+          id: 5,
           name: 'Lịch thời vụ'.tr.toCapitalized(),
           image: 'assets/images/forum.png',
           route: srs_calendar.AllRoute.mainRoute,
