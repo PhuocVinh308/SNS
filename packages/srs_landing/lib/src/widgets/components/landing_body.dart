@@ -263,7 +263,7 @@ class LandingBody extends GetView<LandingController> {
     return list;
   }
 
-  _itemMenu({String? image, String? title, Function? onTap}) {
+  _itemMenu({IconData? image, String? title, Function? onTap}) {
     return InkWell(
       onTap: () {
         onTap?.call();
@@ -281,11 +281,10 @@ class LandingBody extends GetView<LandingController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 50.sp,
-              width: 100.sp,
-              child: Image.asset(
-                image ?? 'assets/images/empty_data.png',
-                fit: BoxFit.cover,
+              child: FaIcon(
+                image ?? FontAwesomeIcons.home,
+                size: 35.sp,
+                color: CustomColors.colorE89148,
               ),
             ),
             5.verticalSpace,

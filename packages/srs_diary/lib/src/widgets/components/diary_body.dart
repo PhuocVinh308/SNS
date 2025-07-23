@@ -71,13 +71,13 @@ class DiaryBody extends GetView<DiaryController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildSummaryItem(
-                  'Thu nhập',
+                  'thu nhập'.tr.toCapitalized(),
                   Icons.arrow_upward,
                   Colors.white,
                   controller.totalIncome,
                 ),
                 _buildSummaryItem(
-                  'Chi phí',
+                  'chi phí'.tr.toCapitalized(),
                   Icons.arrow_downward,
                   Colors.white.withOpacity(0.8),
                   controller.totalExpense,
@@ -91,7 +91,7 @@ class DiaryBody extends GetView<DiaryController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  'Lợi nhuận',
+                  'lợi nhuận'.tr.toCapitalized(),
                   color: Colors.white,
                   fontSize: CustomConsts.h5,
                   fontWeight: CustomConsts.bold,

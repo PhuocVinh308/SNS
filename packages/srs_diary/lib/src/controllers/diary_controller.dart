@@ -1,13 +1,25 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:srs_diary/src/controllers/diary_init_controller.dart';
+import 'package:srs_diary/srs_diary.dart';
 
 import '../models/models.dart';
 
-class DiaryController extends GetxController {
+class DiaryController extends GetxController with DiaryInitController {
   final RxList<DiaryTransaction> transactions = <DiaryTransaction>[].obs;
   final Rx<DateTime> selectedMonth = DateTime.now().obs;
   final RxDouble totalIncome = 0.0.obs;
   final RxDouble totalExpense = 0.0.obs;
+
+  @override
+  void onInit() async {
+    log('initialize Controller', name: DiaryConfig.packageName);
+    await init();
+    // _loadSampleData();
+    super.onInit();
+  }
 
   // Danh mục chi phí
   final expenseCategories = [
@@ -26,13 +38,6 @@ class DiaryController extends GetxController {
     'Hỗ trợ nông nghiệp',
     'Thu nhập khác',
   ];
-
-  @override
-  void onInit() {
-    super.onInit();
-    // Tạo dữ liệu mẫu
-    _loadSampleData();
-  }
 
   void _loadSampleData() {
     final sampleTransactions = [
@@ -149,4 +154,6 @@ class DiaryController extends GetxController {
   String formatDate(DateTime date) {
     return DateFormat('dd/MM/yyyy').format(date);
   }
+
+  funPostDiary() async => await corePostDiary();
 }

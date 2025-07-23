@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class TransactionModel {
   String? documentId;
   String? title;
@@ -76,63 +74,4 @@ class TransactionModel {
     map['createdDate'] = createdDate;
     return map;
   }
-}
-
-// Model cho hợp đồng
-class Contract {
-  final String id;
-  final String transactionId; // ID giao dịch
-  final double agreedPrice; // Giá đã thỏa thuận
-  final DateTime signDate; // Ngày ký
-  final DateTime deliveryDate; // Ngày giao hàng
-  final String status; // Trạng thái hợp đồng
-  final String? farmerSignature; // Chữ ký nông dân
-  final String? traderSignature; // Chữ ký thương lái
-  final List<String> terms; // Các điều khoản
-
-  Contract({
-    required this.id,
-    required this.transactionId,
-    required this.agreedPrice,
-    required this.signDate,
-    required this.deliveryDate,
-    required this.status,
-    this.farmerSignature,
-    this.traderSignature,
-    required this.terms,
-  });
-
-  factory Contract.fromJson(Map<String, dynamic> json) {
-    return Contract(
-      id: json['id'],
-      transactionId: json['transactionId'],
-      agreedPrice: json['agreedPrice'].toDouble(),
-      signDate: DateTime.parse(json['signDate']),
-      deliveryDate: DateTime.parse(json['deliveryDate']),
-      status: json['status'],
-      farmerSignature: json['farmerSignature'],
-      traderSignature: json['traderSignature'],
-      terms: List<String>.from(json['terms']),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'transactionId': transactionId,
-      'agreedPrice': agreedPrice,
-      'signDate': signDate.toIso8601String(),
-      'deliveryDate': deliveryDate.toIso8601String(),
-      'status': status,
-      'farmerSignature': farmerSignature,
-      'traderSignature': traderSignature,
-      'terms': terms,
-    };
-  }
-
-  String get formattedAgreedPrice => NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(agreedPrice);
-
-  String get formattedSignDate => DateFormat('dd/MM/yyyy').format(signDate);
-
-  String get formattedDeliveryDate => DateFormat('dd/MM/yyyy').format(deliveryDate);
 }
