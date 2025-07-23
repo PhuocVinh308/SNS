@@ -13,11 +13,11 @@ class CalendarBody extends GetView<CalendarController> {
     return Stack(
       children: [
         Obx(
-          () => controller.timelineEvents.isEmpty
-              ? _buildEmptyState()
-              : controller.showTimeline.value
-                  ? _buildTimelineView()
-                  : _buildSetupView(),
+          () =>
+              // controller.timelineEvents.isEmpty
+              //     ? _buildEmptyState()
+              //     :
+              controller.showTimeline.value ? _buildTimelineView() : _buildSetupView(),
         ),
       ],
     );

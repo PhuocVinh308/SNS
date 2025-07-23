@@ -68,31 +68,31 @@ class LandingInitController {
         MenuModel(
           id: 1,
           name: 'diễn đàn'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
+          image: FontAwesomeIcons.comments,
           route: srs_forum.AllRoute.mainRoute,
         ),
         MenuModel(
           id: 2,
           name: 'dịch vụ'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
+          image: FontAwesomeIcons.store,
           route: srs_transaction.AllRoute.mainRoute,
         ),
         MenuModel(
           id: 3,
           name: 'Nhận biết bệnh trên lá lúa'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
+          image: FontAwesomeIcons.viruses,
           route: srs_disease.AllRouteDisease.diseaseMainRoute,
         ),
         MenuModel(
           id: 4,
           name: 'Sổ tay nông nghiệp'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
+          image: FontAwesomeIcons.book,
           route: srs_diary.AllRouteDiary.diaryMainRoute,
         ),
         MenuModel(
           id: 5,
           name: 'Lịch thời vụ'.tr.toCapitalized(),
-          image: 'assets/images/forum.png',
+          image: FontAwesomeIcons.calendarDays,
           route: srs_calendar.AllRoute.mainRoute,
         ),
       ];
