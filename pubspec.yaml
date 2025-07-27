@@ -13,6 +13,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   #  flutter_native_splash: ^1.2.0
   flutter_launcher_icons: ^0.14.3
+  image_picker: ^1.0.7
+  http: ^1.1.0
+  path_provider: ^2.1.1
+  path: ^1.8.3
 
   srs_authen:
     path: packages/srs_authen

@@ -11,6 +11,7 @@ export 'src/core/init_package.dart';
 export 'src/models/models.dart';
 // services
 export 'src/services/disease_service.dart';
+export 'src/services/disease_api_service.dart';
 export 'src/widgets/components/disease_components.dart';
 // widgets
 export 'src/widgets/pages/disease_page.dart';

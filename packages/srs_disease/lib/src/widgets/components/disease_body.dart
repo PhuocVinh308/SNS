@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:srs_common/srs_common.dart';
 import 'package:srs_common/srs_common_lib.dart';
 import 'package:srs_disease/srs_disease.dart';
+import 'disease_result_modal.dart';
 
 class DiseaseBody extends GetView<DiseaseController> {
   const DiseaseBody({Key? key}) : super(key: key);
@@ -176,20 +178,30 @@ class DiseaseBody extends GetView<DiseaseController> {
       ),
       child: Column(
         children: [
-          _ActionButton(
+          Obx(() => _ActionButton(
             icon: Icons.camera_alt,
             title: 'Chụp ảnh lá lúa',
-            subtitle: 'Mở camera để chụp ảnh',
-            onTap: () => controller.openCamera(),
+            subtitle: controller.isAnalyzing.value 
+                ? 'Đang phân tích...' 
+                : 'Mở camera để chụp ảnh',
+            onTap: controller.isAnalyzing.value 
+                ? null 
+                : () => controller.openCamera(),
             showBorder: true,
-          ),
-          _ActionButton(
+            isLoading: controller.isAnalyzing.value,
+          )),
+          Obx(() => _ActionButton(
             icon: Icons.photo_library,
             title: 'Tải ảnh lên',
-            subtitle: 'Chọn ảnh từ thư viện',
-            onTap: () => controller.pickImage(),
+            subtitle: controller.isAnalyzing.value 
+                ? 'Đang phân tích...' 
+                : 'Chọn ảnh từ thư viện',
+            onTap: controller.isAnalyzing.value 
+                ? null 
+                : () => controller.pickImage(),
             showBorder: false,
-          ),
+            isLoading: controller.isAnalyzing.value,
+          )),
         ],
       ),
     );
@@ -328,12 +340,31 @@ class DiseaseBody extends GetView<DiseaseController> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.r),
-                  child: Image.asset(
-                    diagnosis.imagePath,
-                    width: 70.w,
-                    height: 70.w,
-                    fit: BoxFit.cover,
-                  ),
+                  child: diagnosis.imagePath.startsWith('assets/')
+                      ? Image.asset(
+                          diagnosis.imagePath,
+                          width: 70.w,
+                          height: 70.w,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.file(
+                          File(diagnosis.imagePath),
+                          width: 70.w,
+                          height: 70.w,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 70.w,
+                              height: 70.w,
+                              color: Colors.grey.withOpacity(0.3),
+                              child: Icon(
+                                Icons.image_not_supported,
+                                color: Colors.grey,
+                                size: 24.w,
+                              ),
+                            );
+                          },
+                        ),
                 ),
               ),
               15.horizontalSpace,
@@ -419,8 +450,9 @@ class _ActionButton extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool showBorder;
+  final bool isLoading;
 
   const _ActionButton({
     required this.icon,
@@ -428,12 +460,13 @@ class _ActionButton extends StatelessWidget {
     required this.subtitle,
     required this.onTap,
     required this.showBorder,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       child: Container(
         padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
@@ -446,13 +479,16 @@ class _ActionButton extends StatelessWidget {
                 )
               : null,
         ),
-        child: Row(
-          children: [
-            _buildIcon(),
-            15.horizontalSpace,
-            _buildContent(),
-            _buildArrow(),
-          ],
+        child: Opacity(
+          opacity: isLoading ? 0.6 : 1.0,
+          child: Row(
+            children: [
+              _buildIcon(),
+              15.horizontalSpace,
+              _buildContent(),
+              _buildArrow(),
+            ],
+          ),
         ),
       ),
     );
@@ -465,11 +501,20 @@ class _ActionButton extends StatelessWidget {
         color: CustomColors.color06b252.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12.r),
       ),
-      child: Icon(
-        icon,
-        color: CustomColors.color06b252,
-        size: 24.w,
-      ),
+      child: isLoading
+          ? SizedBox(
+              width: 24.w,
+              height: 24.w,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(CustomColors.color06b252),
+              ),
+            )
+          : Icon(
+              icon,
+              color: CustomColors.color06b252,
+              size: 24.w,
+            ),
     );
   }
 
@@ -495,6 +540,10 @@ class _ActionButton extends StatelessWidget {
   }
 
   Widget _buildArrow() {
+    if (isLoading) {
+      return SizedBox.shrink();
+    }
+    
     return Container(
       padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
